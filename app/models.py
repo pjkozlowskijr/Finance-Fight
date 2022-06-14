@@ -1,6 +1,6 @@
 from app import db
 from flask_login import UserMixin
-from datetime import datetime as dt, timedelta
+from datetime import datetime as dt, timedelta, time
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
 
@@ -117,9 +117,18 @@ class User(UserMixin, db.Model):
 class League(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    start_date = db.Column(db.DateTime)
-    end_date = db.Column(db.DateTime)
-    max_players = db.Column(db.Integer)
+    start_date = db.Column(db.Date)
+    start_time = db.Column(db.Time, default=(time(hour=0, minute=0, second=0)))
+    end_datetime = db.Column(db.DateTime)
+
+    def __init__(self):
+        self.end_datetime = (dt.combine(self.start_date, self.start_time)) + timedelta(days=7)
+
+    def __repr__(self):
+        return f'<League ID: {self.id} | League Name: {self.name}>'
+
+    def league_to_db(self):
+        pass
 
 class Asset(db.Model):
     id = db.Column(db.Integer, primary_key=True)
