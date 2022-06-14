@@ -103,7 +103,7 @@ class User(UserMixin, db.Model):
             return self.token
         self.token = secrets.token_urlsafe(32)
         self.token_exp = current_time + timedelta(hours=exp)
-        self.save()
+        self.save_user()
         return self.token
 
     # Check if user has token and if token is expired

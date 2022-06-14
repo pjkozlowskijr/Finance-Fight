@@ -12,7 +12,7 @@ def verify_password(email, password):
     if user is None:
         return False
     g.current_user = user
-    return user.check_hashed_password(password)
+    return user.confirm_password(password)
 
 @token_auth.verify_token
 def verify_token(token):
@@ -70,7 +70,7 @@ def put_user():
     '''
     data = request.get_json()
     g.current_user.from_dict(data)
-    g.current_user.save()
+    g.current_user.save_user()
     return make_response('SUCCESS', 200)
 
 @user.delete('/user')
