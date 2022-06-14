@@ -24,4 +24,7 @@ app.register_blueprint(league_bp)
 from .blueprints.user import bp as user_bp
 app.register_blueprint(user_bp)
 
+from .blueprints.user_holding import bp as user_holding_bp
+app.register_blueprint(user_holding_bp)
+
 from app import models

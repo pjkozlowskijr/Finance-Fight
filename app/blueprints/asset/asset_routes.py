@@ -1,6 +1,6 @@
 from . import bp as asset
 from app.models import Asset
-from flask import make_response, g, request, abort
+from flask import make_response, request
 from app.blueprints.user.user_routes import token_auth
 
 @asset.post('/asset')

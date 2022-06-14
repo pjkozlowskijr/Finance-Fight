@@ -127,6 +127,7 @@ class User(UserMixin, db.Model):
 class League(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
+    owner_id = db.Column(db.Integer)
     start_date = db.Column(db.Date)
     start_time = db.Column(db.Time, default=(time(hour=0, minute=0, second=0)))
     end_datetime = db.Column(db.DateTime)
