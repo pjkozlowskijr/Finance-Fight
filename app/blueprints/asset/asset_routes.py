@@ -12,6 +12,6 @@ def post_asset():
     new_asset.save_asset()
     return make_response('SUCCESS', 200)
 
-@asset.get('/asset/<int:id>')
-def get_asset(id):
-    return make_response(Asset.query.get(id).to_dict(), 200)
+@asset.get('/asset/<string:sym>')
+def get_asset(sym):
+    return make_response(Asset.query.filter_by(symbol=sym).to_dict(), 200)

@@ -10,21 +10,23 @@ user_leagues = db.Table('user_leagues',
     db.Column('league_id', db.Integer, db.ForeignKey('league.id'))
 )
 
-class User_Holdings(db.Model):
+class User_Holding(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     asset_id = db.Column(db.Integer, db.ForeignKey('asset.id'), primary_key=True)
     purchase_price = db.Column(db.Numeric(15,2))
     quantity = db.Column(db.Integer)
     user = db.relationship(
         'User',
-        backref = 'user_holdings',
-        lazy = 'dynamic'
+        back_populates = 'holdings',
     )
     asset = db.relationship(
         'Asset',
-        backref = 'user_holdings',
-        lazy = 'dynamic'
+        back_populates = 'users',
     )
+
+    def save_user_holding(self):
+        db.session.add(self)
+        db.session.commit()
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,9 +42,8 @@ class User(UserMixin, db.Model):
     token = db.Column(db.String, unique=True, index=True)
     token_exp = db.Column(db.DateTime)
     holdings = db.relationship(
-        'Asset',
-        secondary = 'User_Holdings',
-        lazy = 'dynamic'
+        'User_Holding',
+        back_populates = 'user',
     )
     leagues = db.relationship(
         'League',
@@ -165,19 +166,19 @@ class Asset(db.Model):
     symbol = db.Column(db.String, unique=True, index=True)
     type = db.Column(db.String)
     users = db.relationship(
-        'User',
-        secondary = 'User_Holdings',
-        lazy = 'dynamic'
+        'User_Holding',
+        back_populates = 'asset'
     )
 
     def __repr__(self):
         return f'<Asset ID: {self.id} | Asset Name: {self.name}>'
     
+    # MAY NOT NEED THIS FUNCTION --> saving user_holding also saves asset
     # Set asset info when user adds to holdings
-    def asset_to_db(self, asset_data):
-        self.name = asset_data['name']
-        self.symbol = asset_data['symbol']
-        self.type = asset_data['type']
+    # def asset_to_db(self, asset_data):
+    #     self.name = asset_data['name']
+    #     self.symbol = asset_data['symbol']
+    #     self.type = asset_data['type']
 
     # Package asset info from DB to send to user
     def to_dict(self):
@@ -188,10 +189,11 @@ class Asset(db.Model):
             'type': self.type
         }
 
+    # MAY NOT NEED THIS FUNCTION
     # Save asset info to database
-    def save_asset(self):
-        db.session.add(self)
-        db.session.commit()
+    # def save_asset(self):
+    #     db.session.add(self)
+    #     db.session.commit()
 
     def delete_asset(self):
         db.session.delete(self)
