@@ -1,5 +1,5 @@
-from app import db, login
-from flask_login import UserMixin, current_user
+from app import db
+from flask_login import UserMixin
 from datetime import datetime as dt, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
@@ -48,14 +48,6 @@ class User(UserMixin, db.Model):
     def __str__(self):
         return f'<User email: {self.email} | User name: {self.first_name} {self.last_name}>'
 
-    # Salt and hash password
-    def hash_password(self, created_password):
-        return generate_password_hash(created_password)
-
-    # Check password submitted at login with hashed password in database
-    def confirm_password(self, login_password):
-        return check_password_hash(self.password, login_password)
-
     # Set user info based on registration
     def reg_to_db(self, reg_data):
         self.first_name = reg_data['first_name'].lower().strip()
@@ -95,6 +87,14 @@ class User(UserMixin, db.Model):
     def delete_user(self):
         db.session.delete(self)
         db.session.commit()
+
+    # Salt and hash password
+    def hash_password(self, created_password):
+        return generate_password_hash(created_password)
+
+    # Check password submitted at login with hashed password in database
+    def confirm_password(self, login_password):
+        return check_password_hash(self.password, login_password)
 
     # Get token upon login for token auth
     def get_token(self, exp=24):
