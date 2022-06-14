@@ -52,7 +52,7 @@ class User(UserMixin, db.Model):
     def reg_to_db(self, reg_data):
         self.first_name = reg_data['first_name'].lower().strip()
         self.last_name = reg_data['last_name'].lower().strip()
-        self.display_name = reg_data['display_name'].lower().strip()
+        self.display_name = reg_data['display_name'].strip()
         self.email = reg_data['email'].lower().strip()
         self.password = self.hash_password(reg_data['password'])
         self.avatar = reg_data['avatar']
@@ -70,8 +70,8 @@ class User(UserMixin, db.Model):
     def to_dict(self):
         return{
             'id': self.id,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
+            'first_name': self.first_name.title(),
+            'last_name': self.last_name.title(),
             'display_name': self.display_name,
             'email': self.email,
             'created_on': self.created_on,
@@ -127,11 +127,58 @@ class League(db.Model):
     def __repr__(self):
         return f'<League ID: {self.id} | League Name: {self.name}>'
 
-    def league_to_db(self):
-        pass
+    # Set league info based on user input
+    def league_to_db(self, league_data):
+        self.name = league_data['name'].strip()
+        self.start_date = league_data['start_date']()
+
+    # Packages league info from DB to send to user via make_response
+    def to_dict(self):
+        return{
+            'id': self.id,
+            'name': self.name,
+            'league_start': dt.combine(self.start_date, self.start_time),
+            'league_end': self.end_datetime
+        }
+
+    # Save league info to database
+    def save_league(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_league(self):
+        db.session.delete(self)
+        db.session.commit()
 
 class Asset(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     symbol = db.Column(db.String)
     type = db.Column(db.String)
+
+    def __repr__(self):
+        return f'<Asset ID: {self.id} | Asset Name: {self.name}>'
+    
+    # Set asset info when user adds to holdings
+    def asset_to_db(self, asset_data):
+        self.name = asset_data['name']
+        self.symbol = asset_data['symbol']
+        self.type = asset_data['type']
+
+    # Package asset info from DB to send to user
+    def to_dict(self):
+        return{
+            'id': self.id,
+            'name': self.name,
+            'symbol': self.symbol,
+            'type': self.type
+        }
+
+    # Save asset info to database
+    def save_asset(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_asset(self):
+        db.session.delete(self)
+        db.session.commit()
