@@ -4,17 +4,27 @@ from datetime import datetime as dt, timedelta, time
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
 
-# Table to link users and assets
-user_holdings = db.Table('user_holdings',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('asset_id', db.Integer, db.ForeignKey('asset.id'))
-)
-
 # Table to link users and leagues
 user_leagues = db.Table('user_leagues',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('league_id', db.Integer, db.ForeignKey('league.id'))
 )
+
+class User_Holdings(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    asset_id = db.Column(db.Integer, db.ForeignKey('asset.id'), primary_key=True)
+    purchase_price = db.Column(db.Numeric(15,2))
+    quantity = db.Column(db.Integer)
+    user = db.relationship(
+        'User',
+        backref = 'user_holdings',
+        lazy = 'dynamic'
+    )
+    asset = db.relationship(
+        'Asset',
+        backref = 'user_holdings',
+        lazy = 'dynamic'
+    )
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,8 +41,7 @@ class User(UserMixin, db.Model):
     token_exp = db.Column(db.DateTime)
     holdings = db.relationship(
         'Asset',
-        secondary = user_holdings,
-        backref = 'users',
+        secondary = 'User_Holdings',
         lazy = 'dynamic'
     )
     leagues = db.relationship(
@@ -153,8 +162,13 @@ class League(db.Model):
 class Asset(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
-    symbol = db.Column(db.String)
+    symbol = db.Column(db.String, unique=True, index=True)
     type = db.Column(db.String)
+    users = db.relationship(
+        'User',
+        secondary = 'User_Holdings',
+        lazy = 'dynamic'
+    )
 
     def __repr__(self):
         return f'<Asset ID: {self.id} | Asset Name: {self.name}>'
