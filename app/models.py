@@ -65,9 +65,35 @@ class User(UserMixin, db.Model):
         self.password = self.hash_password(reg_data['password'])
         self.avatar = reg_data['avatar']
 
+    # Pulls data from editing profile to update existing database
+    def from_dict(self, data):
+        for field in ['avatar', 'display_name', 'email', 'first_name', 'last_name', 'password']:
+            if field in data:
+                if field == 'password':  
+                    setattr(self, field, self.hash_password(data[field]))
+                else:
+                    setattr(self, field, data[field])
+
+    # Packages user info from DB to send to user via make_response
+    def to_dict(self):
+        return{
+            'id': self.id,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'display_name': self.display_name,
+            'email': self.email,
+            'created_on': self.created_on,
+            'token': self.token,
+            'token_exp': self.token_exp
+        }
+
     # Save/update user info to database
     def save_user(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete_user(self):
+        db.session.delete(self)
         db.session.commit()
 
     # Get token upon login for token auth
