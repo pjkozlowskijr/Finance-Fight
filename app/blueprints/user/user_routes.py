@@ -2,7 +2,6 @@ from . import bp as user
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from app.models import User
 from flask import make_response, g, request, abort
-from datetime import datetime as dt, timedelta
 
 # #########################
 # USER ROUTES
