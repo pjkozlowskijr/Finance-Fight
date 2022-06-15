@@ -6,11 +6,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
 import pytz
 
-# Table to link users and leagues
+# #############################################
+# Association table to link users and leagues
+# #############################################
+
 user_leagues = db.Table('user_leagues',
     db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
     db.Column('league_id', db.Integer, db.ForeignKey('league.id'))
 )
+
+# #############################################
+# Association object to link users and assets
+# #############################################
 
 class User_Holding(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
@@ -38,6 +45,10 @@ class User_Holding(db.Model):
     def delete_user_holding(self):
         db.session.delete(self)
         db.session.commit()
+
+# #########################
+# USER MODEL
+# #########################
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -135,6 +146,10 @@ class User(UserMixin, db.Model):
             return None
         return user
 
+# #########################
+# LEAGUE MODEL
+# #########################
+
 class League(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
@@ -176,6 +191,10 @@ class League(db.Model):
     def delete_league(self):
         db.session.delete(self)
         db.session.commit()
+
+# #########################
+# ASSET MODEL
+# #########################
 
 class Asset(db.Model):
     id = db.Column(db.Integer, primary_key=True)
