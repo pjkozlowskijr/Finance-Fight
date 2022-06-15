@@ -1,7 +1,7 @@
 from app import db
 from flask_login import UserMixin
 from flask import g
-from datetime import datetime as dt, date, timedelta, time
+from datetime import datetime as dt, timedelta, time
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
 import pytz
@@ -26,8 +26,17 @@ class User_Holding(db.Model):
         back_populates = 'users',
     )
 
+    def user_holding_to_db(self, asset_data):
+        self.purchase_price = asset_data['purchase_price']
+        self.quantity = asset_data['quantity']
+        self.user_id = g.current_user.id
+
     def save_user_holding(self):
         db.session.add(self)
+        db.session.commit()
+
+    def delete_user_holding(self):
+        db.session.delete(self)
         db.session.commit()
 
 class User(UserMixin, db.Model):
@@ -131,17 +140,20 @@ class League(db.Model):
     name = db.Column(db.String)
     owner_id = db.Column(db.Integer)
     start_date = db.Column(db.Date)
-    start_time = db.Column(db.Time, default=(time(hour=0, minute=0, second=0)))
+    start_time = db.Column(db.Time, default=(time(hour=0, minute=0, second=0, tzinfo=pytz.utc)))
     end_datetime = db.Column(db.DateTime)     
 
     def __repr__(self):
+        return f'<League ID: {self.id} | League Name: {self.name}>'
+
+    def __str__(self):
         return f'<League ID: {self.id} | League Name: {self.name}>'
 
     # Set league info based on user input
     def league_to_db(self, league_data):
         self.name = league_data['name'].strip()
         self.owner_id = g.current_user.id
-        self.start_date = date(league_data['start_date'])
+        self.start_date = dt.strptime(league_data['start_date'], '%Y/%m/%d')
 
     # Packages league info from DB to send to user via make_response
     def to_dict(self):
@@ -177,13 +189,15 @@ class Asset(db.Model):
 
     def __repr__(self):
         return f'<Asset ID: {self.id} | Asset Name: {self.name}>'
+
+    def __str__(self):
+        return f'<Asset ID: {self.id} | Asset Name: {self.name}>'
     
-    # MAY NOT NEED THIS FUNCTION --> saving user_holding also saves asset
     # Set asset info when user adds to holdings
-    # def asset_to_db(self, asset_data):
-    #     self.name = asset_data['name']
-    #     self.symbol = asset_data['symbol']
-    #     self.type = asset_data['type']
+    def asset_to_db(self, asset_data):
+        self.name = asset_data['name']
+        self.symbol = asset_data['symbol']
+        self.type = asset_data['type']
 
     # Package asset info from DB to send to user
     def to_dict(self):

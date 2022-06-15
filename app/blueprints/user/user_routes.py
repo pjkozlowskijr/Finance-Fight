@@ -2,6 +2,11 @@ from . import bp as user
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from app.models import User
 from flask import make_response, g, request, abort
+from datetime import datetime as dt, timedelta
+
+# #########################
+# USER ROUTES
+# #########################
 
 basic_auth = HTTPBasicAuth()
 token_auth = HTTPTokenAuth()
@@ -21,7 +26,7 @@ def verify_token(token):
     return user
 
 @user.post('/user')
-def post_user():
+def create_user():
     '''
         Creates a new user. No auth required. Expected payload:
         {
@@ -52,9 +57,16 @@ def login():
     g.current_user.get_token()
     return make_response(g.current_user.to_dict(), 200)
 
+@user.post('/logout')
+@token_auth.login_required()
+def logout():
+    g.current_user.token = None
+    g.current_user.save_user()
+    return make_response('SUCCESS', 200)
+
 @user.put('/user')
 @token_auth.login_required()
-def put_user():
+def edit_user():
     '''
         Edits user profile. Requires token auth header.
         HTTP Header = "Authorization: Bearer <token>"
