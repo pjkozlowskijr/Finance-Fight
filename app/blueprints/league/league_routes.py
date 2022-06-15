@@ -20,5 +20,11 @@ def delete_league(id):
         abort(404)
     if league.owner_id != g.current_user.id:
         abort(403)
-    league.delete()
+    league.delete_league()
     return make_response('SUCCESS', 200)
+
+@league.get('/league')
+def get_leagues():
+    leagues = League.query.all()
+    leagues = [league.to_dict() for league in leagues]
+    return make_response({'leagues':leagues}, 200)

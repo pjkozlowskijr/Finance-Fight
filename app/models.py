@@ -1,8 +1,10 @@
 from app import db
 from flask_login import UserMixin
-from datetime import datetime as dt, timedelta, time
+from flask import g
+from datetime import datetime as dt, date, timedelta, time
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
+import pytz
 
 # Table to link users and leagues
 user_leagues = db.Table('user_leagues',
@@ -130,10 +132,7 @@ class League(db.Model):
     owner_id = db.Column(db.Integer)
     start_date = db.Column(db.Date)
     start_time = db.Column(db.Time, default=(time(hour=0, minute=0, second=0)))
-    end_datetime = db.Column(db.DateTime)
-
-    def __init__(self):
-        self.end_datetime = (dt.combine(self.start_date, self.start_time)) + timedelta(days=7)
+    end_datetime = db.Column(db.DateTime)     
 
     def __repr__(self):
         return f'<League ID: {self.id} | League Name: {self.name}>'
@@ -141,19 +140,24 @@ class League(db.Model):
     # Set league info based on user input
     def league_to_db(self, league_data):
         self.name = league_data['name'].strip()
-        self.start_date = league_data['start_date']()
+        self.owner_id = g.current_user.id
+        self.start_date = date(league_data['start_date'])
 
     # Packages league info from DB to send to user via make_response
     def to_dict(self):
         return{
             'id': self.id,
             'name': self.name,
+            'owner': self.owner_id,
             'league_start': dt.combine(self.start_date, self.start_time),
             'league_end': self.end_datetime
         }
 
     # Save league info to database
     def save_league(self):
+        db.session.add(self)
+        db.session.commit()
+        self.end_datetime = (dt.combine(self.start_date, self.start_time)) + timedelta(days=7)
         db.session.add(self)
         db.session.commit()
 
