@@ -43,7 +43,7 @@ def create_user():
     new_user = User()
     new_user.reg_to_db(data)
     new_user.save_user()
-    return make_response('SUCCESS', 200)
+    return make_response(f'Successfully created user {new_user.__str__()}.', 200)
 
 @user.get('/login')
 @basic_auth.login_required()
@@ -61,7 +61,7 @@ def login():
 def logout():
     g.current_user.token = None
     g.current_user.save_user()
-    return make_response('SUCCESS', 200)
+    return make_response('Successfully logged out.', 200)
 
 @user.put('/user')
 @token_auth.login_required()
@@ -82,7 +82,7 @@ def edit_user():
     data = request.get_json()
     g.current_user.from_dict(data)
     g.current_user.save_user()
-    return make_response('SUCCESS', 200)
+    return make_response(f'Successfully edited user {g.current_user.__str__()}.', 200)
 
 @user.delete('/user')
 @token_auth.login_required()
@@ -92,4 +92,4 @@ def delete_user():
         HTTP Header = "Authorization: Bearer <token>"
     '''
     g.current_user.delete_user()
-    return make_response('SUCCESS', 200)
+    return make_response('Successfully deleted user.', 200)

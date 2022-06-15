@@ -23,7 +23,7 @@ def create_league():
     new_league = League()
     new_league.league_to_db(data)
     new_league.save_league()
-    return make_response('SUCCESS', 200)
+    return make_response(f'Successfully created {new_league.__str__()}.', 200)
 
 @league.delete('/league/<int:id>')
 @token_auth.login_required()
@@ -38,13 +38,12 @@ def delete_league(id):
     if league.owner_id != g.current_user.id:
         abort(403)
     league.delete_league()
-    return make_response('SUCCESS', 200)
+    return make_response(f'Successfully deleted league with ID {id}.', 200)
 
 @league.get('/league')
 def get_leagues():
     '''
-        Gets ALL leagues from database. Requires token auth header.
-        HTTP Header = "Authorization: Bearer <token>"
+        Gets ALL leagues from database. No auth required.
     '''
     leagues = League.query.all()
     leagues = [league.to_dict() for league in leagues]
@@ -54,8 +53,7 @@ def get_leagues():
 @league.get('/league/<int:id>')
 def get_league(id):
     '''
-        Gets SINGLE league from database. Requires token auth header.
-        HTTP Header = "Authorization: Bearer <token>"
+        Gets SINGLE league from database. No auth required.
     '''
     league = League.query.get(id)
     league = league.to_dict()
@@ -71,7 +69,7 @@ def join_league(id):
     league = League.query.get(id)
     g.current_user.leagues.append(league)
     g.current_user.save_user()
-    return make_response('SUCCESS', 200)
+    return make_response(f'Successfully joined league {league.__str__()}', 200)
 
 @league.delete('/league/leave/<int:id>')
 @token_auth.login_required()
@@ -83,4 +81,4 @@ def leave_league(id):
     league = League.query.get(id)
     g.current_user.leagues.remove(league)
     g.current_user.save_user()
-    return make_response('SUCCESS', 200)
+    return make_response(f'Successfully left league {league.__str__()}.', 200)

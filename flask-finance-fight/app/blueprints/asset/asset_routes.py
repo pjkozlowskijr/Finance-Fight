@@ -33,7 +33,7 @@ def purchase_asset():
     user_holding.asset = asset
     user_holding.user = g.current_user
     user_holding.save_user_holding()
-    return make_response('SUCCESS', 200)
+    return make_response(f'Successfully added asset {asset.__str__()} to holdings.', 200)
 
 @asset.delete('/asset/<int:asset_id>')
 @token_auth.login_required()
@@ -44,7 +44,7 @@ def sell_asset(asset_id):
     '''
     user_holding = User_Holding.query.filter_by(user_id = g.current_user.id, asset_id = asset_id).first()
     user_holding.delete_user_holding()
-    return make_response('SUCCESS', 200)
+    return make_response(f'Successfully removed asset with ID {asset_id} from holdings.', 200)
 
 # MIGHT NOT NEED THIS???
 # @asset.get('/asset/<string:sym>')
