@@ -2,6 +2,8 @@ from . import bp as asset
 from app.models import Asset, User_Holding
 from flask import make_response, request, g
 from app.blueprints.user.user_routes import token_auth
+import os
+import requests
 
 # #########################
 # ASSET ROUTES
@@ -50,3 +52,48 @@ def sell_asset(asset_id):
 # @asset.get('/asset/<string:sym>')
 # def get_asset(sym):
 #     return make_response(Asset.query.filter_by(symbol=sym).to_dict(), 200)
+
+@asset.get('/asset/<string:type>/<string:symbol>')
+def get_asset(type, symbol):
+    FMP_API_KEY = os.environ.get('FMP_API_KEY')
+    FH_API_KEY = os.environ.get('FH_API_KEY')
+    fh_headers = {'X-Finnhub-Token': FH_API_KEY}
+    CMC_API_KEY = os.environ.get('CMC_API_KEY')
+    cmc_headers = {'X-CMC_PRO_API_KEY': CMC_API_KEY}
+
+    fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{symbol.upper().strip()}?apikey={FMP_API_KEY}'
+    fmp_response = requests.get(fmp_url_base)
+    fmp_data = fmp_response.json()
+    asset_dict = {
+        'name': fmp_data[0]['name'],
+        'symbol': fmp_data[0]['symbol'],
+        'price': fmp_data[0]['price'],
+        'change_percent': fmp_data[0]['changesPercentage'],
+        'change_dollar': fmp_data[0]['change'],
+        'day_low': fmp_data[0]['dayLow'],
+        'day_high': fmp_data[0]['dayHigh'],
+        'year_low': fmp_data[0]['yearLow'],
+        'year_high': fmp_data[0]['yearHigh'],
+        'market_cap': fmp_data[0]['marketCap'],
+        'price_avg_50': fmp_data[0]['priceAvg50'],
+        'price_avg_200': fmp_data[0]['priceAvg200'],
+        'volume': fmp_data[0]['volume'],
+        'volume_avg': fmp_data[0]['avgVolume'],
+        'open': fmp_data[0]['open'],
+        'previous_close': fmp_data[0]['previousClose'],
+    }
+    if type == 'stock':
+        fh_url_base = f'https://finnhub.io/api/v1/stock/profile2?symbol={symbol.upper().strip()}'
+        fh_response = requests.get(fh_url_base, headers=fh_headers)
+        fh_data = fh_response.json()
+        asset_dict['logo'] = fh_data['logo']
+        asset_dict['website'] = fh_data['weburl']
+        asset_dict['industry'] = fh_data['finnhubIndustry']
+    elif type == 'crypto':
+        cmc_url_base = f'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info?symbol={symbol}'
+        cmc_response = requests.get(cmc_url_base, headers=cmc_headers)
+        cmc_data = cmc_response.json()
+        asset_dict['logo'] = cmc_data['data'][symbol.upper().strip()]['logo']
+        asset_dict['website'] = cmc_data['data'][symbol.upper().strip()]['urls']['website']
+        asset_dict['industry'] = 'Cryptocurrency'
+    return make_response(asset_dict, 200)

@@ -60,3 +60,5 @@ const apis = {
     editUser,
     deleteUser
 }
+
+export default apis

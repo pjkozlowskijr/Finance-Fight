@@ -73,3 +73,5 @@ const apis = {
     getAllLeagues,
     getLeague
 }
+
+export default apis
