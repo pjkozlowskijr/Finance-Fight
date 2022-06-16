@@ -1,5 +1,5 @@
-import apiClientNoAuth from './clientNoAuth';
-import apiClientTokenAuth from './clientTokenAuth';
+import apiClientNoAuth from './ClientNoAuth';
+import apiClientTokenAuth from './ClientTokenAuth';
 
 // //////////////////////////////
 // LEAGUE APIs

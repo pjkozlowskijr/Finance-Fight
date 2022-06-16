@@ -1,6 +1,6 @@
-import apiClientNoAuth from './clientNoAuth';
-import apiClientBasicAuth from './clientBasicAuth';
-import apiClientTokenAuth from './clientTokenAuth';
+import apiClientNoAuth from './ClientNoAuth';
+import apiClientBasicAuth from './ClientBasicAuth';
+import apiClientTokenAuth from './ClientTokenAuth';
 
 // //////////////////////////////
 // USER APIs
