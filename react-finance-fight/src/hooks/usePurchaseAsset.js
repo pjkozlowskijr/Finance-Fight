@@ -1,30 +1,30 @@
 import { CancelToken } from "apisauce";
 import { useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
-import apiLeague from '../api/apiLeague';
+import apiAsset from '../api/apiAsset';
 
 // //////////////////////////////
-// Hook to join league
+// Hook to purchase asset
 // //////////////////////////////
 
-export default function useJoinLeague(id){
+export default function usePurchaseAsset(data){
     const {user} = useContext(AppContext)
 
     useEffect(
         () => {
             const source = CancelToken.source()
-            if (user?.token && id){
+            if (user?.token && data){
                 (async () => {
-                    const response = await apiLeague.joinLeague(user.token, id, source.token)
+                    const response = await apiAsset.purchaseAsset(user.token, data, source.token)
                     if (response){
-                        console.log('Joined league')
-                    }else if (response === false && response !== undefined){
+                        console.log('Asset purchased')
+                    } else if (response === false && response !== undefined){
                         console.log('Unexpected error')
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [user.token, id]
+        [user.token, data]
     )
 }

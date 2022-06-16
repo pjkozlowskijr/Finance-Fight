@@ -8,11 +8,11 @@ import apiClientTokenAuth from './ClientTokenAuth';
 
 const endpointLogin = '/login'
 const endpointLogout = '/logout'
-const endpointPPD = '/user'
+const endpointUser = '/user'
 
 // Create user account
 const createUser = async (data, cancelToken) => {
-    const response = await apiClientNoAuth(cancelToken).post(endpointPPD, data);
+    const response = await apiClientNoAuth(cancelToken).post(endpointUser, data);
     return response.data
 }
 
@@ -43,14 +43,48 @@ const logout = async (token, cancelToken) => {
 
 // Edit user profile
 const editUser = async (token, data, cancelToken) => {
-    const response = await apiClientTokenAuth(token, cancelToken).put(endpointPPD, data);
+    const response = await apiClientTokenAuth(token, cancelToken).put(endpointUser, data);
     return response.data
 }
 
 // Delete user profile
 const deleteUser = async (token, cancelToken) => {
-    const response = await apiClientTokenAuth(token, cancelToken).delete(endpointPPD);
+    const response = await apiClientTokenAuth(token, cancelToken).delete(endpointUser);
     return response.data
+}
+
+// Get user assets
+const getUserAssets = async (token, cancelToken) => {
+    let error
+    let assets
+
+    const response = await apiClientTokenAuth(token, cancelToken).get(endpointUser+'/assets');
+    if (response.ok){
+        assets = response.data
+    }else{
+        error = 'An unexpected error has occured.'
+    }
+    return{
+        error,
+        assets
+    }
+}
+
+// Get user leagues
+const getUserLeagues = async (token, cancelToken) => {
+    let error
+    let leagues
+
+    const response = await apiClientTokenAuth(token, cancelToken).get(endpointUser+'/leagues');
+    if (response.ok){
+        leagues = response.data
+    }else{
+        error = 'An unexpected error has occured.'
+    }
+    return{
+        error,
+        leagues
+    }
 }
 
 const apis = {
@@ -58,7 +92,9 @@ const apis = {
     login,
     logout,
     editUser,
-    deleteUser
+    deleteUser,
+    getUserAssets,
+    getUserLeagues
 }
 
 export default apis

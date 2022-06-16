@@ -8,7 +8,7 @@ import apiClientTokenAuth from './ClientTokenAuth';
 const endpoint = '/asset'
 
 // Get asset information via API
-const getAsset = async (type, symbol, cancelToken) => {
+const getAssetInfo = async (type, symbol, cancelToken) => {
     let error
     let asset
 
@@ -37,7 +37,7 @@ const sellAsset = async (token, id, cancelToken) => {
 }
 
 const apis = {
-    getAsset,
+    getAssetInfo,
     purchaseAsset,
     sellAsset
 }

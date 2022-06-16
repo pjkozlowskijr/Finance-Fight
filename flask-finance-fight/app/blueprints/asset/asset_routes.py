@@ -54,7 +54,10 @@ def sell_asset(asset_id):
 #     return make_response(Asset.query.filter_by(symbol=sym).to_dict(), 200)
 
 @asset.get('/asset/<string:type>/<string:symbol>')
-def get_asset(type, symbol):
+def get_asset_info(type, symbol):
+    '''
+        Gets asset info from external sources. No auth required. All requests utilize FMP_API_KEY for most info. Stocks also use FH_API_KEY for info not in first source. Crypto also use CMC_API_KEY for info not in first source.
+    '''
     FMP_API_KEY = os.environ.get('FMP_API_KEY')
     FH_API_KEY = os.environ.get('FH_API_KEY')
     fh_headers = {'X-Finnhub-Token': FH_API_KEY}
