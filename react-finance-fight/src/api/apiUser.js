@@ -13,7 +13,7 @@ const endpointPPD = '/user'
 // Create user account
 const createUser = async (data, cancelToken) => {
     const response = await apiClientNoAuth(cancelToken).post(endpointPPD, data);
-    return response.ok
+    return response.data
 }
 
 // User login to receive token
@@ -38,19 +38,19 @@ const login = async (email, password, cancelToken) => {
 // User logs out
 const logout = async (token, cancelToken) => {
     const response = await apiClientTokenAuth(token, cancelToken).post(endpointLogout)
-    return response.ok
+    return response.data
 }
 
 // Edit user profile
 const editUser = async (token, data, cancelToken) => {
     const response = await apiClientTokenAuth(token, cancelToken).put(endpointPPD, data);
-    return response.ok
+    return response.data
 }
 
 // Delete user profile
 const deleteUser = async (token, cancelToken) => {
     const response = await apiClientTokenAuth(token, cancelToken).delete(endpointPPD);
-    return response.ok
+    return response.data
 }
 
 const apis = {
