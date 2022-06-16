@@ -12,11 +12,10 @@ export default function useDeleteUser(deleteUser){
 
     useEffect(
         () => {
-            let response
             const source = CancelToken.source()
             if (user?.token && deleteUser?.key){
                 (async () => {
-                    response = await apiUser.deleteUser(user.token, source.token)
+                    const response = await apiUser.deleteUser(user.token, source.token)
                     if (response){
                         console.log('User deleted')
                         localStorage.clear()

@@ -1,30 +1,30 @@
 import { useContext, useEffect } from "react";
-import apiUser from '../api/apiUser';
 import { CancelToken } from "apisauce";
-import { AppContext } from '../context/AppContext';
+import apiLeague from '../api/apiAsset';
+import { AppContext } from "../context/AppContext";
 
 // //////////////////////////////
-// Hook to edit user profile
+// Hook to delete league
 // //////////////////////////////
 
-export default function useEditUser(data){
+export default function useDeleteLeague(id){
     const {user} = useContext(AppContext)
-    
+
     useEffect(
         () => {
             const source = CancelToken.source()
-            if (user?.token && data?.first_name){
+            if (id){
                 (async () => {
-                    const response = await apiUser.editUser(user.token, data, source.token)
+                    const response = await apiLeague.deleteLeague(user.token, id, source.token)
                     if (response){
-                        console.log('User edited')
+                        console.log('League deleted')
                     }else if(response === false && response !== undefined){
-                        console.log('An unexpected error occured.')
+                        console.log('Unexpected error')
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [user?.token, data]
+        [user.token, id]
     )
 }

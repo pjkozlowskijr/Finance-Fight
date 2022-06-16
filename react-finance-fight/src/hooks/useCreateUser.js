@@ -9,14 +9,13 @@ import apiUser from '../api/apiUser';
 export default function useCreateUser(data){
     useEffect(
         () => {
-            let response
-            const source = CancelToken.source();
+            const source = CancelToken.source()
             if (data?.email){
                 (async () => {
-                    response = await apiUser.createUser(data, source.token)
+                    const response = await apiUser.createUser(data, source.token)
                     if (response){
                         console.log(`User ${data.email} created.`)
-                    }else{
+                    }else if(response === false && response !== undefined){
                         console.log('An unexpected error occured.')
                     }
                 })()
