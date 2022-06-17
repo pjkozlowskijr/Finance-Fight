@@ -54,7 +54,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String)
     last_name = db.Column(db.String)
-    display_name = db.Column(db.String)
+    display_name = db.Column(db.String, unique=True)
     email = db.Column(db.String, unique=True, index=True)
     password = db.Column(db.String)
     avatar = db.Column(db.String)
@@ -87,7 +87,7 @@ class User(UserMixin, db.Model):
         self.display_name = reg_data['display_name'].strip()
         self.email = reg_data['email'].lower().strip()
         self.password = self.hash_password(reg_data['password'])
-        self.avatar = reg_data['avatar']
+        # self.avatar = reg_data['avatar']
 
     # Pulls data from editing profile to update existing database
     def from_dict(self, data):

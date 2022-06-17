@@ -20,6 +20,7 @@ export default function useCreateUser(data){
                     }
                 })()
             }
+            return () => {source.cancel()}
         },
         [data]
     )

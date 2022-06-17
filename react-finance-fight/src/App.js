@@ -2,6 +2,10 @@ import Navbar from './components/Navbar'
 import Button from '@mui/material/Button'
 import apiUser from './api/apiUser'
 import { CancelToken } from 'apisauce'
+import LoginForm from './forms/LoginForm'
+import ProfileForm from './forms/ProfileForm'
+import { useContext } from 'react'
+import { AppContext } from './context/AppContext'
 
 const ghost = {
   // avatar: 'test',
@@ -19,10 +23,15 @@ const handleAPITest = async () => {
 }
 
 function App() {
+  const {user} = useContext(AppContext)
+
   return (
     <>
       <Navbar>
         <Button onClick={handleAPITest} variant='contained'>Test API</Button>
+        <br/>
+        <LoginForm/>
+        <ProfileForm user={user}/>
       </Navbar>
     </>
   );

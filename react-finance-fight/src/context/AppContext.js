@@ -22,9 +22,14 @@ const AppContextProvider = ({children}) => {
         setUser(user)
     }
 
+    // Context for ALERTS
+    const [alert, setAlert] = useState({})
+    
     const values = {
         user,
-        setUserInfo
+        setUserInfo,
+        alert, 
+        setAlert
     }
 
     return (
