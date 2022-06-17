@@ -9,7 +9,7 @@ import { AppContext } from './context/AppContext'
 import AlertPopUp from './components/AlertPopUp'
 import SearchForm from './forms/SearchForm'
 import apiAsset from './api/apiAsset'
-import SingleAsset from './forms/SingleAsset'
+import SingleAsset from './components/SingleAsset'
 
 // const ghost = {
 //   avatar: 'test',

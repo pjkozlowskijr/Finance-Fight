@@ -13,7 +13,7 @@ import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { toTitleCase } from '../helpers';
 import TradingChart from './TradingChart';
-import SearchForm from './SearchForm';
+import SearchForm from '../forms/SearchForm';
 import Grid from '@mui/material/Grid';
 import { currencyFormat, shortenMktCap, formatChange, formatRegNumber } from '../helpers';
 
