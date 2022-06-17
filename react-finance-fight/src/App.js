@@ -7,21 +7,24 @@ import ProfileForm from './forms/ProfileForm'
 import { useContext } from 'react'
 import { AppContext } from './context/AppContext'
 import AlertPopUp from './components/AlertPopUp'
+import SearchForm from './forms/SearchForm'
+import apiAsset from './api/apiAsset'
+import SingleAsset from './forms/SingleAsset'
 
-const ghost = {
-  // avatar: 'test',
-  // display_name: 'test',
-  // email: 'test4',
-  first_name: 'pat',
-  last_name: 'koz',
-  // password: 'test'
-}
+// const ghost = {
+//   avatar: 'test',
+//   display_name: 'test',
+//   email: 'test4',
+//   first_name: 'pat',
+//   last_name: 'koz',
+//   password: 'test'
+// }
 
-const handleAPITest = async () => {
-  const source = CancelToken.source();
-  const responseObject = await apiUser.editUser('1noH_s1hjpXxHmc-GZ9fBRafuDuBInca5ftAGtarCxM', ghost, source.token)
-  console.log(responseObject)
-}
+// const handleAPITest = async () => {
+//   const source = CancelToken.source();
+//   const responseObject = await apiAsset.getAssetInfo('stock', 'msft', source.token)
+//   console.log(responseObject)
+// }
 
 function App() {
   const {user} = useContext(AppContext)
@@ -30,10 +33,12 @@ function App() {
     <>
       <AlertPopUp/>
       <Navbar>
-        <Button onClick={handleAPITest} variant='contained'>Test API</Button>
+        {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
         <br/>
-        <LoginForm/>
-        <ProfileForm user={user}/>
+        {/* <LoginForm/>
+        <ProfileForm user={user}/> */}
+        <SearchForm/>
+        <SingleAsset/>
       </Navbar>
     </>
   );

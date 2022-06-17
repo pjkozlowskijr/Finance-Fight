@@ -48,11 +48,6 @@ def sell_asset(asset_id):
     user_holding.delete_user_holding()
     return make_response(f'Successfully removed asset with ID {asset_id} from holdings.', 200)
 
-# MIGHT NOT NEED THIS???
-# @asset.get('/asset/<string:sym>')
-# def get_asset(sym):
-#     return make_response(Asset.query.filter_by(symbol=sym).to_dict(), 200)
-
 @asset.get('/asset/<string:type>/<string:symbol>')
 def get_asset_info(type, symbol):
     '''
