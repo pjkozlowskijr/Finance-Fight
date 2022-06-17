@@ -8,7 +8,6 @@ import { CancelToken } from "apisauce";
 
 export default function useAssetInfo(type, symbol){
     const [asset, setAsset] = useState({})
-
     useEffect(
         () => {
             const source = CancelToken.source()

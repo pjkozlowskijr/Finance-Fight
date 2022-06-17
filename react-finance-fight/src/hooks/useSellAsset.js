@@ -8,8 +8,7 @@ import apiAsset from '../api/apiAsset';
 // //////////////////////////////
 
 export default function useSellAsset(id){
-    const {user} = useContext(AppContext)
-
+    const {user, setAlert} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source()
@@ -17,14 +16,14 @@ export default function useSellAsset(id){
                 (async () => {
                     const response = await apiAsset.sellAsset(user.token, id, source.token)
                     if (response){
-                        console.log('Asset sold')
+                        setAlert({msg: 'Asset sold successfully.', cat: 'success'})
                     } else if (response === false && response !== undefined){
-                        console.log('Unexpected error')
+                        setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [user.token, id]
+        [user.token, id, setAlert]
     )
 }

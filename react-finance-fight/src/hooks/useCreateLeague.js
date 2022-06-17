@@ -8,8 +8,7 @@ import { AppContext } from "../context/AppContext";
 // //////////////////////////////
 
 export default function useCreateLeague(data){
-    const {user} = useContext(AppContext)
-
+    const {user, setAlert} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source()
@@ -17,14 +16,14 @@ export default function useCreateLeague(data){
                 (async () => {
                     const response = await apiLeague.createLeague(user.token, data, source.token)
                     if (response){
-                        console.log('League created')
+                        setAlert({msg: `League "${data.name}" created successfully.`, cat: 'success'})
                     }else if(response === false && response !== undefined){
-                        console.log('Unexpected error')
+                        setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [data]
+        [data, setAlert]
     )
 }

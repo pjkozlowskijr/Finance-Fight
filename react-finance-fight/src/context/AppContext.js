@@ -25,6 +25,7 @@ const AppContextProvider = ({children}) => {
     // Context for ALERTS
     const [alert, setAlert] = useState({})
     
+    // Values passed to children
     const values = {
         user,
         setUserInfo,

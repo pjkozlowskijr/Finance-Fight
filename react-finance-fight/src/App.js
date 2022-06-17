@@ -6,6 +6,7 @@ import LoginForm from './forms/LoginForm'
 import ProfileForm from './forms/ProfileForm'
 import { useContext } from 'react'
 import { AppContext } from './context/AppContext'
+import AlertPopUp from './components/AlertPopUp'
 
 const ghost = {
   // avatar: 'test',
@@ -27,6 +28,7 @@ function App() {
 
   return (
     <>
+      <AlertPopUp/>
       <Navbar>
         <Button onClick={handleAPITest} variant='contained'>Test API</Button>
         <br/>

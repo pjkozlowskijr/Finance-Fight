@@ -8,8 +8,7 @@ import apiAsset from '../api/apiAsset';
 // //////////////////////////////
 
 export default function usePurchaseAsset(data){
-    const {user} = useContext(AppContext)
-
+    const {user, setAlert} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source()
@@ -17,14 +16,14 @@ export default function usePurchaseAsset(data){
                 (async () => {
                     const response = await apiAsset.purchaseAsset(user.token, data, source.token)
                     if (response){
-                        console.log('Asset purchased')
+                        setAlert({msg: `You purchased some ${data.symbol.toUpperCase()}!`, cat: 'success'})
                     } else if (response === false && response !== undefined){
-                        console.log('Unexpected error')
+                        setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [user.token, data]
+        [user.token, data, setAlert]
     )
 }

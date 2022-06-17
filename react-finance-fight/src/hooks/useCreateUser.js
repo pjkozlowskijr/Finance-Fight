@@ -1,12 +1,14 @@
 import { CancelToken } from 'apisauce';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import apiUser from '../api/apiUser';
+import { AppContext } from '../context/AppContext';
 
 // //////////////////////////////
 // Hook to create user
 // //////////////////////////////
 
 export default function useCreateUser(data){
+    const {setAlert} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source()
@@ -14,14 +16,14 @@ export default function useCreateUser(data){
                 (async () => {
                     const response = await apiUser.createUser(data, source.token)
                     if (response){
-                        console.log(`User ${data.email} created.`)
+                        setAlert({msg: `User ${data.email} created successfully.`, cat: 'success'})
                     }else if(response === false && response !== undefined){
-                        console.log('An unexpected error occured.')
+                        setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [data]
+        [data, setAlert]
     )
 }

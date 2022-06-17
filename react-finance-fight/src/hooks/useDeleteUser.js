@@ -8,8 +8,7 @@ import { AppContext } from "../context/AppContext";
 // //////////////////////////////
 
 export default function useDeleteUser(deleteUser){
-    const {user} = useContext(AppContext)
-
+    const {user, setAlert} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source()
@@ -17,15 +16,15 @@ export default function useDeleteUser(deleteUser){
                 (async () => {
                     const response = await apiUser.deleteUser(user.token, source.token)
                     if (response){
-                        console.log('User deleted')
+                        setAlert({msg: 'Account deleted successfully.', cat: 'success'})
                         localStorage.clear()
                     }else if (response === false && response !== undefined){
-                        console.log('An unexpected error occured')
+                        setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [user?.token, deleteUser]
+        [user?.token, deleteUser, setAlert]
     )
 }

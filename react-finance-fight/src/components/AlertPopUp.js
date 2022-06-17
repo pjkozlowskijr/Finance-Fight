@@ -31,7 +31,7 @@ export default function AlertPopUp(){
             open={open} 
             autoHideDuration={5000} 
             onClose={handleClose} 
-            anchorOrigin={{vertical:'top', horizontal:'right'}}
+            anchorOrigin={{vertical:'bottom', horizontal:'right'}}
         >
             <Alert 
                 onClose={handleClose} 
