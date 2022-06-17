@@ -26,7 +26,63 @@
     <title>Finance Fight</title>
   </head>
   <body>
-    <div id="root"></div>
-
-  </body>
+    <!-- TradingView Widget BEGIN -->
+    <div class="tradingview-widget-container" style="margin-top: 64px">
+    <div class="tradingview-widget-container__widget"></div>
+    <div class="tradingview-widget-copyright">
+      <a href="https://www.tradingview.com/markets/" rel="noopener" target="_blank">
+        <span class="blue-text">Markets</span>
+      </a>
+      by TradingView
+    </div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+      {"symbols": [
+        {
+          "description": "",
+          "proName": "NASDAQ:AAPL"
+        },
+        {
+          "description": "",
+          "proName": "NASDAQ:TSLA"
+        },
+        {
+          "description": "",
+          "proName": "NASDAQ:AMZN"
+        },
+        {
+          "description": "",
+          "proName": "NASDAQ:NVDA"
+        },
+        {
+          "description": "",
+          "proName": "NASDAQ:META"
+        },
+        {
+          "description": "",
+          "proName": "NYSE:GME"
+        },
+        {
+          "description": "",
+          "proName": "BITSTAMP:BTCUSD"
+        },
+        {
+          "description": "",
+          "proName": "COINBASE:ETHUSD"
+        },
+        {
+          "description": "",
+          "proName": "DJ:DJI"
+        }
+        ],
+        "showSymbolLogo": true,
+        "colorTheme": "light",
+        "isTransparent": false,
+        "displayMode": "adaptive",
+        "locale": "en"
+      }
+    </script>
+  </div>
+  <!-- TradingView Widget END -->
+  <div id="root"></div>
+</body>
 </html>
