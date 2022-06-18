@@ -42,7 +42,7 @@ const AppContextProvider = ({children}) => {
         asset,
         setAsset,
         name,
-        setLeagueName
+        setLeagueName,
     }
 
     return (

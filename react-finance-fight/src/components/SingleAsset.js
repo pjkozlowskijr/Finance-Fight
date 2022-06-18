@@ -16,6 +16,7 @@ import TradingChart from './TradingChart';
 import SearchForm from '../forms/SearchForm';
 import Grid from '@mui/material/Grid';
 import { currencyFormat, shortenMktCap, formatChange, formatRegNumber } from '../helpers';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 
 // const aapl = {
 //     change_dollar: 1.8200073,
@@ -41,24 +42,28 @@ import { currencyFormat, shortenMktCap, formatChange, formatRegNumber } from '..
 
 export default function SingleAsset({asset}){
     const changeColor = (formatChange(asset.change_dollar).startsWith('+')) ? 'green' : 'red'
+
     return(
         <Grid container>
-            <Grid item md={4}>
+            <Grid item md={12} sx={{display:'flex', justifyContent:'space-around'}}>
                 <Typography>
                     {asset.name+' ('+asset.symbol+')'}
                 </Typography>
-            </Grid>
-            <Grid item md={4}>
                 <Typography sx={{textAlign: 'center'}}>
                     <span>{currencyFormat(asset.price)}</span>
                     <span style={{color:changeColor}}>{' '+formatChange(asset.change_dollar)}</span>
                     <span style={{color:changeColor}}>{' ('+formatChange(asset.change_percent)+'%)'}</span>
                 </Typography>
-            </Grid>
-            <Grid item md={4}>
-                <Typography id='asset_link' sx={{textAlign: 'right'}}>
-                    {'Website: '+asset.website}
+                <Typography id='asset_link' sx={{textAlign: 'center'}}>
+                    <span>Website: </span><a href={asset.website} target='_blank' style={{textDecoration:'none', color:'inherit'}}>{asset.website}</a>
                 </Typography>
+                <Button
+                    variant='contained'
+                    aria-label='purchase-asset'
+                    startIcon={<MonetizationOnIcon/>}
+                >
+                    Purchase
+                </Button>
             </Grid>
             <Grid item md={6}>
                 <Grid container>
@@ -69,64 +74,124 @@ export default function SingleAsset({asset}){
                     Did not want to duplicate information.
                         */}
 
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Open: {currencyFormat(asset.open)}
+                            Open
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Industry: {asset.industry}
+                            {currencyFormat(asset.open)}
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Previous Close: {currencyFormat(asset.previous_close)}
+                            Industry
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Market Cap: {shortenMktCap(asset.market_cap)}
+                            {asset.industry}
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Day's High: {currencyFormat(asset.day_high)}
+                            Previous Close
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Volume: {formatRegNumber(asset.volume)}
+                            {currencyFormat(asset.previous_close)}
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Day's Low: {currencyFormat(asset.day_low)}
+                            Market Cap
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Avg. Volume: {formatRegNumber(asset.volume_avg)}
+                            {shortenMktCap(asset.market_cap)}
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Year's High: {currencyFormat(asset.year_high)}
+                            Day's High
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            50-Day Average: {currencyFormat(asset.price_avg_50)}
+                            {currencyFormat(asset.day_high)}
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            Year's Low: {currencyFormat(asset.year_low)}
+                            Volume
                         </Typography>
                     </Grid>
-                    <Grid item md={6}>
+                    <Grid item md={3}>
                         <Typography>
-                            200-Day Average: {currencyFormat(asset.price_avg_200)}
+                            {formatRegNumber(asset.volume)}
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            Day's Low
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            {currencyFormat(asset.day_low)}
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            Avg. Volume
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            {formatRegNumber(asset.volume_avg)}
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            Year's High
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            {currencyFormat(asset.year_high)}
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            50-Day Average
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            {currencyFormat(asset.price_avg_50)}
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            Year's Low
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            {currencyFormat(asset.year_low)}
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            200-Day Average
+                        </Typography>
+                    </Grid>
+                    <Grid item md={3}>
+                        <Typography>
+                            {currencyFormat(asset.price_avg_200)}
                         </Typography>
                     </Grid>
                 </Grid>

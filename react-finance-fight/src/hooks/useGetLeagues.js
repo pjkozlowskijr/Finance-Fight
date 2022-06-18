@@ -6,7 +6,7 @@ import apiLeague from '../api/apiLeague';
 // Hook to get all leagues
 // //////////////////////////////
 
-export default function useLeague(id=null){
+export default function useGetLeagues(id=null){
     const [leagues, setLeagues] = useState({})
 
     useEffect(

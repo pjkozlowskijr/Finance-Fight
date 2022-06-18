@@ -12,6 +12,7 @@ import apiAsset from './api/apiAsset'
 import SingleAsset from './components/SingleAsset'
 import SearchAsset from './components/SearchAsset'
 import LeagueForm from './forms/LeagueForm'
+import BrowseLeagues from './components/BrowseLeagues'
 
 // const ghost = {
 //   avatar: 'test',
@@ -35,11 +36,13 @@ function App() {
     <>
       <AlertPopUp/>
       <Navbar>
+        <BrowseLeagues/>
+        <LeagueForm/>
         {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
         <br/>
         {/* <LoginForm/>
         <ProfileForm user={user}/> */}
-        <SearchAsset/>
+        {/* <SearchAsset/> */}
       </Navbar>
     </>
   );

@@ -175,7 +175,8 @@ class League(db.Model):
         return{
             'id': self.id,
             'name': self.name,
-            'owner': self.owner_id,
+            'owner_id': self.owner_id,
+            'owner_name': User.query.get(self.owner_id).first_name + ' ' + User.query.get(self.owner_id).last_name,
             'league_start': dt.combine(self.start_date, self.start_time),
             'league_end': self.end_datetime
         }
