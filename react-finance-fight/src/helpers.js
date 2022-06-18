@@ -40,7 +40,7 @@ export function formatChange(number){
   if (number > 0){
     return '+'+number.toFixed(2)
   }else{
-    return '-'+number.toFixed(2)
+    return number.toFixed(2)
   }
 }
 

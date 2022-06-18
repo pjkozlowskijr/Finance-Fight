@@ -59,28 +59,28 @@ def get_asset_info(type, symbol):
     CMC_API_KEY = os.environ.get('CMC_API_KEY')
     cmc_headers = {'X-CMC_PRO_API_KEY': CMC_API_KEY}
 
-    fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{symbol.upper().strip()}?apikey={FMP_API_KEY}'
-    fmp_response = requests.get(fmp_url_base)
-    fmp_data = fmp_response.json()
-    asset_dict = {
-        'name': fmp_data[0]['name'],
-        'symbol': fmp_data[0]['symbol'],
-        'price': fmp_data[0]['price'],
-        'change_percent': fmp_data[0]['changesPercentage'],
-        'change_dollar': fmp_data[0]['change'],
-        'day_low': fmp_data[0]['dayLow'],
-        'day_high': fmp_data[0]['dayHigh'],
-        'year_low': fmp_data[0]['yearLow'],
-        'year_high': fmp_data[0]['yearHigh'],
-        'market_cap': fmp_data[0]['marketCap'],
-        'price_avg_50': fmp_data[0]['priceAvg50'],
-        'price_avg_200': fmp_data[0]['priceAvg200'],
-        'volume': fmp_data[0]['volume'],
-        'volume_avg': fmp_data[0]['avgVolume'],
-        'open': fmp_data[0]['open'],
-        'previous_close': fmp_data[0]['previousClose'],
-    }
     if type == 'stock':
+        fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{symbol.upper().strip()}?apikey={FMP_API_KEY}'
+        fmp_response = requests.get(fmp_url_base)
+        fmp_data = fmp_response.json()
+        asset_dict = {
+            'name': fmp_data[0]['name'],
+            'symbol': fmp_data[0]['symbol'],
+            'price': fmp_data[0]['price'],
+            'change_percent': fmp_data[0]['changesPercentage'],
+            'change_dollar': fmp_data[0]['change'],
+            'day_low': fmp_data[0]['dayLow'],
+            'day_high': fmp_data[0]['dayHigh'],
+            'year_low': fmp_data[0]['yearLow'],
+            'year_high': fmp_data[0]['yearHigh'],
+            'market_cap': fmp_data[0]['marketCap'],
+            'price_avg_50': fmp_data[0]['priceAvg50'],
+            'price_avg_200': fmp_data[0]['priceAvg200'],
+            'volume': fmp_data[0]['volume'],
+            'volume_avg': fmp_data[0]['avgVolume'],
+            'open': fmp_data[0]['open'],
+            'previous_close': fmp_data[0]['previousClose'],
+        }
         fh_url_base = f'https://finnhub.io/api/v1/stock/profile2?symbol={symbol.upper().strip()}'
         fh_response = requests.get(fh_url_base, headers=fh_headers)
         fh_data = fh_response.json()
@@ -88,10 +88,31 @@ def get_asset_info(type, symbol):
         asset_dict['website'] = fh_data['weburl']
         asset_dict['industry'] = fh_data['finnhubIndustry']
     elif type == 'crypto':
+        fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{symbol.upper().strip()}USD?apikey={FMP_API_KEY}'
+        fmp_response = requests.get(fmp_url_base)
+        fmp_data = fmp_response.json()
+        asset_dict = {
+            'name': fmp_data[0]['name'],
+            'symbol': fmp_data[0]['symbol'],
+            'price': fmp_data[0]['price'],
+            'change_percent': fmp_data[0]['changesPercentage'],
+            'change_dollar': fmp_data[0]['change'],
+            'day_low': fmp_data[0]['dayLow'],
+            'day_high': fmp_data[0]['dayHigh'],
+            'year_low': fmp_data[0]['yearLow'],
+            'year_high': fmp_data[0]['yearHigh'],
+            'market_cap': fmp_data[0]['marketCap'],
+            'price_avg_50': fmp_data[0]['priceAvg50'],
+            'price_avg_200': fmp_data[0]['priceAvg200'],
+            'volume': fmp_data[0]['volume'],
+            'volume_avg': fmp_data[0]['avgVolume'],
+            'open': fmp_data[0]['open'],
+            'previous_close': fmp_data[0]['previousClose'],
+        }
         cmc_url_base = f'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info?symbol={symbol}'
         cmc_response = requests.get(cmc_url_base, headers=cmc_headers)
         cmc_data = cmc_response.json()
         asset_dict['logo'] = cmc_data['data'][symbol.upper().strip()]['logo']
-        asset_dict['website'] = cmc_data['data'][symbol.upper().strip()]['urls']['website']
+        asset_dict['website'] = cmc_data['data'][symbol.upper().strip()]['urls']['website'][0]
         asset_dict['industry'] = 'Cryptocurrency'
     return make_response(asset_dict, 200)

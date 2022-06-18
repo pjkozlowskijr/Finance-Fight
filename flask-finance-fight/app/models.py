@@ -168,7 +168,7 @@ class League(db.Model):
     def league_to_db(self, league_data):
         self.name = league_data['name'].strip()
         self.owner_id = g.current_user.id
-        self.start_date = dt.strptime(league_data['start_date'], '%Y/%m/%d')
+        self.start_date = dt.strptime(league_data['start_date'], '%m/%d/%Y')
 
     # Packages league info from DB to send to user via make_response
     def to_dict(self):

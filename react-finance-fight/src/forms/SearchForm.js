@@ -10,6 +10,7 @@ import FormLabel from '@mui/material/FormLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { Box } from '@mui/material';
 
 // //////////////////////////////
 // ASSET SEARCH FORM
@@ -46,34 +47,36 @@ export default function SearchForm(){
     }
 
     return(
-        <>
-        <FormControl sx={{mb:2}}>
-                <FormLabel id="asset-type">Asset Type:</FormLabel>
-                <RadioGroup
-                    row
-                    aria-labelledby="asset-type"
-                    name="asset-type"
-                    value={assetType}
-                    onChange={handleChange}
-                    >
-                    <FormControlLabel 
-                    value={'stock'}
-                    control={<Radio/>} 
-                    label={'Stock'}
-                    />
-                    <FormControlLabel 
-                    value={'crypto'}
-                    control={<Radio/>} 
-                    label={'Cryptocurrency'}
-                    />
-                </RadioGroup>
-            </FormControl>
-                <form onSubmit={formik.handleSubmit}>
+        <Box sx={{width:'60%', m:'auto'}}>
+        <FormControl sx={{mb:1}}>
+            <Box sx={{display:'flex'}}>
+            <FormLabel id="asset-type" sx={{display:'inline-flex', alignItems:'center', lineHeight:1.5, mr:3}}>Asset Type:</FormLabel>
+            <RadioGroup
+                row
+                aria-labelledby="asset-type"
+                name="asset-type"
+                value={assetType}
+                onChange={handleChange}
+                >
+                <FormControlLabel 
+                value={'stock'}
+                control={<Radio/>} 
+                label={'Stock'}
+                />
+                <FormControlLabel 
+                value={'crypto'}
+                control={<Radio/>} 
+                label={'Cryptocurrency'}
+                />
+            </RadioGroup>
+                </Box>
+        </FormControl>
+        <form onSubmit={formik.handleSubmit}>
             <TextField
                 id = 'symbol'
                 name = 'symbol'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:2}}
                 label = 'Symbol'
                 placeholder = 'Symbol'
                 value = {formik.values.symbol}
@@ -83,6 +86,6 @@ export default function SearchForm(){
             />
             <Button type='submit' sx={{width:'100%', fontWeight:'bold'}} variant='contained'>Search</Button>
         </form>
-                </>
+        </Box>
     )
 }

@@ -10,8 +10,8 @@ const TradingChart = ({symbol}) => {
       theme={Themes.LIGHT}
       locale="en"
       ref={tradingRef}
+      autosize={true}
       height={500}
-      width={'100%'}
     />
   );
 };

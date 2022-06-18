@@ -10,6 +10,8 @@ import AlertPopUp from './components/AlertPopUp'
 import SearchForm from './forms/SearchForm'
 import apiAsset from './api/apiAsset'
 import SingleAsset from './components/SingleAsset'
+import SearchAsset from './components/SearchAsset'
+import LeagueForm from './forms/LeagueForm'
 
 // const ghost = {
 //   avatar: 'test',
@@ -37,8 +39,7 @@ function App() {
         <br/>
         {/* <LoginForm/>
         <ProfileForm user={user}/> */}
-        <SearchForm/>
-        <SingleAsset/>
+        <SearchAsset/>
       </Navbar>
     </>
   );

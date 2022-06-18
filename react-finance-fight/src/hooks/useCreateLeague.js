@@ -12,9 +12,10 @@ export default function useCreateLeague(data){
     useEffect(
         () => {
             const source = CancelToken.source()
-            if (data?.name){
+            if (user?.token && data?.name){
                 (async () => {
-                    const response = await apiLeague.createLeague(user.token, data, source.token)
+                    console.log('trying to run')
+                    const response = await apiLeague.createLeague(user?.token, data, source.token)
                     if (response){
                         setAlert({msg: `League "${data.name}" created successfully.`, cat: 'success'})
                     }else if(response === false && response !== undefined){
@@ -24,6 +25,6 @@ export default function useCreateLeague(data){
             }
             return () => {source.cancel()}
         },
-        [data, setAlert]
+        [data.name, setAlert, user?.token]
     )
 }
