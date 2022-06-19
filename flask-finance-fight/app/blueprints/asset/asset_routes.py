@@ -9,9 +9,9 @@ import requests
 # ASSET ROUTES
 # #########################
 
-@asset.post('/asset')
+@asset.post('/asset/purchase/<string:type>/<int:quantity>')
 @token_auth.login_required()
-def purchase_asset():
+def purchase_asset(type, quantity):
     '''
         Adds asset to user's holdings. Updates both the Asset & User_Holding table. If asset details are NOT already in DB, creates asset in DB. Requires token auth header.
         HTTP Header = "Authorization: Bearer <token>"
@@ -25,20 +25,16 @@ def purchase_asset():
         }
     '''
     data = request.get_json()
-    user_holding = User_Holding()
-    user_holding.user_holding_to_db(data)
     if Asset.query.filter_by(symbol=data['symbol']).first():
         asset = Asset.query.filter_by(symbol=data['symbol']).first()
     else:
         asset = Asset()
-        asset.asset_to_db(data)
-    user_holding.asset = asset
-    user_holding.user = g.current_user
-    g.current_user.bank = g.current_user.bank - (data.purchase_price * data.quantity)
-    user_holding.save_user_holding()
+        asset.asset_to_db(data, type)
+        asset.save_asset()
+    g.current_user.purchase_asset(asset, quantity, data['price'])
     return make_response(f'Successfully added asset {asset.__str__()} to holdings.', 200)
 
-@asset.delete('/asset/<int:asset_id>')
+@asset.delete('/asset/sell/<int:asset_id>')
 @token_auth.login_required()
 def sell_asset(asset_id):
     '''
@@ -46,6 +42,7 @@ def sell_asset(asset_id):
         HTTP Header = "Authorization: Bearer <token>"
     '''
     user_holding = User_Holding.query.filter_by(user_id = g.current_user.id, asset_id = asset_id).first()
+    # g.current_user.bank = g.current_user.bank + (user_holding.quantity * CURRENT_PRICE)
     user_holding.delete_user_holding()
     return make_response(f'Successfully removed asset with ID {asset_id} from holdings.', 200)
 

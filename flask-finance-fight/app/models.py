@@ -1,17 +1,16 @@
 from app import db
 from flask_login import UserMixin
 from flask import g
-from datetime import datetime as dt, timedelta, time
+from datetime import datetime as dt, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
-import pytz
+import uuid
 
 # #############################################
 # Association object to link users and assets
 # #############################################
 
 class User_Holding(db.Model):
-    holding_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     asset_id = db.Column(db.Integer, db.ForeignKey('asset.id'), primary_key=True)
     purchase_price = db.Column(db.Numeric(15,2))
@@ -24,6 +23,12 @@ class User_Holding(db.Model):
         'Asset',
         back_populates = 'users',
     )
+
+    def __init__(self, user=None, asset=None, purchase_price=None, quantity=None):
+        self.user = user
+        self.asset = asset 
+        self.purchase_price = purchase_price
+        self.quantity = quantity
 
     def user_holding_to_db(self, asset_data):
         self.purchase_price = asset_data['purchase_price']
@@ -108,6 +113,19 @@ class User(UserMixin, db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    # Purchase asset
+    def purchase_asset(self, asset, quantity, purchase_price):
+        self.holdings.append(User_Holding(user=self, asset=asset, quantity=quantity, purchase_price=purchase_price))
+        self.bank = float(self.bank) - (float(purchase_price) * quantity)
+        db.session.commit()
+
+    # Sell asset
+
+    def sell_asset(self, asset_id):
+        asset = Asset.query.get(asset_id)
+        self.holdings.remove(asset)
+        db.session.commit
+
     # Salt and hash password
     def hash_password(self, created_password):
         return generate_password_hash(created_password)
@@ -155,10 +173,10 @@ class Asset(db.Model):
         return f'<Asset ID: {self.id} | Asset Name: {self.name}>'
     
     # Set asset info when user adds to holdings
-    def asset_to_db(self, asset_data):
+    def asset_to_db(self, asset_data, type):
         self.name = asset_data['name']
         self.symbol = asset_data['symbol']
-        self.type = asset_data['type']
+        self.type = type
 
     # Package asset info from DB to send to user
     def to_dict(self):
@@ -169,11 +187,10 @@ class Asset(db.Model):
             'type': self.type
         }
 
-    # MAY NOT NEED THIS FUNCTION
     # Save asset info to database
-    # def save_asset(self):
-    #     db.session.add(self)
-    #     db.session.commit()
+    def save_asset(self):
+        db.session.add(self)
+        db.session.commit()
 
     def delete_asset(self):
         db.session.delete(self)

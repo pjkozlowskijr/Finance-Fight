@@ -5,8 +5,8 @@ import { useState } from 'react';
 import * as Yup from 'yup';
 import { toTitleCase } from '../helpers';
 import useCreateUser from '../hooks/useCreateUser';
-import useDeleteUser from '../hooks/useDeleteUser';
 import useEditUser from '../hooks/useEditUser';
+import DeleteUserModal from '../components/DeleteUserModal'
 
 // //////////////////////////////
 // PROFILE FORM (register & edit)
@@ -26,11 +26,9 @@ export default function ProfileForm({user}){
 
     const [createUser, setCreateUser] = useState({})
     const [editUser, setEditUser] = useState({})
-    const [deleteUser, setDeleteUser] = useState({})
 
     useCreateUser(createUser)
     useEditUser(editUser)
-    useDeleteUser(deleteUser)
 
     const initialValues = {
         first_name: (user?.first_name) ? toTitleCase(user?.first_name) : '',
@@ -47,11 +45,6 @@ export default function ProfileForm({user}){
         }else{
             setCreateUser(values)
         }
-        resetForm(initialValues)
-    }
-
-    const handleDelete = (resetForm) => {
-        setDeleteUser({key:'value'})
         resetForm(initialValues)
     }
 
@@ -144,14 +137,7 @@ export default function ProfileForm({user}){
                 {user?.token ? 'Edit Profile' : 'Register'}
             </Button>
             {user?.token ?
-                <Button 
-                    color='error' 
-                    onClick={() => {handleDelete()}} 
-                    sx={{width:'100%', fontWeight:'bold'}} 
-                    variant='contained'
-                >
-                    Delete Profile
-                </Button>
+                <DeleteUserModal/>
                 :
                 ''
             }

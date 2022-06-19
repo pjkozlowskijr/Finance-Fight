@@ -7,15 +7,15 @@ import apiAsset from '../api/apiAsset';
 // Hook to purchase asset
 // //////////////////////////////
 
-export default function usePurchaseAsset(data){
+export default function usePurchaseAsset(type, quantity, data, purchase){
     const {user, setAlert} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source()
-            if (user?.token && data.quantity !== ''){
+            if (user?.token && purchase?.key){
                 (async () => {
                     console.log('trying to run')
-                    const response = await apiAsset.purchaseAsset(user.token, data, source.token)
+                    const response = await apiAsset.purchaseAsset(user.token, type, quantity, data, source.token)
                     if (response){
                         setAlert({msg: `You purchased some ${data.symbol.toUpperCase()}!`, cat: 'success'})
                     } else if (response === false && response !== undefined){
@@ -25,6 +25,6 @@ export default function usePurchaseAsset(data){
             }
             return () => {source.cancel()}
         },
-        [user.token, data.quantity, setAlert]
+        [user?.token, type, quantity, data, setAlert, purchase]
     )
 }

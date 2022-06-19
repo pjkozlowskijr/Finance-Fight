@@ -104,3 +104,11 @@ def get_user_assets():
     assets = [holding.asset for holding in g.current_user.holdings]
     assets = [asset.to_dict() for asset in assets]
     return make_response({'assets':assets}, 200)
+
+# @user.get('/user')
+# def get_all_users():
+#     '''
+#         Gets ALL users. No auth required.
+#         For use when viewing user leaderboard.
+#     '''
+#     users = User.query.

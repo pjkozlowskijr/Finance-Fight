@@ -9,6 +9,7 @@ import { AppContext } from '../context/AppContext';
 import { currencyFormat } from '../helpers';
 import { Grid } from '@mui/material';
 import usePurchaseAsset from '../hooks/usePurchaseAsset'
+import { useState, useContext } from 'react';
 
 const style = {
   position: 'absolute',
@@ -24,24 +25,19 @@ const style = {
 };
 
 export default function PurchaseAssetModal({asset}) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {user, assetType} = React.useContext(AppContext)
-  const [quantity, setQuantity] = React.useState(10);
+  const {user, assetType} = useContext(AppContext)
+  const [quantity, setQuantity] = useState(10);
+  const [purchase, setPurchase] = useState
   console.log(assetType)
 
-//   usePurchaseAsset({
-//     name: asset.name,
-//     symbol: asset.symbol,
-//     type: assetType,
-//     purchase_price: asset.price,
-//     quantity: ''
-//   })
+//   usePurchaseAsset(assetType, quantity, {user})
 
-//   const handlePurchaseAsset = (quantity) => {
-//     setQuantity(quantity)
-//   }
+  const handlePurchaseAsset = () => {
+    setPurchase({key:'value'})
+  }
 
   return (
     <div>

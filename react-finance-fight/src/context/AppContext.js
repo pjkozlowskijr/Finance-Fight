@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { randomInt } from "../helpers";
 
 // //////////////////////////////
 // APP CONTEXT
@@ -30,11 +31,12 @@ const AppContextProvider = ({children}) => {
     const [asset, setAsset] = useState()
 
     const [assetType, setAssetType] = useState('stock')
-
+  
     // Values passed to children
     const values = {
         user,
         setUserInfo,
+        getUserFromLS,
         alert, 
         setAlert,
         symbol,

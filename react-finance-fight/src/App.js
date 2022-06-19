@@ -11,7 +11,7 @@ import SearchForm from './forms/SearchForm'
 import apiAsset from './api/apiAsset'
 import SingleAsset from './components/SingleAsset'
 import SearchAsset from './components/SearchAsset'
-import ProfileAccordion from './components/ProfileAccordion'
+import ProfileStack from './components/ProfileStack'
 
 // const ghost = {
 //   avatar: 'test',
@@ -35,9 +35,9 @@ function App() {
     <>
       <AlertPopUp/>
       <Navbar>
-        <ProfileForm user={user}/>
         <LoginForm/>
-        {/* <ProfileAccordion/> */}
+        <ProfileForm user={user}/>
+        {/* <ProfileStack/> */}
         {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
         <br/>
         {/* <SearchAsset/> */}
