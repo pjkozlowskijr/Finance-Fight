@@ -26,7 +26,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String, unique=True, index=True)
     password = db.Column(db.String)
     avatar = db.Column(db.String)
-    wins = db.Column(db.Integer, default=0)
     bank = db.Column(db.Numeric(15,2), default=10000)
     created_on = db.Column(db.DateTime, default=dt.utcnow)
     token = db.Column(db.String, unique=True, index=True)
