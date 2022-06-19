@@ -34,7 +34,7 @@ export default function BrowseLeagues() {
         )
       }
     return (
-        leagues?.leagues?.leagues.map((league) => (
+        leagues?.leagues?.leagues.filter(league => new Date(league.league_start) > new Date()).map((league) => (
             <Card key={league.id}>
             <CardContent>
                 <Typography>

@@ -17,7 +17,7 @@ import moment from 'moment';
 export default function LeagueForm(){
     let dayPlusOne = new Date()
     dayPlusOne = dayPlusOne.setDate(dayPlusOne.getDate()+1)
-    dayPlusOne = moment(dayPlusOne).format('MM/DD/YYYY')
+    dayPlusOne = moment(dayPlusOne).format('YYYY/MM/DD')
     const FormSchema = Yup.object(
         {name: Yup.string().required()}
     )
@@ -41,7 +41,7 @@ export default function LeagueForm(){
     }
 
     const handleChange = (newValue) => {
-        setLeagueStart(moment(newValue).format('MM/DD/YYYY'))
+        setLeagueStart(moment(newValue).format('YYYY/MM/DD'))
         console.log(start_date)
     }
 

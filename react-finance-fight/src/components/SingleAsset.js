@@ -17,6 +17,8 @@ import SearchForm from '../forms/SearchForm';
 import Grid from '@mui/material/Grid';
 import { currencyFormat, shortenMktCap, formatChange, formatRegNumber } from '../helpers';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import PurchaseAssetModal from './PurchaseAssetModal';
+import Link from '@mui/material/Link';
 
 // const aapl = {
 //     change_dollar: 1.8200073,
@@ -55,15 +57,11 @@ export default function SingleAsset({asset}){
                     <span style={{color:changeColor}}>{' ('+formatChange(asset.change_percent)+'%)'}</span>
                 </Typography>
                 <Typography id='asset_link' sx={{textAlign: 'center'}}>
-                    <span>Website: </span><a href={asset.website} target='_blank' style={{textDecoration:'none', color:'inherit'}}>{asset.website}</a>
+                    <Link href={asset.website} underline='none' target='_blank' color='inherit'>
+                        Website: {asset.website}
+                    </Link>
                 </Typography>
-                <Button
-                    variant='contained'
-                    aria-label='purchase-asset'
-                    startIcon={<MonetizationOnIcon/>}
-                >
-                    Purchase
-                </Button>
+                <PurchaseAssetModal asset={asset}/>
             </Grid>
             <Grid item md={6}>
                 <Grid container>

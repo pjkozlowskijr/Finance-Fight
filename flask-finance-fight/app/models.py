@@ -7,19 +7,11 @@ import secrets
 import pytz
 
 # #############################################
-# Association table to link users and leagues
-# #############################################
-
-user_leagues = db.Table('user_leagues',
-    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('league_id', db.Integer, db.ForeignKey('league.id'))
-)
-
-# #############################################
 # Association object to link users and assets
 # #############################################
 
 class User_Holding(db.Model):
+    holding_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
     asset_id = db.Column(db.Integer, db.ForeignKey('asset.id'), primary_key=True)
     purchase_price = db.Column(db.Numeric(15,2))
@@ -66,12 +58,7 @@ class User(UserMixin, db.Model):
     holdings = db.relationship(
         'User_Holding',
         back_populates = 'user',
-    )
-    leagues = db.relationship(
-        'League',
-        secondary = user_leagues,
-        backref = 'users',
-        lazy = 'dynamic'
+        cascade = 'all, delete-orphan'
     )
 
     def __repr__(self):
@@ -105,6 +92,7 @@ class User(UserMixin, db.Model):
             'first_name': self.first_name.title(),
             'last_name': self.last_name.title(),
             'display_name': self.display_name,
+            'bank':self.bank,
             'email': self.email,
             'created_on': self.created_on,
             'token': self.token,
@@ -145,53 +133,6 @@ class User(UserMixin, db.Model):
         if not user or user.token_exp < dt.utcnow():
             return None
         return user
-
-# #########################
-# LEAGUE MODEL
-# #########################
-
-class League(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    owner_id = db.Column(db.Integer)
-    start_date = db.Column(db.Date)
-    start_time = db.Column(db.Time, default=(time(hour=0, minute=0, second=0, tzinfo=pytz.utc)))
-    end_datetime = db.Column(db.DateTime)     
-
-    def __repr__(self):
-        return f'<League ID: {self.id} | League Name: {self.name}>'
-
-    def __str__(self):
-        return f'<League ID: {self.id} | League Name: {self.name}>'
-
-    # Set league info based on user input
-    def league_to_db(self, league_data):
-        self.name = league_data['name'].strip()
-        self.owner_id = g.current_user.id
-        self.start_date = dt.strptime(league_data['start_date'], '%m/%d/%Y')
-
-    # Packages league info from DB to send to user via make_response
-    def to_dict(self):
-        return{
-            'id': self.id,
-            'name': self.name,
-            'owner_id': self.owner_id,
-            'owner_name': User.query.get(self.owner_id).first_name + ' ' + User.query.get(self.owner_id).last_name,
-            'league_start': dt.combine(self.start_date, self.start_time),
-            'league_end': self.end_datetime
-        }
-
-    # Save league info to database
-    def save_league(self):
-        db.session.add(self)
-        db.session.commit()
-        self.end_datetime = (dt.combine(self.start_date, self.start_time)) + timedelta(days=7)
-        db.session.add(self)
-        db.session.commit()
-
-    def delete_league(self):
-        db.session.delete(self)
-        db.session.commit()
 
 # #########################
 # ASSET MODEL

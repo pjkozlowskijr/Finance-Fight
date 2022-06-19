@@ -104,14 +104,3 @@ def get_user_assets():
     assets = [holding.asset for holding in g.current_user.holdings]
     assets = [asset.to_dict() for asset in assets]
     return make_response({'assets':assets}, 200)
-
-@user.get('/user/leagues')
-@token_auth.login_required()
-def get_user_leagues():
-    '''
-        Gets ALL user leagues. Requires token auth header.
-        HTTP Header = "Authorization: Bearer <token>"
-    '''
-    leagues = [league for league in g.current_user.leagues]
-    leagues = [league.to_dict() for league in leagues]
-    return make_response({'leagues':leagues}, 200)

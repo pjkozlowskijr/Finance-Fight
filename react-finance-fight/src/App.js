@@ -13,6 +13,7 @@ import SingleAsset from './components/SingleAsset'
 import SearchAsset from './components/SearchAsset'
 import LeagueForm from './forms/LeagueForm'
 import BrowseLeagues from './components/BrowseLeagues'
+import ProfileAccordion from './components/ProfileAccordion'
 
 // const ghost = {
 //   avatar: 'test',
@@ -36,8 +37,8 @@ function App() {
     <>
       <AlertPopUp/>
       <Navbar>
-        <BrowseLeagues/>
-        <LeagueForm/>
+        <LoginForm/>
+        <ProfileAccordion/>
         {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
         <br/>
         {/* <LoginForm/>

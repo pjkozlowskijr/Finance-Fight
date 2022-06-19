@@ -32,7 +32,7 @@ export default function SearchForm(){
         enableReinitialize: true
     })
 
-    const [assetType, setAssetType] = useState('stock')
+    const {assetType, setAssetType} = useContext(AppContext)
     const {symbol, setSymbol} = useContext(AppContext)
     
     useAssetInfo(assetType, symbol)

@@ -18,9 +18,6 @@ if os.environ.get('FLASK_ENV') == 'development':
 from .blueprints.asset import bp as asset_bp
 app.register_blueprint(asset_bp)
 
-from .blueprints.league import bp as league_bp
-app.register_blueprint(league_bp)
-
 from .blueprints.user import bp as user_bp
 app.register_blueprint(user_bp)
 

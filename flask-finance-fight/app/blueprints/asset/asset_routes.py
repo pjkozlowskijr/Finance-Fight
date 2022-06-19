@@ -34,6 +34,7 @@ def purchase_asset():
         asset.asset_to_db(data)
     user_holding.asset = asset
     user_holding.user = g.current_user
+    g.current_user.bank = g.current_user.bank - (data.purchase_price * data.quantity)
     user_holding.save_user_holding()
     return make_response(f'Successfully added asset {asset.__str__()} to holdings.', 200)
 

@@ -12,8 +12,9 @@ export default function usePurchaseAsset(data){
     useEffect(
         () => {
             const source = CancelToken.source()
-            if (user?.token && data){
+            if (user?.token && data.quantity !== ''){
                 (async () => {
+                    console.log('trying to run')
                     const response = await apiAsset.purchaseAsset(user.token, data, source.token)
                     if (response){
                         setAlert({msg: `You purchased some ${data.symbol.toUpperCase()}!`, cat: 'success'})
@@ -24,6 +25,6 @@ export default function usePurchaseAsset(data){
             }
             return () => {source.cancel()}
         },
-        [user.token, data, setAlert]
+        [user.token, data.quantity, setAlert]
     )
 }
