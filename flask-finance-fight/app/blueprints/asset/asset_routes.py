@@ -1,5 +1,5 @@
 from . import bp as asset
-from app.models import Asset, User_Holding
+from app.models import Asset
 from flask import make_response, request, g
 from app.blueprints.user.user_routes import token_auth
 import os

@@ -4,44 +4,15 @@ from flask import g
 from datetime import datetime as dt, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
-import uuid
 
 # #############################################
-# Association object to link users and assets
+# Association table to link user & assets
 # #############################################
 
-class User_Holding(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-    asset_id = db.Column(db.Integer, db.ForeignKey('asset.id'), primary_key=True)
-    purchase_price = db.Column(db.Numeric(15,2))
-    quantity = db.Column(db.Integer)
-    user = db.relationship(
-        'User',
-        back_populates = 'holdings',
+user_assets = db.Table('user_assets',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('asset_id', db.Integer, db.ForeignKey('asset.id'))
     )
-    asset = db.relationship(
-        'Asset',
-        back_populates = 'users',
-    )
-
-    def __init__(self, user=None, asset=None, purchase_price=None, quantity=None):
-        self.user = user
-        self.asset = asset 
-        self.purchase_price = purchase_price
-        self.quantity = quantity
-
-    def user_holding_to_db(self, asset_data):
-        self.purchase_price = asset_data['purchase_price']
-        self.quantity = asset_data['quantity']
-        self.user_id = g.current_user.id
-
-    def save_user_holding(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete_user_holding(self):
-        db.session.delete(self)
-        db.session.commit()
 
 # #########################
 # USER MODEL
@@ -60,10 +31,15 @@ class User(UserMixin, db.Model):
     created_on = db.Column(db.DateTime, default=dt.utcnow)
     token = db.Column(db.String, unique=True, index=True)
     token_exp = db.Column(db.DateTime)
-    holdings = db.relationship(
-        'User_Holding',
-        back_populates = 'user',
-        cascade = 'all, delete-orphan'
+    assets = db.relationship(
+        'Asset',
+        secondary = user_assets,
+        backref = 'users',
+        lazy = 'dynamic'
+    )
+    purchases = db.relationship(
+        'Purchase',
+        backref = 'user'
     )
 
     def __repr__(self):
@@ -161,10 +137,6 @@ class Asset(db.Model):
     name = db.Column(db.String)
     symbol = db.Column(db.String, unique=True, index=True)
     type = db.Column(db.String)
-    users = db.relationship(
-        'User_Holding',
-        back_populates = 'asset'
-    )
 
     def __repr__(self):
         return f'<Asset ID: {self.id} | Asset Name: {self.name}>'
@@ -195,3 +167,14 @@ class Asset(db.Model):
     def delete_asset(self):
         db.session.delete(self)
         db.session.commit()
+
+# #########################
+# PURCHASE MODEL
+# #########################
+
+class Purchase(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    symbol = db.Column(db.String, index=True)
+    price = db.Column(db.Numeric(15,2))
+    quantity = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
