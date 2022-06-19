@@ -37,7 +37,7 @@ export default function ProfileAccordion() {
           <Typography>Holdings</Typography>
         </AccordionSummary>
         <AccordionDetails>
-            {userAssets?.assets.assets.map((asset) => (
+            {userAssets?.assets?.assets.map((asset) => (
               <Typography>
                 {asset.name}
 

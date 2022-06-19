@@ -11,8 +11,6 @@ import SearchForm from './forms/SearchForm'
 import apiAsset from './api/apiAsset'
 import SingleAsset from './components/SingleAsset'
 import SearchAsset from './components/SearchAsset'
-import LeagueForm from './forms/LeagueForm'
-import BrowseLeagues from './components/BrowseLeagues'
 import ProfileAccordion from './components/ProfileAccordion'
 
 // const ghost = {
@@ -37,12 +35,11 @@ function App() {
     <>
       <AlertPopUp/>
       <Navbar>
+        <ProfileForm user={user}/>
         <LoginForm/>
-        <ProfileAccordion/>
+        {/* <ProfileAccordion/> */}
         {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
         <br/>
-        {/* <LoginForm/>
-        <ProfileForm user={user}/> */}
         {/* <SearchAsset/> */}
       </Navbar>
     </>
