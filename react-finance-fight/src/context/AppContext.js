@@ -29,8 +29,6 @@ const AppContextProvider = ({children}) => {
 
     const [asset, setAsset] = useState()
 
-    const [name, setLeagueName] = useState()
-
     const [assetType, setAssetType] = useState('stock')
 
     // Values passed to children
@@ -43,8 +41,6 @@ const AppContextProvider = ({children}) => {
         setSymbol,
         asset,
         setAsset,
-        name,
-        setLeagueName,
         assetType,
         setAssetType
     }
