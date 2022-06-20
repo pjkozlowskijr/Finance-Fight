@@ -1,5 +1,5 @@
 from . import bp as asset
-from app.models import Asset
+from app.models import Asset, Purchase
 from flask import make_response, request, g
 from app.blueprints.user.user_routes import token_auth
 import os
@@ -15,13 +15,11 @@ def purchase_asset(type, quantity):
     '''
         Adds asset to user's holdings. Updates both the Asset & User_Holding table. If asset details are NOT already in DB, creates asset in DB. Requires token auth header.
         HTTP Header = "Authorization: Bearer <token>"
-        Expected payload:
+        Expected JSON payload:
         {
             "name": STRING,
             "symbol": STRING,
-            "type": STRING (stock/crypto),
-            "purchase_price": NUMERIC (15,2),
-            "quantity": INTEGER
+            "price": NUMERIC (15,2)
         }
     '''
     data = request.get_json()
@@ -31,20 +29,28 @@ def purchase_asset(type, quantity):
         asset = Asset()
         asset.asset_to_db(data, type)
         asset.save_asset()
-    g.current_user.purchase_asset(asset, quantity, data['price'])
+    purchase = Purchase()
+    purchase.purchase_to_db(data, quantity)
+    purchase.save_purchase()
+    g.current_user.purchase_asset(asset, purchase)
+    g.current_user.save_user()
     return make_response(f'Successfully added asset {asset.__str__()} to holdings.', 200)
 
-@asset.delete('/asset/sell/<int:asset_id>')
+@asset.delete('/asset/sell/<int:sell_qty>')
 @token_auth.login_required()
-def sell_asset(asset_id):
+def sell_asset(sell_qty):
     '''
         Removes an asset from user's holdings. Requires token auth header.
         HTTP Header = "Authorization: Bearer <token>"
+        Expected JSON payload:
+        {
+            "symbol": STRING
+            "price": NUMERIC (15,2)
+        }
     '''
-    user_holding = User_Holding.query.filter_by(user_id = g.current_user.id, asset_id = asset_id).first()
-    # g.current_user.bank = g.current_user.bank + (user_holding.quantity * CURRENT_PRICE)
-    user_holding.delete_user_holding()
-    return make_response(f'Successfully removed asset with ID {asset_id} from holdings.', 200)
+    data = request.get_json()
+    g.current_user.sell_asset(data, sell_qty)
+    return make_response(f'Successfully sold {sell_qty} {data["symbol"]}.', 200)
 
 @asset.get('/asset/<string:type>/<string:symbol>')
 def get_asset_info(type, symbol):

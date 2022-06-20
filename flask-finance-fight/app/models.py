@@ -79,7 +79,6 @@ class User(UserMixin, db.Model):
             'token_exp': self.token_exp
         }
 
-    # Save/update user info to database
     def save_user(self):
         db.session.add(self)
         db.session.commit()
@@ -89,17 +88,40 @@ class User(UserMixin, db.Model):
         db.session.commit()
 
     # Purchase asset
-    def purchase_asset(self, asset, quantity, purchase_price):
-        self.holdings.append(User_Holding(user=self, asset=asset, quantity=quantity, purchase_price=purchase_price))
-        self.bank = float(self.bank) - (float(purchase_price) * quantity)
-        db.session.commit()
+    def purchase_asset(self, asset, purchase):
+        new_asset = Asset.query.filter_by(symbol = asset.symbol.lower()).first()
+        self.assets.append(new_asset)
+        new_purchase = Purchase.query.get(purchase.id)
+        self.purchases.append(new_purchase)
+        self.bank = float(self.bank) - (float(new_purchase.price) * new_purchase.quantity)
+        self.save_user()
+
+    # Check quantity available to sell
+    def check_quantity(self, asset_symbol):
+        purchases = Purchase.query.filter_by(symbol = asset_symbol).all()
+        qty_available = 0
+        for purchase in purchases:
+            qty_available += purchase.quantity
+        return qty_available
 
     # Sell asset
-
-    def sell_asset(self, asset_id):
-        asset = Asset.query.get(asset_id)
-        self.holdings.remove(asset)
-        db.session.commit
+    def sell_asset(self, sell_data, sell_quantity):
+        asset = Asset.query.filter_by(symbol = sell_data['symbol'].lower()).first()
+        self.bank = float(self.bank) + (sell_quantity * float(sell_data['price']))
+        purchases = Purchase.query.filter_by(symbol = sell_data['symbol']).order_by(Purchase.purchase_date.asc()).all()
+        qty_removal = sell_quantity
+        for purchase in purchases:
+            if qty_removal >= purchase.quantity:
+                qty_removal -= purchase.quantity
+                self.purchases.remove(purchase)
+                if qty_removal == 0:
+                    break
+            else:
+                purchase.quantity -= qty_removal
+                break
+        if not Purchase.query.filter_by(symbol = sell_data['symbol']).all():
+            self.assets.remove(asset)
+        db.session.commit()
 
     # Salt and hash password
     def hash_password(self, created_password):
@@ -146,7 +168,7 @@ class Asset(db.Model):
     # Set asset info when user adds to holdings
     def asset_to_db(self, asset_data, type):
         self.name = asset_data['name']
-        self.symbol = asset_data['symbol']
+        self.symbol = asset_data['symbol'].lower()
         self.type = type
 
     # Package asset info from DB to send to user
@@ -158,7 +180,6 @@ class Asset(db.Model):
             'type': self.type
         }
 
-    # Save asset info to database
     def save_asset(self):
         db.session.add(self)
         db.session.commit()
@@ -176,4 +197,34 @@ class Purchase(db.Model):
     symbol = db.Column(db.String, index=True)
     price = db.Column(db.Numeric(15,2))
     quantity = db.Column(db.Integer)
+    purchase_date = db.Column(db.DateTime, default=dt.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f'<Purchase ID: {self.id} | User ID: {self.user_id}>'
+
+    def __str__(self):
+        return f'<Purchase ID: {self.id} | Asset Symbol: {self.symbol}>'
+    
+    # Set info when purchase made
+    def purchase_to_db(self, asset_data, quantity):
+        self.symbol = asset_data['symbol'].lower()
+        self.price = asset_data['price']
+        self.quantity = quantity
+
+    # Package purchase info from DB to send to user
+    def to_dict(self):
+        return{
+            'id': self.id,
+            'symbol': self.symbol,
+            'price': self.price,
+            'quantity': self.quantity,
+        }
+
+    def save_purchase(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete_purchase(self):
+        db.session.delete(self)
+        db.session.commit()
