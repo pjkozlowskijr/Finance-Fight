@@ -60,10 +60,13 @@ class User(UserMixin, db.Model):
     def from_dict(self, data):
         for field in ['avatar', 'display_name', 'email', 'first_name', 'last_name', 'password']:
             if field in data:
-                if field == 'password':  
-                    setattr(self, field, self.hash_password(data[field]))
+                if data[field] == '':
+                    continue
                 else:
-                    setattr(self, field, data[field])
+                    if field == 'password':  
+                        setattr(self, field, self.hash_password(data[field]))
+                    else:
+                        setattr(self, field, data[field])
 
     # Packages user info from DB to send to user via make_response
     def to_dict(self):
@@ -173,11 +176,19 @@ class Asset(db.Model):
 
     # Package asset info from DB to send to user
     def to_dict(self):
+        purchases = Purchase.query.filter_by(symbol = self.symbol, user_id = g.current_user.id).all()
+        quantity = 0
+        value = 0
+        for purchase in purchases:
+            quantity += purchase.quantity
+            value += purchase.quantity * float(purchase.price)
         return{
             'id': self.id,
             'name': self.name,
             'symbol': self.symbol,
-            'type': self.type
+            'type': self.type,
+            'quantity': quantity,
+            'value': value 
         }
 
     def save_asset(self):

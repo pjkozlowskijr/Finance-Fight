@@ -49,3 +49,9 @@ export function formatRegNumber(number){
   const formatter = new Intl.NumberFormat('en-US')
   return formatter.format(number)
 }
+
+// Get variable for text color change based on +/- asset change
+export function changeColor(string){
+  const changeColor = (string.startsWith('+')) ? 'green' : 'red'
+  return changeColor
+}

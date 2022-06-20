@@ -8,7 +8,8 @@ import { AppContext } from '../context/AppContext';
 import useGetUserAssets from '../hooks/useGetUserAssets'
 import Typography from '@mui/material/Typography';
 import { Divider, Grid } from '@mui/material';
-import { toTitleCase, currencyFormat, formatChange } from '../helpers';
+import { toTitleCase, currencyFormat, formatChange, changeColor } from '../helpers';
+import useGetUserInfo from '../hooks/useGetUserInfo';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -21,35 +22,71 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function ProfileStack() {
     const userAssets = useGetUserAssets()
     const {user} = React.useContext(AppContext)
-    console.log(userAssets)
+    const dollarChange = formatChange(user.bank-10000)
+    const percentChange = formatChange((user.bank-10000)/10000*100)
+    
+    // useGetUserInfo()
 
   return (
-    <Box sx={{ width:'70%', margin:'auto'}}>
+    <Box sx={{ width:'80%', margin:'auto'}}>
       <Stack spacing={3} divider={<Divider/>}>
         <Item>
           <Typography sx={{textAlign:'left'}} variant='h4'>{toTitleCase(user.first_name)+' '+toTitleCase(user.last_name)+' ('+user.display_name+')'}</Typography>
           <Grid container>
             <Grid item md={3}>
-              <Typography>Starting Funds: $10,000.00</Typography>
+              <Typography>Cash Funds: {currencyFormat(user.bank)}</Typography>
             </Grid>
             <Grid item md={3}>
-              <Typography>Current Funds: {currencyFormat(user.bank)}</Typography>
+              <Typography>Total Asset Costs: {currencyFormat(userAssets?.assets?.assets.map(asset=>asset.value).reduce((x,y)=>x+y))}</Typography>
             </Grid>
             <Grid item md={3}>
-              <Typography>Dollar Change: {formatChange(user.bank-10000)}</Typography>
+              <Typography>Dollar Change: <span style={{color:changeColor(dollarChange)}}>{currencyFormat(dollarChange)}</span></Typography>
             </Grid>
             <Grid item md={3}>
-              <Typography>Percent Change: {formatChange((user.bank-10000)/10000*100)}%</Typography>
+              <Typography>Percent Change: <span style={{color:changeColor(percentChange)}}>{percentChange}%</span></Typography>
             </Grid>
           </Grid>
         </Item>
         <Item>
+          <Grid container>
+            <Grid item md={12}>
+              <Typography>Assets</Typography>
+            </Grid>
             {userAssets?.assets?.assets.map((asset) => (
-              <Typography>
-                {asset.name}
-
-              </Typography>
+              <>
+                <Grid item md={2}>
+                  <Typography key={asset.symbol}>
+                    {toTitleCase(asset.name)+' ('+asset.symbol.toUpperCase()+')'}
+                  </Typography>
+                </Grid>
+                <Grid item md={2}>
+                  <Typography key={asset.symbol}>
+                    {toTitleCase(asset.type)}
+                  </Typography>
+                </Grid>
+                <Grid item md={2}>
+                  <Typography key={asset.symbol}>
+                    Quantity Owned: {asset.quantity}
+                  </Typography>
+                </Grid>
+                <Grid item md={2}>
+                  <Typography key={asset.symbol}>
+                    Purchase Value: {currencyFormat(asset.value)}
+                  </Typography>
+                </Grid>
+                <Grid item md={2}>
+                  <Typography key={asset.symbol}>
+                    Current Value: XXXXX
+                  </Typography>
+                </Grid>
+                <Grid item md={2}>
+                  <Typography key={asset.symbol}>
+                    Change: XXXXX
+                  </Typography>
+                </Grid>
+              </>
             ))}
+          </Grid>
         </Item>
         <Item>
             <Typography>Edit Profile</Typography>

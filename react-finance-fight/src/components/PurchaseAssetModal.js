@@ -30,13 +30,13 @@ export default function PurchaseAssetModal({asset}) {
   const handleClose = () => setOpen(false);
   const {user, assetType} = useContext(AppContext)
   const [quantity, setQuantity] = useState(10);
-  const [purchase, setPurchase] = useState
-  console.log(assetType)
+  const [purchase, setPurchase] = useState();
+//   console.log(assetType)
 
-//   usePurchaseAsset(assetType, quantity, {user})
+  usePurchaseAsset(assetType, quantity, {asset}, purchase)
 
-  const handlePurchaseAsset = () => {
-    setPurchase({key:'value'})
+  const handlePurchaseAsset = (value) => {
+    setPurchase(value)
   }
 
   return (
@@ -102,7 +102,7 @@ export default function PurchaseAssetModal({asset}) {
                     <Button
                         variant='contained'
                         startIcon={<MonetizationOnIcon/>}
-                        // onClick={handlePurchaseAsset(quantity)}
+                        onClick={() => handlePurchaseAsset({key:'value'})}
                         sx={{margin:'auto'}}
                         >
                         Confirm Purchase

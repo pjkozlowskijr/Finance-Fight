@@ -28,7 +28,7 @@ export default function QuantitySlider({quantity, setQuantity}) {
   };
 
   return (
-    <Box sx={{ width: 500 }}>
+    <Box sx={{ width: '100%'}}>
       <Typography id="input-slider" gutterBottom variant='h6'>
         Quantity
       </Typography>

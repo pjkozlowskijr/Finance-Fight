@@ -35,9 +35,9 @@ function App() {
     <>
       <AlertPopUp/>
       <Navbar>
-        <LoginForm/>
-        <ProfileForm user={user}/>
-        {/* <ProfileStack/> */}
+        {/* <LoginForm/>
+        <ProfileForm user={user}/> */}
+        <ProfileStack/>
         {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
         <br/>
         {/* <SearchAsset/> */}

@@ -19,6 +19,8 @@ export default function useCreateUser(data){
                         setAlert({msg: `User ${data.email} created successfully.`, cat: 'success'})
                     }else if(response === false && response !== undefined){
                         setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
+                    }else if(response === 422){
+                        setAlert({msg: 'That email is already in use.', cat: 'error'})
                     }
                 })()
             }

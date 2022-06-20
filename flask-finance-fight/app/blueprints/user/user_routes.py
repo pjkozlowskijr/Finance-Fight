@@ -101,14 +101,26 @@ def get_user_assets():
         Gets ALL user assets. Requires token auth header.
         HTTP Header = "Authorization: Bearer <token>"
     '''
-    assets = [holding.asset for holding in g.current_user.holdings]
-    assets = [asset.to_dict() for asset in assets]
+    assets = [asset.to_dict() for asset in g.current_user.assets]
     return make_response({'assets':assets}, 200)
 
-# @user.get('/user')
+# @user.get('/user/all')
 # def get_all_users():
 #     '''
 #         Gets ALL users. No auth required.
 #         For use when viewing user leaderboard.
 #     '''
 #     users = User.query.
+
+@user.get('/user')
+@token_auth.login_required()
+def get_user_info():
+    '''
+        Gets user info and sends to front end for updates.
+        For example, if user makes purchase and bank updates.
+        Info updates in DB, but needs to be called to front end for display.
+        Requires token auth header.
+        HTTP Header = "Authorization: Bearer <token>"
+    '''
+    user = g.current_user.to_dict()
+    return make_response({'user':user}, 200)

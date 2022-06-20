@@ -27,8 +27,8 @@ export default function ProfileForm({user}){
     const [createUser, setCreateUser] = useState({})
     const [editUser, setEditUser] = useState({})
 
-    useCreateUser(createUser)
-    useEditUser(editUser)
+    // useCreateUser(createUser)
+    // useEditUser(editUser)
 
     const initialValues = {
         first_name: (user?.first_name) ? toTitleCase(user?.first_name) : '',

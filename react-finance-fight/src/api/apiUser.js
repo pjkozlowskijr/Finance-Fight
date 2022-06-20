@@ -70,21 +70,9 @@ const getUserAssets = async (token, cancelToken) => {
     }
 }
 
-// Get user leagues
-const getUserLeagues = async (token, cancelToken) => {
-    let error
-    let leagues
-
-    const response = await apiClientTokenAuth(token, cancelToken).get(endpointUser+'/leagues');
-    if (response.ok){
-        leagues = response.data
-    }else{
-        error = 'An unexpected error has occured.'
-    }
-    return{
-        error,
-        leagues
-    }
+const getUserInfo = async (token, cancelToken) => {
+    const response = await apiClientTokenAuth(token, cancelToken).get(endpointUser)
+    return response.data
 }
 
 const apis = {
@@ -94,7 +82,7 @@ const apis = {
     editUser,
     deleteUser,
     getUserAssets,
-    getUserLeagues
+    getUserInfo
 }
 
 export default apis
