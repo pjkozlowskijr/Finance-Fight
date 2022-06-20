@@ -16,10 +16,20 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import SearchIcon from '@mui/icons-material/Search';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import CandlestickChartIcon from '@mui/icons-material/CandlestickChart';
+import HomeIcon from '@mui/icons-material/Home';
+import HelpIcon from '@mui/icons-material/Help';
+import LogoutIcon from '@mui/icons-material/Logout';
+import LoginIcon from '@mui/icons-material/Login';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import { Link } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
+import ThemeSwitch from './ThemeSwitch';
 
-const drawerWidth = 200;
+const drawerWidth = 225;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -68,6 +78,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerRight({children}) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const {user} = React.useContext(AppContext)
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -80,11 +91,16 @@ export default function PersistentDrawerRight({children}) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={open} sx={{backgroundColor:theme.palette.primary.main, backgroundImage:'none'}}>
         <Toolbar>
-          <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
+          <Box sx={{flexGrow: 1}}>
+          <Typography variant="h6" noWrap sx={{mr:3, display: 'inline', lineHeight:'40px'}} component="div">
             Finance Fight
           </Typography>
+            {/* <Link to='/ReactLibrary'> */}
+              <img height="40px" style={{verticalAlign:'top'}} src="https://res.cloudinary.com/detcvmtip/image/upload/v1655272091/finance%20fight/Business-trend-and-finance-logo-design-on-transparent-background-PNG_z2hsjy.png" alt="Books"/>
+            {/* </Link> */}
+          </Box>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -106,30 +122,50 @@ export default function PersistentDrawerRight({children}) {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
+            backgroundColor: theme.palette.background.paper
           },
         }}
         variant="persistent"
         anchor="right"
         open={open}
       >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+        <DrawerHeader sx={{backgroundColor: theme.palette.primary.main}}>
+          <IconButton onClick={handleDrawerClose} sx={{color: '#fff'}}>
             {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
+          {[
+            {label: 'Home', path: '', icon: <HomeIcon/>},
+            {label: 'Asset Lookup', path: '', icon: <SearchIcon/>},
+            {label: 'Market Overview', path: '', icon: <CandlestickChartIcon/>},
+            {label: 'Leaderboard', path: '', icon: <LeaderboardIcon/>},
+            {label: 'Help', path: '', icon: <HelpIcon/>},
+            ((user?.token)?
+              {label: 'Logout', path: '/logout', icon: <LogoutIcon/>}
+              :
+              {label: 'Login', path: '/login', icon: <LoginIcon/>}),
+            ((user?.token)?
+              {label: 'Account', path: '/profile', icon: <AccountCircleIcon/>}
+              :
+              {label: 'Register', path: '/profile', icon: <AppRegistrationIcon/>})
+          ].map((navItem) => (
+            <ListItem key={navItem.label} disablePadding>
+              {/* <Link to='#' style={{textDecoration:'none', color:theme.palette.text.secondary, width:'100%'}}> */}
+                <ListItemButton>
+                  <ListItemIcon sx={{color:theme.palette.text.secondary}}>
+                    {navItem.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={navItem.label} />
+                </ListItemButton>
+              {/* </Link> */}
             </ListItem>
           ))}
         </List>
+        <ListItem sx={{position:'absolute', bottom:'0', justifyContent:'center'}}>
+          <ThemeSwitch/>
+        </ListItem>
       </Drawer>
     </Box>
   );

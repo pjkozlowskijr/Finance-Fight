@@ -12,7 +12,7 @@ import { toTitleCase, currencyFormat, formatChange, changeColor } from '../helpe
 import useGetUserInfo from '../hooks/useGetUserInfo';
 
 const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  backgroundColor: theme.palette.background.paper,
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',
@@ -24,8 +24,6 @@ export default function ProfileStack() {
     const {user} = React.useContext(AppContext)
     const dollarChange = formatChange(user.bank-10000)
     const percentChange = formatChange((user.bank-10000)/10000*100)
-    
-    // useGetUserInfo()
 
   return (
     <Box sx={{ width:'80%', margin:'auto'}}>
@@ -48,45 +46,41 @@ export default function ProfileStack() {
           </Grid>
         </Item>
         <Item>
-          <Grid container>
-            <Grid item md={12}>
-              <Typography>Assets</Typography>
+        <Typography>Assets</Typography>
+        {userAssets?.assets?.assets.map((asset) => (
+          <Grid key={asset.symbol} container>
+            <Grid item md={2}>
+              <Typography>
+                {toTitleCase(asset.name)+' ('+asset.symbol.toUpperCase()+')'}
+              </Typography>
             </Grid>
-            {userAssets?.assets?.assets.map((asset) => (
-              <>
-                <Grid item md={2}>
-                  <Typography key={asset.symbol}>
-                    {toTitleCase(asset.name)+' ('+asset.symbol.toUpperCase()+')'}
-                  </Typography>
-                </Grid>
-                <Grid item md={2}>
-                  <Typography key={asset.symbol}>
-                    {toTitleCase(asset.type)}
-                  </Typography>
-                </Grid>
-                <Grid item md={2}>
-                  <Typography key={asset.symbol}>
-                    Quantity Owned: {asset.quantity}
-                  </Typography>
-                </Grid>
-                <Grid item md={2}>
-                  <Typography key={asset.symbol}>
-                    Purchase Value: {currencyFormat(asset.value)}
-                  </Typography>
-                </Grid>
-                <Grid item md={2}>
-                  <Typography key={asset.symbol}>
-                    Current Value: XXXXX
-                  </Typography>
-                </Grid>
-                <Grid item md={2}>
-                  <Typography key={asset.symbol}>
-                    Change: XXXXX
-                  </Typography>
-                </Grid>
-              </>
-            ))}
+            <Grid item md={2}>
+              <Typography key={asset.symbol}>
+                {toTitleCase(asset.type)}
+              </Typography>
+            </Grid>
+            <Grid item md={2}>
+              <Typography key={asset.symbol}>
+                Quantity Owned: {asset.quantity}
+              </Typography>
+            </Grid>
+            <Grid item md={2}>
+              <Typography key={asset.symbol}>
+                Purchase Value: {currencyFormat(asset.value)}
+              </Typography>
+            </Grid>
+            <Grid item md={2}>
+              <Typography key={asset.symbol}>
+                Current Value: XXXXX
+              </Typography>
+            </Grid>
+            <Grid item md={2}>
+              <Typography key={asset.symbol}>
+                Change: XXXXX
+              </Typography>
+            </Grid>
           </Grid>
+        ))}
         </Item>
         <Item>
             <Typography>Edit Profile</Typography>

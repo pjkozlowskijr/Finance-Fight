@@ -70,12 +70,18 @@ class User(UserMixin, db.Model):
 
     # Packages user info from DB to send to user via make_response
     def to_dict(self):
+        qty_company = len(self.assets)
+        qty_assets = 0
+        for purchase in self.purchases:
+            qty_assets += purchase.quantity
         return{
             'id': self.id,
             'first_name': self.first_name.title(),
             'last_name': self.last_name.title(),
             'display_name': self.display_name,
             'bank':self.bank,
+            'qty_company': qty_company,
+            'qty_assets': qty_assets,
             'email': self.email,
             'created_on': self.created_on,
             'token': self.token,

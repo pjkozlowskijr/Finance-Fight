@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { randomInt } from "../helpers";
+import useGetUserInfo from "../hooks/useGetUserInfo";
 
 // //////////////////////////////
 // APP CONTEXT
@@ -16,6 +17,7 @@ const AppContextProvider = ({children}) => {
         }
     }
 
+    // const [user, setUser] = useState(useGetUserInfo())
     const [user, setUser] = useState(getUserFromLS())
 
     const setUserInfo = (user) => {
@@ -35,6 +37,7 @@ const AppContextProvider = ({children}) => {
     // Values passed to children
     const values = {
         user,
+        setUser,
         setUserInfo,
         getUserFromLS,
         alert, 

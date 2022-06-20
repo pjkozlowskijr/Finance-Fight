@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar'
 import Button from '@mui/material/Button'
+import Box from '@mui/material/Box'
 import apiUser from './api/apiUser'
 import { CancelToken } from 'apisauce'
 import LoginForm from './forms/LoginForm'
@@ -12,6 +13,7 @@ import apiAsset from './api/apiAsset'
 import SingleAsset from './components/SingleAsset'
 import SearchAsset from './components/SearchAsset'
 import ProfileStack from './components/ProfileStack'
+import { Routes } from 'react-router-dom'
 
 // const ghost = {
 //   avatar: 'test',
@@ -35,12 +37,17 @@ function App() {
     <>
       <AlertPopUp/>
       <Navbar>
+        <Box sx={{minHeight:'100%'}}>
+          {/* <Routes> */}
+
         {/* <LoginForm/>
-        <ProfileForm user={user}/> */}
+        <ProfileForm/> */}
         <ProfileStack/>
         {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
         <br/>
         {/* <SearchAsset/> */}
+        {/* </Routes> */}
+        </Box>
       </Navbar>
     </>
   );
