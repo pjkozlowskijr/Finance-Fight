@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormGroup from '@mui/material/FormGroup';
 import { styled } from '@mui/material/styles';
@@ -55,6 +56,7 @@ const MaterialUISwitch = styled(Switch)(({theme}) => ({
 export default function ThemeSwitch() {
   const {currentTheme, setTheme} = useContext(ThemeContext);
   const isDark = Boolean(currentTheme === 'darkTheme')
+  const {theme} = useContext(ThemeContext)
 
   const handleThemeChange = (event) =>{
     const checked = event.target.checked
@@ -67,9 +69,18 @@ export default function ThemeSwitch() {
 
   return (
     <FormGroup>
+        {(isDark) ? 
+        <Typography>
+            Light Mode
+        </Typography>
+        :
+        <Typography>
+            Dark Mode
+        </Typography>
+        }
       <FormControlLabel
-        control={<MaterialUISwitch sx={{m:1}} checked={isDark} onChange={(event)=>handleThemeChange(event)} />}
-        label=""
+        control={<MaterialUISwitch checked={isDark} onChange={(event)=>handleThemeChange(event)} />}
+        sx={{m:'auto'}}
       />
     </FormGroup>
   );
