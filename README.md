@@ -1,4 +1,4 @@
-# <img src="https://res.cloudinary.com/detcvmtip/image/upload/v1655847445/finance%20fight/Stack-of-new-100-us-dollars-edition-banknotes-on-transparent-background-PNG_qmesuh_ujnnu7.png" height="40px"> Finance Fight <img src="https://res.cloudinary.com/detcvmtip/image/upload/v1655847445/finance%20fight/bitcoin-Currency-png_c57ve2_opzmfq.png" height="40px">
+# <img src="https://res.cloudinary.com/detcvmtip/image/upload/v1655847445/finance%20fight/Stack-of-new-100-us-dollars-edition-banknotes-on-transparent-background-PNG_qmesuh_ujnnu7.png" height="30px"> Finance Fight <img src="https://res.cloudinary.com/detcvmtip/image/upload/v1655847445/finance%20fight/bitcoin-Currency-png_c57ve2_opzmfq.png" height="30px">
 
 ## About This Project
 
