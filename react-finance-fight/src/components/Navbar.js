@@ -139,7 +139,6 @@ export default function PersistentDrawerRight({children}) {
           {[
             {label: 'Home', path: '/', icon: <HomeIcon/>},
             {label: 'Asset Lookup', path: '/search', icon: <SearchIcon/>},
-            {label: 'Market Overview', path: '/market', icon: <CandlestickChartIcon/>},
             {label: 'Leaderboard', path: '/leaderboard', icon: <LeaderboardIcon/>},
             {label: 'Help', path: '/help', icon: <HelpIcon/>},
             ((user?.token)?

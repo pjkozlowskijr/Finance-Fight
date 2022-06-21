@@ -33,7 +33,6 @@ function App() {
             <Route path='/leaderboard' element={<Leaderboard/>}/>
             <Route path='/login' element={<Login/>}/>
             <Route path='/logout' element={<Logout/>}/>
-            <Route path='/market' element={<MarketOverview/>}/>
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/register' element={<Profile/>}/>
             <Route path='/search' element={<AssetLookup/>}/>
