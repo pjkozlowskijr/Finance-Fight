@@ -31,8 +31,8 @@ const purchaseAsset = async (token, type, quantity, data, cancelToken) => {
 }
 
 // User sells an asset and removes from holdings
-const sellAsset = async (token, id, cancelToken) => {
-    const response = await apiClientTokenAuth(token, cancelToken).delete(endpoint+'/sell/'+id);
+const sellAsset = async (token, type, symbol, quantity, cancelToken) => {
+    const response = await apiClientTokenAuth(token, cancelToken).delete(endpoint+'/sell/'+type+'/'+symbol+'/'+quantity);
     return response.ok
 }
 

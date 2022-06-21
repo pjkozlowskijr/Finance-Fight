@@ -37,21 +37,30 @@ def purchase_asset(type, quantity):
     g.current_user.save_user()
     return make_response(f'Successfully added asset {asset.__str__()} to holdings.', 200)
 
-@asset.delete('/asset/sell/<int:sell_qty>')
+@asset.delete('/asset/sell/<string:type>/<string:symbol>/<int:sell_qty>')
 @token_auth.login_required()
-def sell_asset(sell_qty):
+def sell_asset(type, symbol, sell_qty):
     '''
         Removes an asset from user's holdings. Requires token auth header.
         HTTP Header = "Authorization: Bearer <token>"
-        Expected JSON payload:
-        {
-            "symbol": STRING
-            "price": NUMERIC (15,2)
-        }
     '''
-    data = request.get_json()
-    g.current_user.sell_asset(data, sell_qty)
-    return make_response(f'Successfully sold {sell_qty} {data["symbol"]}.', 200)
+    asset_symbol = symbol.upper().strip()
+    FMP_API_KEY = os.environ.get('FMP_API_KEY')
+    if type == 'stock':
+        fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{asset_symbol}?apikey={FMP_API_KEY}'
+        fmp_response = requests.get(fmp_url_base)
+        fmp_data = fmp_response.json()
+    if type == 'crypto':
+        fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{asset_symbol}USD?apikey={FMP_API_KEY}'
+        fmp_response = requests.get(fmp_url_base)
+        fmp_data = fmp_response.json()
+    symbol = fmp_data[0]['symbol'].lower()
+    asset_data = {
+        'symbol': symbol,
+        'price': fmp_data[0]['price']
+    }
+    g.current_user.sell_asset(asset_data, sell_qty)
+    return make_response(f'Successfully sold {sell_qty} {symbol}.', 200)
 
 @asset.get('/asset/<string:type>/<string:symbol>')
 def get_asset_info(type, symbol):

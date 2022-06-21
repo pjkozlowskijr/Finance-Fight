@@ -98,7 +98,8 @@ class User(UserMixin, db.Model):
     # Purchase asset
     def purchase_asset(self, asset, purchase):
         new_asset = Asset.query.filter_by(symbol = asset.symbol.lower()).first()
-        self.assets.append(new_asset)
+        if new_asset not in self.assets:
+            self.assets.append(new_asset)
         new_purchase = Purchase.query.get(purchase.id)
         self.purchases.append(new_purchase)
         self.bank = float(self.bank) - (float(new_purchase.price) * new_purchase.quantity)
