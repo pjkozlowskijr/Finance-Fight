@@ -25,17 +25,19 @@ export default function LoginForm(){
     const {setUserInfo} = useContext(AppContext)
     const [loginCreds, setLoginCreds] = useState({})
     const [error, setError] = useState('')
-
+    
     useLogin(loginCreds, setLoginCreds, setError, setUserInfo)
-
-    const handleSubmit = (values) => {
+    
+    const handleSubmit = (values, resetForm) => {
         setLoginCreds(values)
+        resetForm(initialValues)
     }
 
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: FormSchema,
-        onSubmit: (values) => {handleSubmit(values)}
+        onSubmit: (values, {resetForm}) => {handleSubmit(values, resetForm)},
+        enableReinitialize: true
     })
 
     return(

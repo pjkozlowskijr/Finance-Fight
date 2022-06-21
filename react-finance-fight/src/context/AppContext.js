@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useCallback, useState } from "react";
 import { randomInt } from "../helpers";
 import useGetUserInfo from "../hooks/useGetUserInfo";
 
@@ -20,10 +20,10 @@ const AppContextProvider = ({children}) => {
     // const [user, setUser] = useState(useGetUserInfo())
     const [user, setUser] = useState(getUserFromLS())
 
-    const setUserInfo = (user) => {
+    const setUserInfo = useCallback(() => {
         localStorage.setItem('user', JSON.stringify(user))
-        setUser(user)
-    }
+        setUser(user)}, [user]
+    )
 
     // Context for ALERTS
     const [alert, setAlert] = useState({})

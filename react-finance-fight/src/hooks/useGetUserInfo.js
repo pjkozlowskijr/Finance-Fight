@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CancelToken } from "apisauce";
 import apiUser from '../api/apiUser';
 import { AppContext } from "../context/AppContext";
@@ -9,21 +9,25 @@ import { AppContext } from "../context/AppContext";
 
 export default function useGetUserInfo(){
     const {user, setUserInfo} = useContext(AppContext)
+    const [updatedUser, setUpdatedUser] = useState({})
     useEffect(
         () => {
-            const source = CancelToken.source()
-            console.log('trying')
+            const source = CancelToken.source();
             if (user?.token){
                 (async () => {
-                    const response = await apiUser.getUserInfo(user.token, source.token)
-                    if (response.user){
-                        console.log(response.user)
+                    console.log('trying')
+                    var response = await apiUser.getUserInfo(user.token, source.token)
+                    console.log(response.user)
+                    if (response){
+                        setUpdatedUser(response.user)
                         setUserInfo(response.user)
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [user?.token, setUserInfo]
+        [setUserInfo, user]
+        
     )
+    return updatedUser
 }

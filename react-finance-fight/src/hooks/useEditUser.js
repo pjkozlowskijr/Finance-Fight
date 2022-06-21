@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import apiUser from '../api/apiUser';
 import { CancelToken } from "apisauce";
 import { AppContext } from '../context/AppContext';
+import useGetUserInfo from "./useGetUserInfo";
 
 // //////////////////////////////
 // Hook to edit user profile
@@ -12,8 +13,9 @@ export default function useEditUser(data){
     useEffect(
         () => {
             const source = CancelToken.source()
-            if (user?.token && data?.first_name){
+            if (user?.token && data?.key){
                 (async () => {
+                    console.log('running')
                     const response = await apiUser.editUser(user.token, data, source.token)
                     if (response){
                         let editUser = getUserFromLS()
@@ -27,9 +29,10 @@ export default function useEditUser(data){
                         setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
                 })()
+                
             }
             return () => {source.cancel()}
         },
-        [user?.token, data, setAlert, getUserFromLS, setUserInfo]
+        [data.key]
     )
 }

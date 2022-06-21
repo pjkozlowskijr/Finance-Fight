@@ -14,6 +14,7 @@ import SingleAsset from './components/SingleAsset'
 import SearchAsset from './components/SearchAsset'
 import ProfileStack from './components/ProfileStack'
 import { Routes } from 'react-router-dom'
+import UserLeaderboard from './components/UserLeaderboard'
 
 // const ghost = {
 //   avatar: 'test',
@@ -38,14 +39,14 @@ function App() {
       <AlertPopUp/>
       <Navbar>
         <Box sx={{minHeight:'100%'}}>
-          {/* <Routes> */}
-
-        {/* <LoginForm/>
-        <ProfileForm/> */}
-        <ProfileStack/>
+        {/* <Routes> */}
+        {/* <UserLeaderboard/> */}
+        {/* <LoginForm/> */}
+        {/* <ProfileForm/> */}
+        {/* <ProfileStack/> */}
         {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
         <br/>
-        {/* <SearchAsset/> */}
+        <SearchAsset/>
         {/* </Routes> */}
         </Box>
       </Navbar>

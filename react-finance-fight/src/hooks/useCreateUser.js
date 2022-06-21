@@ -12,15 +12,15 @@ export default function useCreateUser(data){
     useEffect(
         () => {
             const source = CancelToken.source()
-            if (data?.email){
+            if (data?.first_name){
                 (async () => {
                     const response = await apiUser.createUser(data, source.token)
                     if (response){
                         setAlert({msg: `User ${data.email} created successfully.`, cat: 'success'})
-                    }else if(response === false && response !== undefined){
-                        setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }else if(response === 422){
                         setAlert({msg: 'That email is already in use.', cat: 'error'})
+                    }else if(response === false && response !== undefined){
+                        setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
                 })()
             }

@@ -104,13 +104,15 @@ def get_user_assets():
     assets = [asset.to_dict() for asset in g.current_user.assets]
     return make_response({'assets':assets}, 200)
 
-# @user.get('/user/all')
-# def get_all_users():
-#     '''
-#         Gets ALL users. No auth required.
-#         For use when viewing user leaderboard.
-#     '''
-#     users = User.query.
+@user.get('/user/all')
+def get_all_users():
+    '''
+        Gets ALL users. No auth required.
+        For use when viewing user leaderboard.
+    '''
+    users = User.query.order_by(User.bank.desc()).all()
+    users = [user.to_dict() for user in users]
+    return make_response({'users':users}, 200)
 
 @user.get('/user')
 @token_auth.login_required()

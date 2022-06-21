@@ -21,18 +21,18 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function ProfileStack() {
     const userAssets = useGetUserAssets()
-    const {user} = React.useContext(AppContext)
-    const dollarChange = formatChange(user.bank-10000)
-    const percentChange = formatChange((user.bank-10000)/10000*100)
+    const user = useGetUserInfo()
+    const dollarChange = formatChange(user?.bank-10000)
+    const percentChange = formatChange((user?.bank-10000)/10000*100)
 
   return (
     <Box sx={{ width:'80%', margin:'auto'}}>
       <Stack spacing={3} divider={<Divider/>}>
         <Item>
-          <Typography sx={{textAlign:'left'}} variant='h4'>{toTitleCase(user.first_name)+' '+toTitleCase(user.last_name)+' ('+user.display_name+')'}</Typography>
+          <Typography sx={{textAlign:'left'}} variant='h4'>{user?.first_name+' '+user?.last_name+' ('+user?.display_name+')'}</Typography>
           <Grid container>
             <Grid item md={3}>
-              <Typography>Cash Funds: {currencyFormat(user.bank)}</Typography>
+              <Typography>Cash Funds: {currencyFormat(user?.bank)}</Typography>
             </Grid>
             <Grid item md={3}>
               <Typography>Total Asset Costs: {currencyFormat(userAssets?.assets?.assets.map(asset=>asset.value).reduce((x,y)=>x+y))}</Typography>
@@ -51,12 +51,12 @@ export default function ProfileStack() {
           <Grid key={asset.symbol} container>
             <Grid item md={2}>
               <Typography>
-                {toTitleCase(asset.name)+' ('+asset.symbol.toUpperCase()+')'}
+                {asset.name+' ('+asset.symbol.toUpperCase()+')'}
               </Typography>
             </Grid>
             <Grid item md={2}>
               <Typography key={asset.symbol}>
-                {toTitleCase(asset.type)}
+                {asset.type}
               </Typography>
             </Grid>
             <Grid item md={2}>

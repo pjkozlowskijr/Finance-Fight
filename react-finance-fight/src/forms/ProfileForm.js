@@ -7,6 +7,7 @@ import { toTitleCase } from '../helpers';
 import useCreateUser from '../hooks/useCreateUser';
 import useEditUser from '../hooks/useEditUser';
 import DeleteUserModal from '../components/DeleteUserModal'
+import useGetUserInfo from '../hooks/useGetUserInfo';
 
 // //////////////////////////////
 // PROFILE FORM (register & edit)
@@ -19,16 +20,17 @@ export default function ProfileForm({user}){
             last_name: Yup.string().required(),
             display_name: Yup.string().required(),
             email: Yup.string().email('Must be a valid email format.').required(),
-            password: (user?.token) ? Yup.string() : Yup.string().required(),
-            confirm_pass: (user?.token) ? Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match.') : Yup.string().required().oneOf([Yup.ref('password'), null], 'Passwords must match.')
+            password: Yup.string().required(),
+            confirm_pass: Yup.string().required().oneOf([Yup.ref('password'), null], 'Passwords must match.')
         }
     )
 
     const [createUser, setCreateUser] = useState({})
     const [editUser, setEditUser] = useState({})
 
-    // useCreateUser(createUser)
-    // useEditUser(editUser)
+    useCreateUser(createUser)
+    useEditUser(editUser)
+
 
     const initialValues = {
         first_name: (user?.first_name) ? toTitleCase(user?.first_name) : '',
@@ -41,7 +43,7 @@ export default function ProfileForm({user}){
 
     const handleSubmit = (values, resetForm) => {
         if (user?.token){
-            setEditUser(values)
+            setEditUser({...values, key:'value'})
         }else{
             setCreateUser(values)
         }

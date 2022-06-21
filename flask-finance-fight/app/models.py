@@ -70,7 +70,6 @@ class User(UserMixin, db.Model):
 
     # Packages user info from DB to send to user via make_response
     def to_dict(self):
-        qty_company = len(self.assets)
         qty_assets = 0
         for purchase in self.purchases:
             qty_assets += purchase.quantity
@@ -80,7 +79,7 @@ class User(UserMixin, db.Model):
             'last_name': self.last_name.title(),
             'display_name': self.display_name,
             'bank':self.bank,
-            'qty_company': qty_company,
+            'qty_company': len([asset for asset in self.assets]),
             'qty_assets': qty_assets,
             'email': self.email,
             'created_on': self.created_on,
@@ -190,9 +189,9 @@ class Asset(db.Model):
             value += purchase.quantity * float(purchase.price)
         return{
             'id': self.id,
-            'name': self.name,
+            'name': self.name.title(),
             'symbol': self.symbol,
-            'type': self.type,
+            'type': self.type.title(),
             'quantity': quantity,
             'value': value 
         }

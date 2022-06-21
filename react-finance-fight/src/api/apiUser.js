@@ -75,6 +75,11 @@ const getUserInfo = async (token, cancelToken) => {
     return response.data
 }
 
+const getAllUsers = async (cancelToken) => {
+    const response = await apiClientNoAuth(cancelToken).get(endpointUser+'/all')
+    return response.data
+}
+
 const apis = {
     createUser,
     login,
@@ -82,7 +87,8 @@ const apis = {
     editUser,
     deleteUser,
     getUserAssets,
-    getUserInfo
+    getUserInfo,
+    getAllUsers
 }
 
 export default apis
