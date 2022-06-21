@@ -58,16 +58,16 @@ export default function ProfileStack() {
             <th scope='col'>Current Value</th>
             <th scope='col'>Change</th>
           </tr>
-        {userAssets?.assets?.assets.map((asset, index) => (
-          <tr>
-            <td>{asset.name+' ('+asset.symbol.toUpperCase()+')'}</td>
-            <td>{asset.type}</td>
-            <td>{asset.quantity}</td>
-            <td>{currencyFormat(asset.value)}</td>
-            <td>{currencyFormat(userValues?.prices[index][asset.symbol.toUpperCase()])}</td>
-            <td>{currencyChangeFormat(userValues?.prices[index][asset.symbol.toUpperCase()]-asset.value)}</td>
-          </tr>
-        ))}
+          {userAssets?.assets?.assets.map((asset, index) => (
+            <tr>
+              <td>{asset.name+' ('+asset.symbol.toUpperCase()+')'}</td>
+              <td>{asset.type}</td>
+              <td>{asset.quantity}</td>
+              <td>{currencyFormat(asset.value)}</td>
+              <td>{currencyFormat(userValues?.prices[index][asset.symbol.toUpperCase()])}</td>
+              <td>{currencyChangeFormat(userValues?.prices[index][asset.symbol.toUpperCase()]-asset.value)}</td>
+            </tr>
+          ))}
         </table>
         </Item>
         <Item>

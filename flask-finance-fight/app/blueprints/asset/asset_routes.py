@@ -23,8 +23,9 @@ def purchase_asset(type, quantity):
         }
     '''
     data = request.get_json()
-    if Asset.query.filter_by(symbol=data['symbol']).first():
-        asset = Asset.query.filter_by(symbol=data['symbol']).first()
+    print(data)
+    if Asset.query.filter_by(symbol=data['symbol'].lower()).first():
+        asset = Asset.query.filter_by(symbol=data['symbol'].lower()).first()
     else:
         asset = Asset()
         asset.asset_to_db(data, type)

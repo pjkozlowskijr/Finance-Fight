@@ -143,7 +143,8 @@ def get_user_asset_values():
     cmc_headers = {'X-CMC_PRO_API_KEY': CMC_API_KEY}
     stock_string = ''
     crypto_string = ''
-    for asset in g.current_user.assets:
+    user_assets = g.current_user.assets
+    for asset in user_assets:
         if asset.type == 'stock':
             stock_string += (asset.symbol.upper()+',')
         elif asset.type == 'crypto':
@@ -165,6 +166,5 @@ def get_user_asset_values():
         cmc_data = cmc_response.json()
         for asset in cmc_data['data']:
             prices.append({asset:cmc_data['data'][asset]['quote']['USD']['price']})
-
 
     return make_response({'prices':prices}, 200)

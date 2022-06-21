@@ -110,6 +110,7 @@ export default function ProfileForm({user}){
             <TextField
                 id = 'password'
                 name = 'password'
+                type = 'password'
                 fullWidth
                 sx={{mb:2, mt:2}}
                 label = 'Password'
@@ -122,6 +123,7 @@ export default function ProfileForm({user}){
             <TextField
                 id = 'confirm_pass'
                 name = 'confirm_pass'
+                type = 'password'
                 fullWidth
                 sx={{mb:2, mt:2}}
                 label = 'Confirm Password'

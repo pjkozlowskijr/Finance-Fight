@@ -12,6 +12,7 @@ export default function useGetUserAssetValues() {
             const source = CancelToken.source();
             if (user?.token){
                 (async () => {
+                    console.log('running')
                     const response = await apiUser.getUserAssetValues(user.token, source.token)
                     setUpdatedValues(response)
                 })()

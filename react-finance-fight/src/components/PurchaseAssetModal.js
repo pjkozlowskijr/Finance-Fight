@@ -30,9 +30,8 @@ export default function PurchaseAssetModal({asset}) {
   const handleClose = () => setOpen(false);
   const {user, assetType, quantity} = useContext(AppContext)
   const [purchase, setPurchase] = useState();
-  console.log(assetType)
 
-  usePurchaseAsset(assetType, quantity, {...asset, purchase})
+  usePurchaseAsset(assetType, quantity, {...asset, ...purchase})
 
   const handlePurchaseAsset = (value) => {
     setPurchase(value)
