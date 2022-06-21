@@ -5,12 +5,14 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
+import { AppContext } from '../context/AppContext';
 
 const Input = styled(MuiInput)`
   width: 50px;
 `;
 
-export default function QuantitySlider({quantity, setQuantity}) {
+export default function QuantitySlider() {
+  const {quantity, setQuantity} = React.useContext(AppContext)
   const handleSliderChange = (event, newValue) => {
     setQuantity(newValue);
   };

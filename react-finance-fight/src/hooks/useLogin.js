@@ -8,7 +8,7 @@ import { AppContext } from "../context/AppContext";
 // //////////////////////////////
 
 export default function useLogin(loginCreds, setLoginCreds, setError, setUserInfo){
-    const {setAlert} = useContext(AppContext)
+    const {setAlert, setUser} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source()

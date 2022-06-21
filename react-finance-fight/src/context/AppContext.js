@@ -33,6 +33,10 @@ const AppContextProvider = ({children}) => {
     const [asset, setAsset] = useState()
 
     const [assetType, setAssetType] = useState('stock')
+
+    const [quantity, setQuantity] = useState(10);
+
+    const [users, setUsers] = useState()
   
     // Values passed to children
     const values = {
@@ -47,7 +51,11 @@ const AppContextProvider = ({children}) => {
         asset,
         setAsset,
         assetType,
-        setAssetType
+        setAssetType,
+        quantity,
+        setQuantity,
+        users,
+        setUsers
     }
 
     return (

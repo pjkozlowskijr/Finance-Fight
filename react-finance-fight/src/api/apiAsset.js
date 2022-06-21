@@ -2,7 +2,7 @@ import apiClientNoAuth from './ClientNoAuth';
 import apiClientTokenAuth from './ClientTokenAuth';
 
 // //////////////////////////////
-// LEAGUE APIs
+// SSET APIs
 // //////////////////////////////
 
 const endpoint = '/asset'

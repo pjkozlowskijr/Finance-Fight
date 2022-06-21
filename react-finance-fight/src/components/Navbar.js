@@ -97,9 +97,9 @@ export default function PersistentDrawerRight({children}) {
           <Typography variant="h6" noWrap sx={{mr:3, display: 'inline', lineHeight:'40px'}} component="div">
             Finance Fight
           </Typography>
-            {/* <Link to='/ReactLibrary'> */}
-              <img height="40px" style={{verticalAlign:'top'}} src="https://res.cloudinary.com/detcvmtip/image/upload/v1655272091/finance%20fight/Business-trend-and-finance-logo-design-on-transparent-background-PNG_z2hsjy.png" alt="Books"/>
-            {/* </Link> */}
+            <Link to='/'>
+              <img height="40px" style={{verticalAlign:'top'}} src="https://res.cloudinary.com/detcvmtip/image/upload/v1655272091/finance%20fight/Business-trend-and-finance-logo-design-on-transparent-background-PNG_z2hsjy.png" alt="Finance Fight logo"/>
+            </Link>
           </Box>
           <IconButton
             color="inherit"
@@ -137,11 +137,11 @@ export default function PersistentDrawerRight({children}) {
         <Divider />
         <List>
           {[
-            {label: 'Home', path: '', icon: <HomeIcon/>},
-            {label: 'Asset Lookup', path: '', icon: <SearchIcon/>},
-            {label: 'Market Overview', path: '', icon: <CandlestickChartIcon/>},
-            {label: 'Leaderboard', path: '', icon: <LeaderboardIcon/>},
-            {label: 'Help', path: '', icon: <HelpIcon/>},
+            {label: 'Home', path: '/', icon: <HomeIcon/>},
+            {label: 'Asset Lookup', path: '/search', icon: <SearchIcon/>},
+            {label: 'Market Overview', path: '/market', icon: <CandlestickChartIcon/>},
+            {label: 'Leaderboard', path: '/leaderboard', icon: <LeaderboardIcon/>},
+            {label: 'Help', path: '/help', icon: <HelpIcon/>},
             ((user?.token)?
               {label: 'Logout', path: '/logout', icon: <LogoutIcon/>}
               :
@@ -149,17 +149,17 @@ export default function PersistentDrawerRight({children}) {
             ((user?.token)?
               {label: 'Account', path: '/profile', icon: <AccountCircleIcon/>}
               :
-              {label: 'Register', path: '/profile', icon: <AppRegistrationIcon/>})
+              {label: 'Register', path: '/register', icon: <AppRegistrationIcon/>})
           ].map((navItem) => (
             <ListItem key={navItem.label} disablePadding>
-              {/* <Link to='#' style={{textDecoration:'none', color:theme.palette.text.secondary, width:'100%'}}> */}
+              <Link to={navItem.path} style={{textDecoration:'none', color:theme.palette.text.secondary, width:'100%'}}>
                 <ListItemButton>
                   <ListItemIcon sx={{color:theme.palette.text.secondary}}>
                     {navItem.icon}
                   </ListItemIcon>
                   <ListItemText primary={navItem.label} />
                 </ListItemButton>
-              {/* </Link> */}
+              </Link>
             </ListItem>
           ))}
         </List>

@@ -28,12 +28,11 @@ export default function PurchaseAssetModal({asset}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {user, assetType} = useContext(AppContext)
-  const [quantity, setQuantity] = useState(10);
+  const {user, assetType, quantity} = useContext(AppContext)
   const [purchase, setPurchase] = useState();
-//   console.log(assetType)
+  console.log(assetType)
 
-  usePurchaseAsset(assetType, quantity, {...asset, key:'value'})
+  usePurchaseAsset(assetType, quantity, {...asset, purchase})
 
   const handlePurchaseAsset = (value) => {
     setPurchase(value)
@@ -56,7 +55,7 @@ export default function PurchaseAssetModal({asset}) {
                     </Typography>
                 </Grid>
                 <Grid item md={12}>
-                    <QuantitySlider quantity={quantity} setQuantity={setQuantity}/>
+                    <QuantitySlider/>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
@@ -102,7 +101,7 @@ export default function PurchaseAssetModal({asset}) {
                     <Button
                         variant='contained'
                         startIcon={<MonetizationOnIcon/>}
-                        onClick={() => handlePurchaseAsset()}
+                        onClick={() => handlePurchaseAsset({key:'value'})}
                         sx={{margin:'auto'}}
                         >
                         Confirm Purchase

@@ -12,9 +12,9 @@ export default function usePurchaseAsset(type, quantity, data){
     useEffect(
         () => {
             const source = CancelToken.source()
+            console.log('trying to run')
             if (user?.token && data?.key){
                 (async () => {
-                    console.log('trying to run')
                     const response = await apiAsset.purchaseAsset(user.token, type, quantity, data, source.token)
                     if (response){
                         setAlert({msg: `You purchased some ${data.symbol.toUpperCase()}!`, cat: 'success'})

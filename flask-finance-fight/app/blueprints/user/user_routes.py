@@ -2,6 +2,8 @@ from . import bp as user
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from app.models import User
 from flask import make_response, g, request, abort
+import os
+import requests
 
 # #########################
 # USER ROUTES
@@ -126,3 +128,47 @@ def get_user_info():
     '''
     user = g.current_user.to_dict()
     return make_response({'user':user}, 200)
+
+@user.get('/user/assets/values')
+@token_auth.login_required()
+def get_user_asset_values():
+    '''
+        Gets current price of user's assets. Token auth required. 
+        Utilizes FMP_API_KEY to get current price only.
+        HTTP Header = "Authorization: Bearer <token>"
+    '''
+    FINAGE_API_KEY = os.environ.get('FINAGE_API_KEY')
+    finage_headers = {'Accept-Encoding': 'gzip'}
+    CMC_API_KEY = os.environ.get('CMC_API_KEY')
+    cmc_headers = {'X-CMC_PRO_API_KEY': CMC_API_KEY}
+
+    user_assets = [asset.to_dict() for asset in g.current_user.assets]
+    stock_string = ''
+    crypto_string = ''
+    for asset in user_assets:
+        if asset['type'] == 'stock':
+            stock_string += (asset.symbol.upper()+',')
+        elif asset['type'] == 'crypto':
+            crypto_string += (asset.symbol.upper()+',')
+
+    if stock_string != '':
+        price_dict = {}
+        finage_url_base = f'https://api.finage.co.uk/last/trade/stocks/?symbols={stock_string}&apikey={FINAGE_API_KEY}'
+        finage_response = requests.get(finage_url_base, headers=finage_headers)
+        finage_data = finage_response.json()
+        for asset in finage_data['data']:
+            price_dict[asset['symbol']] = {
+                'price': asset['price']
+            }
+    if crypto_string != '':
+        if not price_dict:
+            price_dict = {}
+        cmc_url_base = f'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol={crypto_string}'
+        cmc_response = requests.get(cmc_url_base, headers=cmc_headers)
+        cmc_data = cmc_response.json()
+        for asset in cmc_data['data']:
+            price_dict[asset] = {
+                'price': cmc_data[asset]['quote']['USD']['price']
+            }
+
+    return make_response(price_dict, 200)

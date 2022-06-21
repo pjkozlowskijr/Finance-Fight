@@ -1,29 +1,17 @@
 import Navbar from './components/Navbar'
-import Button from '@mui/material/Button'
 import Box from '@mui/material/Box'
-import apiUser from './api/apiUser'
-import { CancelToken } from 'apisauce'
-import LoginForm from './forms/LoginForm'
-import ProfileForm from './forms/ProfileForm'
 import { useContext } from 'react'
 import { AppContext } from './context/AppContext'
 import AlertPopUp from './components/AlertPopUp'
-import SearchForm from './forms/SearchForm'
-import apiAsset from './api/apiAsset'
-import SingleAsset from './components/SingleAsset'
-import SearchAsset from './components/SearchAsset'
-import ProfileStack from './components/ProfileStack'
-import { Routes } from 'react-router-dom'
-import UserLeaderboard from './components/UserLeaderboard'
-
-// const ghost = {
-//   avatar: 'test',
-//   display_name: 'test',
-//   email: 'test4',
-//   first_name: 'pat',
-//   last_name: 'koz',
-//   password: 'test'
-// }
+import { Route, Routes } from 'react-router-dom'
+import MarketOverview from './views/MarketOverview'
+import Home from './views/Home'
+import Help from './views/Help'
+import Leaderboard from './views/Leaderboard'
+import Login from './views/Login'
+import Logout from './views/Logout'
+import Profile from './views/Profile'
+import AssetLookup from './views/AssetLookup'
 
 // const handleAPITest = async () => {
 //   const source = CancelToken.source();
@@ -39,15 +27,17 @@ function App() {
       <AlertPopUp/>
       <Navbar>
         <Box sx={{minHeight:'100%'}}>
-        {/* <Routes> */}
-        {/* <UserLeaderboard/> */}
-        {/* <LoginForm/> */}
-        {/* <ProfileForm/> */}
-        {/* <ProfileStack/> */}
-        {/* <Button onClick={handleAPITest} variant='contained'>Test API</Button> */}
-        <br/>
-        <SearchAsset/>
-        {/* </Routes> */}
+          <Routes>
+            <Route path='/help' element={<Help/>}/>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/leaderboard' element={<Leaderboard/>}/>
+            <Route path='/login' element={<Login/>}/>
+            <Route path='/logout' element={<Logout/>}/>
+            <Route path='/market' element={<MarketOverview/>}/>
+            <Route path='/profile' element={<Profile/>}/>
+            <Route path='/register' element={<Profile/>}/>
+            <Route path='/search' element={<AssetLookup/>}/>
+          </Routes>
         </Box>
       </Navbar>
     </>
@@ -55,3 +45,12 @@ function App() {
 }
 
 export default App;
+
+
+{/* <MarketOverview/>
+<UserLeaderboard/>
+<LoginForm/>
+<ProfileForm/>
+<ProfileStack/>
+<Button onClick={handleAPITest} variant='contained'>Test API</Button>
+<SearchAsset/> */}
