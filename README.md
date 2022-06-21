@@ -1,4 +1,4 @@
-# Finance Fight
+# Finance Fight <img src="https://res.cloudinary.com/detcvmtip/image/upload/v1655272093/finance%20fight/Stack-of-new-100-us-dollars-edition-banknotes-on-transparent-background-PNG_qmesuh.png" height="50px">
 
 ## About This Project
 
