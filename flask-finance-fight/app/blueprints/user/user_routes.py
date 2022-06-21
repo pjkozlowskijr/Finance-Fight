@@ -140,13 +140,12 @@ def get_user_asset_values():
     FINAGE_API_KEY = os.environ.get('FINAGE_API_KEY')
     CMC_API_KEY = os.environ.get('CMC_API_KEY')
     cmc_headers = {'X-CMC_PRO_API_KEY': CMC_API_KEY}
-    user_assets = [asset.to_dict() for asset in g.current_user.assets]
     stock_string = ''
     crypto_string = ''
-    for asset in user_assets:
-        if asset['type'] == 'stock':
+    for asset in g.current_user.assets:
+        if asset.type == 'stock':
             stock_string += (asset.symbol.upper()+',')
-        elif asset['type'] == 'crypto':
+        elif asset.type == 'crypto':
             crypto_string += (asset.symbol.upper()+',')
 
     if stock_string != '':
@@ -154,7 +153,7 @@ def get_user_asset_values():
         finage_url_base = f'https://api.finage.co.uk/last/trade/stocks/?symbols={stock_string}&apikey={FINAGE_API_KEY}'
         finage_response = requests.get(finage_url_base)
         finage_data = finage_response.json()
-        for asset in finage_data['data']:
+        for asset in finage_data:
             price_dict[asset['symbol']] = {
                 'price': asset['price']
             }
