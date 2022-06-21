@@ -8,7 +8,7 @@ import { AppContext } from '../context/AppContext';
 import useGetUserAssets from '../hooks/useGetUserAssets'
 import Typography from '@mui/material/Typography';
 import { Divider, Grid } from '@mui/material';
-import { toTitleCase, currencyFormat, formatChange, changeColor } from '../helpers';
+import { currencyChangeFormat, currencyFormat, formatChange, changeColor } from '../helpers';
 import useGetUserInfo from '../hooks/useGetUserInfo';
 import useGetUserAssetValues from '../hooks/useGetUserAssetValues';
 
@@ -24,65 +24,51 @@ export default function ProfileStack() {
     const userAssets = useGetUserAssets()
     const user = useGetUserInfo()
     const dollarChange = formatChange(user?.bank-10000)
-    const percentChange = formatChange((user?.bank-10000)/10000*100)
+    const percentChange = formatChange(dollarChange/10000*100)
     const userValues = useGetUserAssetValues()
 
   return (
     <Box sx={{ width:'80%', margin:'auto'}}>
       <Stack spacing={3} divider={<Divider/>}>
         <Item>
-          <Typography sx={{textAlign:'left'}} variant='h4'>{user?.first_name+' '+user?.last_name+' ('+user?.display_name+')'}</Typography>
-          <Grid container>
-            <Grid item md={3}>
-              <Typography>Cash Funds: {currencyFormat(user?.bank)}</Typography>
-            </Grid>
-            <Grid item md={3}>
-              <Typography>Total Asset Costs: {currencyFormat(userAssets?.assets?.assets.map(asset=>asset.value).reduce((x,y)=>x+y))}</Typography>
-            </Grid>
-            <Grid item md={3}>
-              <Typography>Dollar Change: <span style={{color:changeColor(dollarChange)}}>{currencyFormat(dollarChange)}</span></Typography>
-            </Grid>
-            <Grid item md={3}>
-              <Typography>Percent Change: <span style={{color:changeColor(percentChange)}}>{percentChange}%</span></Typography>
-            </Grid>
-          </Grid>
+          <Typography sx={{textAlign:'center'}} variant='h4'>{user?.first_name+' '+user?.last_name+' ('+user?.display_name+')'}</Typography>
+          <table style={{width:'100%'}}>
+            <tr>
+              <th scope='col'>Cash Funds</th>
+              <th scope='col'>Total Asset Costs</th>
+              <th scope='col'>Dollar Change</th>
+              <th scope='col'>Percent Change</th>
+            </tr>
+            <tr>
+              <td>{currencyFormat(user?.bank)}</td>
+              <td>{currencyFormat(userAssets?.assets?.assets.map(asset=>asset.value).reduce((x,y)=>x+y))}</td>
+              <td style={{color:changeColor(dollarChange)}}>{currencyFormat(dollarChange)}</td>
+              <td style={{color:changeColor(percentChange)}}>{percentChange}%</td>
+            </tr>
+          </table>
         </Item>
         <Item>
         <Typography>Assets</Typography>
-        {userAssets?.assets?.assets.map((asset) => (
-          <Grid key={asset.symbol} container>
-            <Grid item md={2}>
-              <Typography>
-                {asset.name+' ('+asset.symbol.toUpperCase()+')'}
-              </Typography>
-            </Grid>
-            <Grid item md={2}>
-              <Typography key={asset.symbol}>
-                {asset.type}
-              </Typography>
-            </Grid>
-            <Grid item md={2}>
-              <Typography key={asset.symbol}>
-                Quantity Owned: {asset.quantity}
-              </Typography>
-            </Grid>
-            <Grid item md={2}>
-              <Typography key={asset.symbol}>
-                Purchase Value: {currencyFormat(asset.value)}
-              </Typography>
-            </Grid>
-            <Grid item md={2}>
-              <Typography key={asset.symbol}>
-                {userValues}
-              </Typography>
-            </Grid>
-            <Grid item md={2}>
-              <Typography key={asset.symbol}>
-                Change: XXXXX
-              </Typography>
-            </Grid>
-          </Grid>
+        <table style={{width:'100%'}}>
+          <tr>
+            <th scope='col'>Asset</th>
+            <th scope='col'>Type</th>
+            <th scope='col'>Quantity Owned</th>
+            <th scope='col'>Purchase Value</th>
+            <th scope='col'>Current Value</th>
+            <th scope='col'>Change</th>
+          </tr>
+        {userAssets?.assets?.assets.map((asset, index) => (
+          <tr>
+            <td>{asset.name+' ('+asset.symbol.toUpperCase()+')'}</td>
+            <td>{asset.type}</td>
+            <td>{asset.quantity}</td>
+            <td>{currencyFormat(asset.value)}</td>
+            <td>{currencyFormat(userValues?.prices[index][asset.symbol.toUpperCase()])}</td>
+            <td>{currencyChangeFormat(userValues?.prices[index][asset.symbol.toUpperCase()]-asset.value)}</td>
+          </tr>
         ))}
+        </table>
         </Item>
         <Item>
             <Typography>Edit Profile</Typography>

@@ -138,6 +138,7 @@ def get_user_asset_values():
         HTTP Header = "Authorization: Bearer <token>"
     '''
     FINAGE_API_KEY = os.environ.get('FINAGE_API_KEY')
+    finage_headers = {'Accept-Encoding': 'gzip'}
     CMC_API_KEY = os.environ.get('CMC_API_KEY')
     cmc_headers = {'X-CMC_PRO_API_KEY': CMC_API_KEY}
     stock_string = ''
@@ -149,23 +150,21 @@ def get_user_asset_values():
             crypto_string += (asset.symbol.upper()+',')
 
     if stock_string != '':
-        price_dict = {}
+        prices = []
         finage_url_base = f'https://api.finage.co.uk/last/trade/stocks/?symbols={stock_string}&apikey={FINAGE_API_KEY}'
-        finage_response = requests.get(finage_url_base)
+        finage_response = requests.get(finage_url_base, headers=finage_headers)
         finage_data = finage_response.json()
         for asset in finage_data:
-            price_dict[asset['symbol']] = {
-                'price': asset['price']
-            }
+            prices.append({asset['symbol']:asset['price']})
+
     if crypto_string != '':
-        if not price_dict:
-            price_dict = {}
+        if not prices:
+            prices = []
         cmc_url_base = f'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol={crypto_string}'
         cmc_response = requests.get(cmc_url_base, headers=cmc_headers)
         cmc_data = cmc_response.json()
         for asset in cmc_data['data']:
-            price_dict[asset] = {
-                'price': cmc_data[asset]['quote']['USD']['price']
-            }
+            prices.append({asset:cmc_data['data'][asset]['quote']['USD']['price']})
 
-    return make_response(price_dict, 200)
+
+    return make_response({'prices':prices}, 200)

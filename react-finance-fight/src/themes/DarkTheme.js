@@ -19,7 +19,7 @@ export const themeOptions = {
       },
     },
     typography: {
-      fontFamily: 'Raleway',
+      fontFamily: 'Source Sans Pro',
     },
     props: {
       MuiList: {

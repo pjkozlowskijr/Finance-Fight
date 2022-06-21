@@ -16,6 +16,18 @@ export function currencyFormat(number){
   return formatter.format(number)
 }
 
+// Format currency change for profile
+export function currencyChangeFormat(number){
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  })
+  if (number > 0){
+    return '+ ' + formatter.format(number)
+  }
+  return formatter.format(number)
+}
+
 // Shorten market cap based on M, B, T
 export function shortenMktCap(number){
   const formatter = new Intl.NumberFormat('en-US', {
