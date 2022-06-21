@@ -15,7 +15,7 @@ export default function useGetUserInfo(){
             const source = CancelToken.source();
             if (user?.token){
                 (async () => {
-                    console.log('trying')
+                    console.log('trying');
                     var response = await apiUser.getUserInfo(user.token, source.token)
                     console.log(response.user)
                     if (response){

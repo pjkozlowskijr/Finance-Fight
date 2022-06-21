@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import { Divider, Grid } from '@mui/material';
 import { toTitleCase, currencyFormat, formatChange, changeColor } from '../helpers';
 import useGetUserInfo from '../hooks/useGetUserInfo';
+import useGetUserAssetValues from '../hooks/useGetUserAssetValues';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -24,6 +25,7 @@ export default function ProfileStack() {
     const user = useGetUserInfo()
     const dollarChange = formatChange(user?.bank-10000)
     const percentChange = formatChange((user?.bank-10000)/10000*100)
+    const userValues = useGetUserAssetValues()
 
   return (
     <Box sx={{ width:'80%', margin:'auto'}}>
@@ -71,7 +73,7 @@ export default function ProfileStack() {
             </Grid>
             <Grid item md={2}>
               <Typography key={asset.symbol}>
-                Current Value: XXXXX
+                {userValues}
               </Typography>
             </Grid>
             <Grid item md={2}>
