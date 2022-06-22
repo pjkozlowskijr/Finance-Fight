@@ -50,15 +50,17 @@ def sell_asset(type, symbol, sell_qty):
         fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{asset_symbol}?apikey={FMP_API_KEY}'
         fmp_response = requests.get(fmp_url_base)
         fmp_data = fmp_response.json()
+        symbol = fmp_data[0]['symbol'].lower()
     if type == 'crypto':
         fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{asset_symbol}USD?apikey={FMP_API_KEY}'
         fmp_response = requests.get(fmp_url_base)
         fmp_data = fmp_response.json()
-    symbol = fmp_data[0]['symbol'].lower()
+        symbol = fmp_data[0]['symbol'].lower()[:-3]
     asset_data = {
         'symbol': symbol,
         'price': fmp_data[0]['price']
     }
+    print(asset_data)
     g.current_user.sell_asset(asset_data, sell_qty)
     return make_response(f'Successfully sold {sell_qty} {symbol}.', 200)
 
