@@ -13,6 +13,7 @@ import { currencyChangeFormat, currencyFormat, formatChange, changeColor } from 
 import useGetUserInfo from '../hooks/useGetUserInfo';
 import useGetUserAssetValues from '../hooks/useGetUserAssetValues';
 import SellAssetModal from './SellAssetModal';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -27,8 +28,16 @@ export default function ProfileStack() {
   const userAssets = useGetUserAssets()
   const user = useGetUserInfo()
   const userValues = useGetUserAssetValues()
-  const dollarChange = formatChange(user?.bank-10000)
-  const percentChange = formatChange(dollarChange/10000*100)
+  const dollarChange = formatChange(userValues?.total_value - userAssets?.assets?.total_cost)
+  const percentChange = formatChange((dollarChange/userAssets?.assets?.total_cost)*100)
+
+  if (!userAssets ?? user ?? userValues){
+    return(
+        <Box sx={{width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center'}}>
+            <CircularProgress/>
+        </Box>
+    )
+  }
 
   return (
     <Box sx={{ width:'80%', margin:'auto'}}>
@@ -40,6 +49,7 @@ export default function ProfileStack() {
               <tr>
                 <th scope='col'>Cash Funds</th>
                 <th scope='col'>Total Asset Costs</th>
+                <th scope='col'>Total Asset Value</th>
                 <th scope='col'>Dollar Change</th>
                 <th scope='col'>Percent Change</th>
               </tr>
@@ -47,7 +57,8 @@ export default function ProfileStack() {
             <tbody>
               <tr>
                 <td>{currencyFormat(user?.bank)}</td>
-                <td>{currencyFormat(userAssets?.assets?.assets?.map(asset=>asset.value)?.reduce((x,y)=>x+y))}</td>
+                <td>{currencyFormat(userAssets?.assets?.total_cost)}</td>
+                <td>{currencyFormat(userValues?.total_value)}</td>
                 <td style={{color:changeColor(dollarChange)}}>{currencyFormat(dollarChange)}</td>
                 <td style={{color:changeColor(percentChange)}}>{percentChange}%</td>
               </tr>
@@ -62,9 +73,10 @@ export default function ProfileStack() {
               <th scope='col'>Asset</th>
               <th scope='col'>Type</th>
               <th scope='col'>Quantity Owned</th>
-              <th scope='col'>Purchase Value</th>
+              <th scope='col'>Purchase Cost</th>
               <th scope='col'>Current Value</th>
-              <th scope='col'>Change</th>
+              <th scope='col'>$ Change</th>
+              <th scope='col'>% Change</th>
             </tr>
           </thead>
           <tbody>
@@ -73,10 +85,23 @@ export default function ProfileStack() {
                 <td>{asset.name+' ('+asset.symbol.toUpperCase()+')'}</td>
                 <td>{asset.type}</td>
                 <td>{asset.quantity}</td>
-                <td>{currencyFormat(asset.value)}</td>
-                <td>{currencyFormat(userValues?.prices[index]*asset.quantity)}</td>
-                <td style={{color: (userValues?.prices[index]*asset.quantity-asset.value) > 0 ? 'green' : 'red'}}>
+                <td>
+                  {currencyFormat(asset.value)}
+                </td>
+                <td>
+                  {currencyFormat(userValues?.prices[index]*asset.quantity)}
+                </td>
+                <td style={{
+                  color: (userValues?.prices[index]*asset.quantity-asset.value) > 0 ? 'green' : 'red'
+                  }}
+                >
                   {currencyChangeFormat(userValues?.prices[index]*asset.quantity-asset.value)}
+                </td>
+                <td style={{
+                  color: ((userValues?.prices[index]*asset.quantity - asset.value)/asset.value*100) > 0 ? 'green' : 'red'
+                  }}
+                >
+                  {formatChange((userValues?.prices[index]*asset.quantity - asset.value)/asset.value*100)}
                 </td>
                 <td>
                   <SellAssetModal asset={asset} price={userValues?.prices[index]}/>

@@ -107,17 +107,62 @@ def get_user_assets():
     for asset in g.current_user.assets:
         if asset.type == 'crypto':
             assets.append(asset.to_dict())
-    return make_response({'assets':assets}, 200)
+    total_cost = 0
+    for item in assets:
+        total_cost += item['value']
+    return make_response({'assets':assets, 'total_cost':total_cost}, 200)
 
 @user.get('/user/all')
 def get_all_users():
     '''
-        Gets ALL users. No auth required.
+        Gets ALL users & their asset values. No auth required.
         For use when viewing user leaderboard.
     '''
+    # Get all users as dictionaries (includes total asset cost)
     users = User.query.order_by(User.bank.desc()).all()
-    users = [user.to_dict() for user in users]
-    return make_response({'users':users}, 200)
+    user_dicts = [user.to_dict() for user in users]
+
+    # Get all users current total asset values
+    stock_string = []
+    crypto_string = []
+    for user in users:
+        for asset in user.assets:
+            if asset.type == 'stock':
+                if asset.symbol not in stock_string:
+                    stock_string.append(asset.symbol)
+            elif asset.type == 'crypto':
+                if asset.symbol not in crypto_string:
+                    crypto_string.append(asset.symbol)
+    stock_string = ','.join(stock_string)
+    crypto_string = ','.join(crypto_string)
+    print(stock_string)
+
+    FINAGE_API_KEY = os.environ.get('FINAGE_API_KEY')
+    finage_headers = {'Accept-Encoding': 'gzip'}
+    CMC_API_KEY = os.environ.get('CMC_API_KEY')
+    cmc_headers = {'X-CMC_PRO_API_KEY': CMC_API_KEY}
+    if stock_string != '':
+        prices = {}
+        finage_url_base = f'https://api.finage.co.uk/last/trade/stocks/?symbols={stock_string}&apikey={FINAGE_API_KEY}'
+        finage_response = requests.get(finage_url_base, headers=finage_headers)
+        finage_data = finage_response.json()
+        for asset in finage_data:
+            prices[asset['symbol'].lower()] = asset['price']
+    if crypto_string != '':
+        if not prices:
+            prices = {}
+        cmc_url_base = f'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol={crypto_string}'
+        cmc_response = requests.get(cmc_url_base, headers=cmc_headers)
+        cmc_data = cmc_response.json()
+        for asset in cmc_data['data']:
+            prices[cmc_data['data'][asset]['symbol'].lower()] = cmc_data['data'][asset]['quote']['USD']['price']
+    print(prices)
+
+    # for user in users:
+    #     for asset in user.assets:
+
+                
+    return make_response({'users':user_dicts}, 200)
 
 @user.get('/user')
 @token_auth.login_required()
@@ -170,4 +215,13 @@ def get_user_asset_values():
         for asset in cmc_data['data']:
             prices.append(cmc_data['data'][asset]['quote']['USD']['price'])
 
-    return make_response({'prices':prices}, 200)
+    user_assets = [asset.to_dict() for asset in g.current_user.assets if asset.type == 'stock']
+    for asset in g.current_user.assets:
+        if asset.type == 'crypto':
+            user_assets.append(asset.to_dict())
+    
+    total_value = 0
+    for ind, item in enumerate(user_assets):
+        total_value += prices[ind] * item['quantity']
+
+    return make_response({'prices':prices, 'total_value':total_value}, 200)

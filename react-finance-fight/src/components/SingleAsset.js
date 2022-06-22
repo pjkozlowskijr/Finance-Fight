@@ -12,8 +12,8 @@ export default function SingleAsset({asset}){
     
     if (!asset){
         return(
-            <Box sx={{display:'flex', justifyContent:'center', alignItems:'center'}}>
-            <CircularProgress/>
+            <Box sx={{width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center'}}>
+                <CircularProgress/>
             </Box>
         )
     }

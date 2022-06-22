@@ -15,7 +15,6 @@ export default function useAssetInfo(type, symbol){
             if (symbol && type){
                 (async () => {
                 const response = await apiAsset.getAssetInfo(type, symbol, source.token)
-                console.log(response.asset)
                 setAsset(response.asset)
                 setSymbol('')
                 })()

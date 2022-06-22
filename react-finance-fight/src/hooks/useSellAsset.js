@@ -9,13 +9,11 @@ import apiAsset from '../api/apiAsset';
 
 export default function useSellAsset(saleInfo){
     const {user, setAlert} = useContext(AppContext)
-    console.log(saleInfo)
     useEffect(
         () => {
             const source = CancelToken.source()
             if (saleInfo?.data?.key){
                 (async () => {
-                    console.log('trying to sell')
                     const response = await apiAsset.sellAsset(user.token, saleInfo.type, saleInfo.symbol, saleInfo.quantity, source.token)
                     if (response){
                         setAlert({msg: `You just sold ${saleInfo.quantity} ${saleInfo.symbol.toUpperCase()}`, cat: 'success'})

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useState, useEffect } from "react";
 
 // //////////////////////////////
 // APP CONTEXT
@@ -10,17 +10,12 @@ const AppContextProvider = ({children}) => {
     // Context for USER
     const getUserFromLS = () => {
         let user = localStorage.getItem('user')
-        if (user?.token){
+        if (user){
             return JSON.parse(user)
         }return {}
     }
 
     const [user, setUser] = useState(getUserFromLS())
-
-    const setUserInfo = useCallback(() => {
-        localStorage.setItem('user', JSON.stringify(user))
-        }, [user]
-    )
 
     // Context for ALERTS
     const [alert, setAlert] = useState({})
@@ -40,8 +35,7 @@ const AppContextProvider = ({children}) => {
     // Values passed to children
     const values = {
         user,
-        setUser,
-        setUserInfo,
+        setUser: (user1) => {setUser(user1); localStorage.setItem('user', JSON.stringify(user1))},
         getUserFromLS,
         alert, 
         setAlert,

@@ -20,6 +20,8 @@ export default function UserLeaderboard() {
   const users = useGetAllUsers()
   const rank = '1'
 
+  console.log(users)
+
   return (
     <Box sx={{width:'60%', m:'auto'}}>
       <Typography sx={{textAlign:'center'}}>Leaderboard</Typography>
@@ -32,7 +34,7 @@ export default function UserLeaderboard() {
             <th scope="col">Total Shares</th>
           </tr>
         {users?.users?.map((user, index) => (
-          <tr style={{textAlign:'center'}}>
+          <tr key={user.display_name} style={{textAlign:'center'}}>
             <td>{index + 1}</td>
             <td>{user.display_name}</td>
             <td>XXXXXX</td>

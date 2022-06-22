@@ -42,7 +42,7 @@ export default function SearchForm(){
     }
     
     const handleSubmit = (values, resetForm) => {
-        setSymbol(values.symbol)
+        setSymbol(values.symbol.toLowerCase())
         resetForm(initialValues)
     }
 

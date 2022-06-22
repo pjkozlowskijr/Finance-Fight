@@ -32,7 +32,6 @@ export default function SellAssetModal({asset, price}) {
   const [sale, setSale] = useState();
 
   useSellAsset(sale)
-  console.log(sale)
   const handleSellAsset = (value) => {
     setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity:quantity, data:{...value}})
   }

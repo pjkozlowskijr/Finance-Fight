@@ -15,7 +15,6 @@ export default function useEditUser(data){
             const source = CancelToken.source()
             if (user?.token && data?.key){
                 (async () => {
-                    console.log('running')
                     const response = await apiUser.editUser(user.token, data, source.token)
                     if (response){
                         let editUser = getUserFromLS()
@@ -29,7 +28,6 @@ export default function useEditUser(data){
                         setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
                 })()
-                
             }
             return () => {source.cancel()}
         },
