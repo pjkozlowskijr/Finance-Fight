@@ -135,7 +135,6 @@ def get_all_users():
                     crypto_string.append(asset.symbol)
     stock_string = ','.join(stock_string)
     crypto_string = ','.join(crypto_string)
-    print(stock_string)
 
     FINAGE_API_KEY = os.environ.get('FINAGE_API_KEY')
     finage_headers = {'Accept-Encoding': 'gzip'}
@@ -156,12 +155,17 @@ def get_all_users():
         cmc_data = cmc_response.json()
         for asset in cmc_data['data']:
             prices[cmc_data['data'][asset]['symbol'].lower()] = cmc_data['data'][asset]['quote']['USD']['price']
-    print(prices)
 
-    # for user in users:
-    #     for asset in user.assets:
+    for user in users:
+        total_value = 0
+        for purchase in user.purchases:
+            total_value += purchase.quantity * prices[purchase.symbol]
+        for dict in user_dicts:
+            if dict['display_name'] == user.display_name:
+                dict['total_value'] = total_value + float(user.bank)
+                dict['asset_value'] = total_value
+    user_dicts = sorted(user_dicts, key=lambda d: d['total_value'], reverse=True)
 
-                
     return make_response({'users':user_dicts}, 200)
 
 @user.get('/user')

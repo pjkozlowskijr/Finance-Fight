@@ -120,7 +120,8 @@ class User(UserMixin, db.Model):
     def sell_asset(self, sell_data, sell_quantity):
         asset = Asset.query.filter_by(symbol = sell_data['symbol'].lower()).first()
         self.bank = float(self.bank) + (sell_quantity * float(sell_data['price']))
-        purchases = Purchase.query.filter_by(symbol = sell_data['symbol']).order_by(Purchase.purchase_date.asc()).all()
+        purchases = Purchase.query.filter_by(symbol = asset.symbol, user_id = g.current_user.id).order_by(Purchase.purchase_date.asc()).all()
+        print(purchases)
         qty_removal = sell_quantity
         for purchase in purchases:
             if qty_removal >= purchase.quantity:
@@ -131,7 +132,7 @@ class User(UserMixin, db.Model):
             else:
                 purchase.quantity -= qty_removal
                 break
-        if not Purchase.query.filter_by(symbol = sell_data['symbol']).all():
+        if not Purchase.query.filter_by(symbol = asset.symbol).all():
             self.assets.remove(asset)
         db.session.commit()
 

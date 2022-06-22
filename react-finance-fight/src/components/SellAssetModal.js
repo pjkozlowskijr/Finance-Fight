@@ -24,16 +24,21 @@ const style = {
   p: 4,
 };
 
-export default function SellAssetModal({asset, price}) {
+export default function SellAssetModal({asset, price, userAssets}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {user, quantity} = useContext(AppContext)
+  const {user, quantity,setAlert} = useContext(AppContext)
   const [sale, setSale] = useState();
 
   useSellAsset(sale)
   const handleSellAsset = (value) => {
-    setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity:quantity, data:{...value}})
+    if (quantity <= asset.quantity){
+        setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity:quantity, data:{...value}})
+        console.log(sale)
+    }else{
+        setAlert({msg: "You can't sell what you don't own. Quantity selected is above your current holdings.", cat: 'error'})
+    }
   }
 
   return (

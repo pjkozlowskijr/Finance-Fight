@@ -19,22 +19,22 @@ export default function SingleAsset({asset}){
     }
 
     return(
-        <Grid container>
-            <Grid item md={12} sx={{display:'flex', justifyContent:'space-around'}}>
-                <Typography>
+        <Grid container sx={{mt:5}}>
+            <Grid item md={12} sx={{display:'flex', justifyContent:'space-around', mb:3}}>
+                <PurchaseAssetModal asset={asset}/>
+                <Typography variant='h4' sx={{fontWeight:'bold'}}>
                     {asset.name+' ('+asset.symbol+')'}
                 </Typography>
-                <Typography sx={{textAlign: 'center'}}>
+                <Typography variant='h4'>
                     <span>{currencyFormat(asset.price)}</span>
                     <span style={{color:changeColor}}>{' '+formatChange(asset.change_dollar)}</span>
                     <span style={{color:changeColor}}>{' ('+formatChange(asset.change_percent)+'%)'}</span>
                 </Typography>
-                <Typography id='asset_link' sx={{textAlign: 'center'}}>
+                <Typography id='asset_link' variant='h6' sx={{lineHeight:2}}>
                     <Link href={asset.website} underline='none' target='_blank' color='inherit'>
                         Website: {asset.website}
                     </Link>
                 </Typography>
-                <PurchaseAssetModal asset={asset}/>
             </Grid>
             <Grid item md={6}>
                 <Grid container>

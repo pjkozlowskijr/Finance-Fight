@@ -17,6 +17,7 @@ export default function useSellAsset(saleInfo){
                     const response = await apiAsset.sellAsset(user.token, saleInfo.type, saleInfo.symbol, saleInfo.quantity, source.token)
                     if (response){
                         setAlert({msg: `You just sold ${saleInfo.quantity} ${saleInfo.symbol.toUpperCase()}`, cat: 'success'})
+                        console.log(response)
                     }else if (response === false && response !== undefined){
                         setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }

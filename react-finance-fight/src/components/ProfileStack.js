@@ -104,7 +104,7 @@ export default function ProfileStack() {
                   {formatChange((userValues?.prices[index]*asset.quantity - asset.value)/asset.value*100)}
                 </td>
                 <td>
-                  <SellAssetModal asset={asset} price={userValues?.prices[index]}/>
+                  <SellAssetModal asset={asset} price={userValues?.prices[index]} userAssets={userAssets}/>
                 </td>
               </tr>
             ))}

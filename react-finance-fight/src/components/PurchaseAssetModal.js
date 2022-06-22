@@ -25,21 +25,25 @@ const style = {
 };
 
 export default function PurchaseAssetModal({asset}) {
+  const {user, assetType, quantity, setAlert} = useContext(AppContext);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => (user?.token) ? setOpen(true) : setAlert({msg: 'Please login to purchase an asset.', cat: 'error'});
   const handleClose = () => setOpen(false);
-  const {user, assetType, quantity} = useContext(AppContext);
   const [purchase, setPurchase] = useState();
 
   usePurchaseAsset(purchase)
 
   const handlePurchaseAsset = (value) => {
-    setPurchase({type:assetType, quantity, data:{...asset, ...value}})
+    if (asset.price * quantity <= user.bank){
+        setPurchase({type:assetType, quantity, data:{...asset, ...value}})
+    }else{
+        setAlert({msg: "You don't have enough funds to make this purchase.", cat: "error"})
+    }
   }
 
   return (
     <div>
-      <Button variant='contained' startIcon={<MonetizationOnIcon/>} onClick={handleOpen}>Purchase</Button>
+      <Button variant='contained' sx={{py:0.5, mt:0.6}}startIcon={<MonetizationOnIcon/>} onClick={handleOpen}>Purchase</Button>
       <Modal
         open={open}
         onClose={handleClose}

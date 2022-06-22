@@ -38,7 +38,7 @@ const login = async (email, password, cancelToken) => {
 // User logs out
 const logout = async (token, cancelToken) => {
     const response = await apiClientTokenAuth(token, cancelToken).post(endpointLogout)
-    return response.data
+    return response
 }
 
 // Edit user profile

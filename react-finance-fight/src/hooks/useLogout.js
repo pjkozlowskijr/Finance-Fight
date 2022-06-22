@@ -7,16 +7,18 @@ import apiUser from '../api/apiUser';
 // Hook to logout user
 // //////////////////////////////
 
-export default function Logout(logoutUser){
-    const {setUserInfo, setAlert} = useContext(AppContext)
+export default function Logout(user){
+    const {setUser, setAlert} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source()
-            if (user?.token && logoutUser?.key){
+            if (user?.token){
                 (async () => {
                     const response = await apiUser.logout(user.token, source.token)
+                    console.log('are we here', response)
                     if (response){
-                        setUserInfo({})
+                        setUser({})
+                        console.log('does it get here')
                         setAlert({msg: 'You are now logged out.', cat: 'success'})
                     }else if(response === false && response !== undefined){
                         setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
@@ -25,6 +27,6 @@ export default function Logout(logoutUser){
             }
             return () => {source.cancel()}
         },
-        [user?.token, logoutUser?.key, setUserInfo, setAlert]
+        [user?.token, setUser, setAlert]
     )
 }

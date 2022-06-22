@@ -23,7 +23,6 @@ def purchase_asset(type, quantity):
         }
     '''
     data = request.get_json()
-    print(data)
     if Asset.query.filter_by(symbol=data['symbol'].lower()).first():
         asset = Asset.query.filter_by(symbol=data['symbol'].lower()).first()
     else:
@@ -57,10 +56,9 @@ def sell_asset(type, symbol, sell_qty):
         fmp_data = fmp_response.json()
         symbol = fmp_data[0]['symbol'].lower()[:-3]
     asset_data = {
-        'symbol': symbol,
+        'symbol': symbol.lower(),
         'price': fmp_data[0]['price']
     }
-    print(asset_data)
     g.current_user.sell_asset(asset_data, sell_qty)
     return make_response(f'Successfully sold {sell_qty} {symbol}.', 200)
 

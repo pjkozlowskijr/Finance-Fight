@@ -10,7 +10,8 @@ import FormLabel from '@mui/material/FormLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 
 // //////////////////////////////
 // ASSET SEARCH FORM
@@ -34,6 +35,7 @@ export default function SearchForm(){
 
     const {assetType, setAssetType} = useContext(AppContext)
     const {symbol, setSymbol} = useContext(AppContext)
+    const theme = useTheme()
     
     useAssetInfo(assetType, symbol)
     
@@ -71,6 +73,7 @@ export default function SearchForm(){
             </RadioGroup>
                 </Box>
         </FormControl>
+        <Typography sx={{color: theme?.palette.secondary.main}}>Note: Only TICKER SYMBOLS are accepted in search. For example, enter "AMZN" to search Amazon.</Typography>
         <form onSubmit={formik.handleSubmit}>
             <TextField
                 id = 'symbol'

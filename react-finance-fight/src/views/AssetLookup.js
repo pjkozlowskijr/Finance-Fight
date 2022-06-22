@@ -4,11 +4,6 @@ import SearchAsset from '../components/SearchAsset'
 
 export default function AssetLookup() {
   return (
-    <>
-    <Typography>
-        Pick a winner...
-    </Typography>
     <SearchAsset/>
-    </>
   )
 }
