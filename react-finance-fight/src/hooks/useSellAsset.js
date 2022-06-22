@@ -16,9 +16,9 @@ export default function useSellAsset(saleInfo){
             if (saleInfo?.data?.key){
                 (async () => {
                     console.log('trying to sell')
-                    const response = await apiAsset.sellAsset(user.token, saleInfo.type, saleInfo.symbol, quantity, source.token)
+                    const response = await apiAsset.sellAsset(user.token, saleInfo.type, saleInfo.symbol, saleInfo.quantity, source.token)
                     if (response){
-                        setAlert({msg: `You just sold ${quantity} ${symbol.toUpperCase()}`, cat: 'success'})
+                        setAlert({msg: `You just sold ${saleInfo.quantity} ${saleInfo.symbol.toUpperCase()}`, cat: 'success'})
                     }else if (response === false && response !== undefined){
                         setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
@@ -26,6 +26,6 @@ export default function useSellAsset(saleInfo){
             }
             return () => {source.cancel()}
         },
-        [user?.token, symbol, setAlert]
+        [saleInfo, setAlert]
     )
 }

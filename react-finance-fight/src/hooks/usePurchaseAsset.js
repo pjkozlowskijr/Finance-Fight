@@ -24,6 +24,6 @@ export default function usePurchaseAsset(purchaseInfo){
             }
             return () => {source.cancel()}
         },
-        [purchaseInfo]
+        [purchaseInfo, setAlert]
     )
 }

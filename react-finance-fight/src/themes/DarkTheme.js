@@ -5,7 +5,7 @@ export const themeOptions = {
       type: 'dark',
       mode: 'dark',
       primary: {
-        main: '#0a6b6b',
+        main: '#163d49',
       },
       secondary: {
         main: '#b33c06',

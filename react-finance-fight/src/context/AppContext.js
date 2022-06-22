@@ -34,6 +34,8 @@ const AppContextProvider = ({children}) => {
     const [quantity, setQuantity] = useState(10);
 
     const [users, setUsers] = useState()
+
+    const [open, setOpen] = useState(false);
   
     // Values passed to children
     const values = {
@@ -52,7 +54,9 @@ const AppContextProvider = ({children}) => {
         quantity,
         setQuantity,
         users,
-        setUsers
+        setUsers,
+        open,
+        setOpen
     }
 
     return (

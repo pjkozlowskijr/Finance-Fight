@@ -16,6 +16,7 @@ import SellAssetModal from './SellAssetModal';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
+  backgroundImage:'none',
   ...theme.typography.body2,
   padding: theme.spacing(1),
   textAlign: 'center',

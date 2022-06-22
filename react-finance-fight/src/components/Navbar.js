@@ -18,7 +18,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import SearchIcon from '@mui/icons-material/Search';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import CandlestickChartIcon from '@mui/icons-material/CandlestickChart';
 import HomeIcon from '@mui/icons-material/Home';
 import HelpIcon from '@mui/icons-material/Help';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -77,7 +76,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function PersistentDrawerRight({children}) {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const {open, setOpen} = React.useContext(AppContext)
   const {user} = React.useContext(AppContext)
 
   const handleDrawerOpen = () => {

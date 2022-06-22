@@ -7,9 +7,9 @@ import QuantitySlider from './QuantitySlider';
 import { AppContext } from '../context/AppContext';
 import { currencyFormat } from '../helpers';
 import { Grid } from '@mui/material';
-import usePurchaseAsset from '../hooks/usePurchaseAsset'
 import { useState, useContext } from 'react';
 import SellIcon from '@mui/icons-material/Sell';
+import useSellAsset from '../hooks/useSellAsset';
 
 const style = {
   position: 'absolute',
@@ -31,10 +31,10 @@ export default function SellAssetModal({asset, price}) {
   const {user, quantity} = useContext(AppContext)
   const [sale, setSale] = useState();
 
-  usePurchaseAsset(sale)
+  useSellAsset(sale)
   console.log(sale)
   const handleSellAsset = (value) => {
-    setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity, data:{...value}})
+    setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity:quantity, data:{...value}})
   }
 
   return (
