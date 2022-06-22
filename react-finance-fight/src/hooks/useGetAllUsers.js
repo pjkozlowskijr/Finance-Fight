@@ -10,9 +10,7 @@ export default function useGetAllUsers() {
         () => {
             const source = CancelToken.source();
             (async () => {
-                console.log('running')
                 const response = await apiUser.getAllUsers(source.token)
-                console.log(response)
                 setUsers(response)
             })()
             return () => {source.cancel()}

@@ -107,7 +107,7 @@ def get_asset_info(type, symbol):
         fmp_data = fmp_response.json()
         asset_dict = {
             'name': fmp_data[0]['name'],
-            'symbol': fmp_data[0]['symbol'],
+            'symbol': fmp_data[0]['symbol'][:-3],
             'price': fmp_data[0]['price'],
             'change_percent': fmp_data[0]['changesPercentage'],
             'change_dollar': fmp_data[0]['change'],

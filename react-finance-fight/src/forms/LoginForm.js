@@ -22,11 +22,10 @@ const initialValues={
 }
 
 export default function LoginForm(){
-    const {setUserInfo} = useContext(AppContext)
     const [loginCreds, setLoginCreds] = useState({})
     const [error, setError] = useState('')
     
-    useLogin(loginCreds, setLoginCreds, setError, setUserInfo)
+    useLogin(loginCreds, setLoginCreds, setError)
     
     const handleSubmit = (values, resetForm) => {
         setLoginCreds(values)

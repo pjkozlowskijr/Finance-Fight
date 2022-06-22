@@ -3,13 +3,13 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import QuantitySlider from './QuantitySlider';
 import { AppContext } from '../context/AppContext';
 import { currencyFormat } from '../helpers';
 import { Grid } from '@mui/material';
 import usePurchaseAsset from '../hooks/usePurchaseAsset'
 import { useState, useContext } from 'react';
+import SellIcon from '@mui/icons-material/Sell';
 
 const style = {
   position: 'absolute',
@@ -24,22 +24,22 @@ const style = {
   p: 4,
 };
 
-export default function PurchaseAssetModal({asset}) {
+export default function SellAssetModal({asset, price}) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {user, assetType, quantity} = useContext(AppContext);
-  const [purchase, setPurchase] = useState();
+  const {user, quantity} = useContext(AppContext)
+  const [sale, setSale] = useState();
 
-  usePurchaseAsset(purchase)
-
-  const handlePurchaseAsset = (value) => {
-    setPurchase({type:assetType, quantity, data:{...asset, ...value}})
+  usePurchaseAsset(sale)
+  console.log(sale)
+  const handleSellAsset = (value) => {
+    setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity, data:{...value}})
   }
 
   return (
     <div>
-      <Button variant='contained' startIcon={<MonetizationOnIcon/>} onClick={handleOpen}>Purchase</Button>
+      <Button variant='contained' startIcon={<SellIcon/>} onClick={handleOpen}>Sell</Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -50,7 +50,7 @@ export default function PurchaseAssetModal({asset}) {
             <Grid container spacing={2} columnSpacing={5}>
                 <Grid item md={12}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'center'}}>
-                        Purchase {asset.symbol}
+                        Sell {asset?.symbol.toUpperCase()}
                     </Typography>
                 </Grid>
                 <Grid item md={12}>
@@ -58,27 +58,27 @@ export default function PurchaseAssetModal({asset}) {
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
-                        Purchase Price
+                        Market Price
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(asset.price)}
+                        {currencyFormat(price)}
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
-                        Cost (Qty x Price)
+                        Net (Qty x Price)
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(asset.price*quantity)}
+                        {currencyFormat(price*quantity)}
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
-                        Available Funds
+                        Current Funds
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
@@ -88,22 +88,22 @@ export default function PurchaseAssetModal({asset}) {
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
-                        Funds After Purchase
+                        Funds After Sale
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(user?.bank - (asset.price*quantity))}
+                        {currencyFormat(parseFloat(user?.bank) + (price*quantity))}
                     </Typography>
                 </Grid>
                 <Grid item md={12} sx={{display:'flex'}}>
                     <Button
                         variant='contained'
-                        startIcon={<MonetizationOnIcon/>}
-                        onClick={() => handlePurchaseAsset({key:'value'})}
+                        startIcon={<SellIcon/>}
+                        onClick={() => handleSellAsset({key:'value'})}
                         sx={{margin:'auto'}}
                         >
-                        Confirm Purchase
+                        Confirm Sale
                     </Button>
                 </Grid>
             </Grid>

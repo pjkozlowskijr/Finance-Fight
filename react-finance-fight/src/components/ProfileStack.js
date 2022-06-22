@@ -7,10 +7,12 @@ import ProfileForm from '../forms/ProfileForm';
 import { AppContext } from '../context/AppContext';
 import useGetUserAssets from '../hooks/useGetUserAssets'
 import Typography from '@mui/material/Typography';
-import { Divider, Grid } from '@mui/material';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import { currencyChangeFormat, currencyFormat, formatChange, changeColor } from '../helpers';
 import useGetUserInfo from '../hooks/useGetUserInfo';
 import useGetUserAssetValues from '../hooks/useGetUserAssetValues';
+import SellAssetModal from './SellAssetModal';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -21,11 +23,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ProfileStack() {
-    const userAssets = useGetUserAssets()
-    const user = useGetUserInfo()
-    const dollarChange = formatChange(user?.bank-10000)
-    const percentChange = formatChange(dollarChange/10000*100)
-    const userValues = useGetUserAssetValues()
+  const userAssets = useGetUserAssets()
+  const user = useGetUserInfo()
+  const userValues = useGetUserAssetValues()
+  const dollarChange = formatChange(user?.bank-10000)
+  const percentChange = formatChange(dollarChange/10000*100)
 
   return (
     <Box sx={{ width:'80%', margin:'auto'}}>
@@ -33,18 +35,22 @@ export default function ProfileStack() {
         <Item>
           <Typography sx={{textAlign:'center'}} variant='h4'>{user?.first_name+' '+user?.last_name+' ('+user?.display_name+')'}</Typography>
           <table style={{width:'100%'}}>
-            <tr>
-              <th scope='col'>Cash Funds</th>
-              <th scope='col'>Total Asset Costs</th>
-              <th scope='col'>Dollar Change</th>
-              <th scope='col'>Percent Change</th>
-            </tr>
-            <tr>
-              <td>{currencyFormat(user?.bank)}</td>
-              <td>{currencyFormat(userAssets?.assets?.assets.map(asset=>asset.value).reduce((x,y)=>x+y))}</td>
-              <td style={{color:changeColor(dollarChange)}}>{currencyFormat(dollarChange)}</td>
-              <td style={{color:changeColor(percentChange)}}>{percentChange}%</td>
-            </tr>
+            <thead>
+              <tr>
+                <th scope='col'>Cash Funds</th>
+                <th scope='col'>Total Asset Costs</th>
+                <th scope='col'>Dollar Change</th>
+                <th scope='col'>Percent Change</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{currencyFormat(user?.bank)}</td>
+                <td>{currencyFormat(userAssets?.assets?.assets?.map(asset=>asset.value)?.reduce((x,y)=>x+y))}</td>
+                <td style={{color:changeColor(dollarChange)}}>{currencyFormat(dollarChange)}</td>
+                <td style={{color:changeColor(percentChange)}}>{percentChange}%</td>
+              </tr>
+            </tbody>
           </table>
         </Item>
         <Item>
@@ -62,13 +68,18 @@ export default function ProfileStack() {
           </thead>
           <tbody>
             {userAssets?.assets?.assets.map((asset, index) => (
-              <tr>
+              <tr key={asset.symbol}>
                 <td>{asset.name+' ('+asset.symbol.toUpperCase()+')'}</td>
                 <td>{asset.type}</td>
                 <td>{asset.quantity}</td>
                 <td>{currencyFormat(asset.value)}</td>
-                <td>{currencyFormat(userValues?.prices[index][asset.symbol.toUpperCase()])}</td>
-                <td>{currencyChangeFormat(userValues?.prices[index][asset.symbol.toUpperCase()]-asset.value)}</td>
+                <td>{currencyFormat(userValues?.prices[index]*asset.quantity)}</td>
+                <td style={{color: (userValues?.prices[index]*asset.quantity-asset.value) > 0 ? 'green' : 'red'}}>
+                  {currencyChangeFormat(userValues?.prices[index]*asset.quantity-asset.value)}
+                </td>
+                <td>
+                  <SellAssetModal asset={asset} price={userValues?.prices[index]}/>
+                </td>
               </tr>
             ))}
           </tbody>

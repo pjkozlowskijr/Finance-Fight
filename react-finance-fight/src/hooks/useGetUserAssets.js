@@ -22,7 +22,7 @@ export default function useGetUserAssets(){
             }
             return () => {source.cancel()}
         },
-        [user.token]
+        [user?.token]
     )
     return assets
 }

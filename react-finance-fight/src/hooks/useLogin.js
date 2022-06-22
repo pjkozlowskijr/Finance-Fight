@@ -7,7 +7,7 @@ import { AppContext } from "../context/AppContext";
 // Hook to login user
 // //////////////////////////////
 
-export default function useLogin(loginCreds, setLoginCreds, setError, setUserInfo){
+export default function useLogin(loginCreds, setLoginCreds, setError){
     const {setAlert, setUser} = useContext(AppContext)
     useEffect(
         () => {
@@ -15,9 +15,9 @@ export default function useLogin(loginCreds, setLoginCreds, setError, setUserInf
             if (loginCreds.email && loginCreds.password){
                 const login = async (cancelToken) => {
                     const response = await apiUser.login(loginCreds.email, loginCreds.password, cancelToken)
-                    if (response.user?.token){
+                    if (response?.user?.token){
                         setAlert({msg: 'You are now logged in. Happy investing!', cat:'success'})
-                        setUserInfo(response.user)
+                        setUser(response.user)
                         setLoginCreds({})
                     }
                     setError(response.error)
@@ -26,6 +26,6 @@ export default function useLogin(loginCreds, setLoginCreds, setError, setUserInf
             }
             return () => {source.cancel()}
         },
-        [loginCreds, setLoginCreds, setError, setUserInfo, setAlert]
+        [loginCreds, setLoginCreds, setError, setAlert]
     )
 }

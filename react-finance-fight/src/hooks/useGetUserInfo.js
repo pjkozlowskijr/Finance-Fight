@@ -8,26 +8,21 @@ import { AppContext } from "../context/AppContext";
 // //////////////////////////////
 
 export default function useGetUserInfo(){
-    const {user, setUserInfo} = useContext(AppContext)
-    const [updatedUser, setUpdatedUser] = useState({})
+    const {user, setUser} = useContext(AppContext)
     useEffect(
         () => {
             const source = CancelToken.source();
             if (user?.token){
                 (async () => {
-                    console.log('trying');
                     var response = await apiUser.getUserInfo(user.token, source.token)
-                    console.log(response.user)
                     if (response){
-                        setUpdatedUser(response.user)
-                        setUserInfo(response.user)
+                        setUser(response.user)
                     }
                 })()
             }
             return () => {source.cancel()}
         },
-        [setUserInfo, user]
-        
+        []  
     )
-    return updatedUser
+    return user
 }

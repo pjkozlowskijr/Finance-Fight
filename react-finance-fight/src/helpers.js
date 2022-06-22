@@ -23,7 +23,7 @@ export function currencyChangeFormat(number){
     currency: 'USD'
   })
   if (number > 0){
-    return '+ ' + formatter.format(number)
+    return '+' + formatter.format(number)
   }
   return formatter.format(number)
 }

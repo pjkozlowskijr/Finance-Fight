@@ -103,7 +103,10 @@ def get_user_assets():
         Gets ALL user assets. Requires token auth header.
         HTTP Header = "Authorization: Bearer <token>"
     '''
-    assets = [asset.to_dict() for asset in g.current_user.assets]
+    assets = [asset.to_dict() for asset in g.current_user.assets if asset.type == 'stock']
+    for asset in g.current_user.assets:
+        if asset.type == 'crypto':
+            assets.append(asset.to_dict())
     return make_response({'assets':assets}, 200)
 
 @user.get('/user/all')
@@ -156,7 +159,7 @@ def get_user_asset_values():
         finage_response = requests.get(finage_url_base, headers=finage_headers)
         finage_data = finage_response.json()
         for asset in finage_data:
-            prices.append({asset['symbol']:asset['price']})
+            prices.append(asset['price'])
 
     if crypto_string != '':
         if not prices:
@@ -165,6 +168,6 @@ def get_user_asset_values():
         cmc_response = requests.get(cmc_url_base, headers=cmc_headers)
         cmc_data = cmc_response.json()
         for asset in cmc_data['data']:
-            prices.append({asset:cmc_data['data'][asset]['quote']['USD']['price']})
+            prices.append(cmc_data['data'][asset]['quote']['USD']['price'])
 
     return make_response({'prices':prices}, 200)
