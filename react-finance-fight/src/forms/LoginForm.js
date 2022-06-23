@@ -11,6 +11,10 @@ import Error from '../components/Error';
 import useLogin from '../hooks/useLogin';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 
 const FormSchema = Yup.object({
     email: Yup.string().email('Must be a valid email format.').required(),
@@ -43,6 +47,12 @@ export default function LoginForm(){
         enableReinitialize: true
     })
 
+    // Show/hide password icon
+    const [showPassword, setShowPassword] = useState(false)
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword)
+    }
+
     return(
         <form onSubmit={formik.handleSubmit}>
             <TextField
@@ -60,7 +70,7 @@ export default function LoginForm(){
             <TextField
                 id = 'password'
                 name = 'password'
-                type = 'password'
+                type = {showPassword ? 'text': 'password'}
                 fullWidth
                 sx={{mb:1, mt:1}}
                 label = 'Password'
@@ -69,6 +79,15 @@ export default function LoginForm(){
                 onChange = {formik.handleChange}
                 error = {formik.touched.password && Boolean(formik.errors.password)}
                 helperText = {formik.touched.password && formik.errors.password}
+                InputProps = {{
+                    endAdornment: (
+                    <InputAdornment position='end'>
+                        <IconButton onClick={handleShowPassword}>
+                            {showPassword ? <VisibilityOffIcon/> : <VisibilityIcon/>}
+                        </IconButton>
+                    </InputAdornment>
+                    )
+                }}
             />
             <Button 
                 type='submit' 

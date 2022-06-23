@@ -2,6 +2,8 @@
 // PROFILE FORM (register & edit)
 // //////////////////////////////
 
+import InputAdornment from '@mui/material/InputAdornment';
+import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
@@ -13,6 +15,8 @@ import DeleteUserModal from '../components/DeleteUserModal';
 import { toTitleCase } from '../helpers';
 import useCreateUser from '../hooks/useCreateUser';
 import useEditUser from '../hooks/useEditUser';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export default function ProfileForm({user}){
     const theme = useTheme()
@@ -35,6 +39,12 @@ export default function ProfileForm({user}){
         }
         resetForm(initialValues)
     };
+
+    // Show/hide password icon
+    const [showPassword, setShowPassword] = useState(false)
+    const handleShowPassword = () => {
+        setShowPassword(!showPassword)
+    }
 
     const FormSchema = Yup.object(
         {
@@ -68,6 +78,7 @@ export default function ProfileForm({user}){
             <TextField
                 id = 'first_name'
                 name = 'first_name'
+                size = 'small'
                 fullWidth
                 sx={{mb:1, mt:1}}
                 label = 'First Name'
@@ -80,6 +91,7 @@ export default function ProfileForm({user}){
             <TextField
                 id = 'last_name'
                 name = 'last_name'
+                size = 'small'
                 fullWidth
                 sx={{mb:1, mt:1}}
                 label = 'Last Name'
@@ -92,6 +104,7 @@ export default function ProfileForm({user}){
             <TextField
                 id = 'display_name'
                 name = 'display_name'
+                size = 'small'
                 fullWidth
                 sx={{mb:1, mt:1}}
                 label = 'Display Name'
@@ -104,6 +117,7 @@ export default function ProfileForm({user}){
             <TextField
                 id = 'email'
                 name = 'email'
+                size = 'small'
                 fullWidth
                 sx={{mb:1, mt:1}}
                 label = 'Email'
@@ -116,7 +130,8 @@ export default function ProfileForm({user}){
             <TextField
                 id = 'password'
                 name = 'password'
-                type = 'password'
+                type = {showPassword ? 'text': 'password'}
+                size = 'small'
                 fullWidth
                 sx={{mb:1, mt:1}}
                 label = 'Password'
@@ -125,11 +140,22 @@ export default function ProfileForm({user}){
                 onChange = {formik.handleChange}
                 error = {formik.touched.password && Boolean(formik.errors.password)}
                 helperText = {formik.touched.password && formik.errors.password}
+                InputProps = {{
+                    endAdornment: (
+                    <InputAdornment position='end'>
+                        <IconButton onClick={handleShowPassword}>
+                            {showPassword ? <VisibilityOffIcon/> : <VisibilityIcon/>}
+                        </IconButton>
+                    </InputAdornment>
+                    )
+                }}
             />
+                                
             <TextField
                 id = 'confirm_pass'
                 name = 'confirm_pass'
-                type = 'password'
+                type = {showPassword ? 'text': 'password'}
+                size = 'small'
                 fullWidth
                 sx={{mb:1, mt:1}}
                 label = 'Confirm Password'
@@ -138,6 +164,15 @@ export default function ProfileForm({user}){
                 onChange = {formik.handleChange}
                 error = {formik.touched.confirm_pass && Boolean(formik.errors.confirm_pass)}
                 helperText = {formik.touched.confirm_pass && formik.errors.confirm_pass}
+                InputProps = {{
+                    endAdornment: (
+                    <InputAdornment position='end'>
+                        <IconButton onClick={handleShowPassword}>
+                            {showPassword ? <VisibilityOffIcon/> : <VisibilityIcon/>}
+                        </IconButton>
+                    </InputAdornment>
+                    )
+                }}
             />
             <Button 
                 type='submit' 

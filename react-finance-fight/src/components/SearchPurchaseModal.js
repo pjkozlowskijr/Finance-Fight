@@ -1,19 +1,19 @@
-// //////////////////////////////
-// POP UP MODAL FOR SELL ASSET
-// //////////////////////////////
+// ///////////////////////////////////////////
+// POP UP MODAL FOR ASSET PURCHASE IN SEARCH
+// ///////////////////////////////////////////
 
-import SellIcon from '@mui/icons-material/Sell';
+import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
-import { useContext, useState } from 'react';
+import Modal from '@mui/material/Modal';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import QuantitySlider from './QuantitySlider';
 import { AppContext } from '../context/AppContext';
 import { currencyFormat } from '../helpers';
-import useSellAsset from '../hooks/useSellAsset';
-import QuantitySlider from './QuantitySlider';
-import { useTheme } from '@mui/material/styles';
+import usePurchaseAsset from '../hooks/usePurchaseAsset';
+import { useState, useContext } from 'react';
 
 const style = {
   position: 'absolute',
@@ -28,56 +28,40 @@ const style = {
   p: 4,
 };
 
-export default function SellAssetModal({asset, price}) {
-  const {user, quantity, setAlert} = useContext(AppContext);
-  const theme = useTheme();
+export default function SearchPurchaseModal({asset}) {
+  const {user, assetType, quantity, setAlert} = useContext(AppContext);
 
   // Set modal open/close
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => (user?.token) ? setOpen(true) : setAlert({msg: 'Please login to purchase an asset.', cat: 'error'});
   const handleClose = () => setOpen(false);
 
-  // Set info for useSellAsset hook 
-  const [sale, setSale] = useState();
-  const handleSellAsset = (value) => {
-      // If the quantity trying to sell is less than what user has, setAlert and don't proceed
-      if (quantity <= asset.quantity){
-          setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity:quantity, data:{...value}})
+  // Set info for usePurchaseAsset hook on submit  
+  const [purchase, setPurchase] = useState();
+  const handlePurchaseAsset = (value) => {
+      // If the cost of purchase is more than user funds, setAlert and don't proceed
+      if (asset.price * quantity <= user.bank){
+          setPurchase({type:assetType, quantity, data:{...asset, ...value}})
         }else{
-          setAlert({msg: "You can't sell what you don't own. Quantity selected is above your current holdings.", cat: 'error'})
+          setAlert({msg: "You don't have enough funds to make this purchase.", cat: "error"})
         }
     };
-    
-  useSellAsset(sale);
 
+  usePurchaseAsset(purchase);
+    
   return (
     <div>
-      <Button 
-        variant='contained' 
-        sx={{
-            py:0.5, 
-            my:2, 
-            backgroundColor:theme.palette.secondary.main,           
-            '&:hover': {
-                backgroundColor:theme.palette.secondary.dark,
-            }, 
-            width:'5vw'
-        }} 
-        startIcon={<SellIcon/>} 
-        onClick={handleOpen}
-      >
-        Sell
-      </Button>
+      <Button variant='contained' sx={{mt:0.6, width:'5vw'}} startIcon={<MonetizationOnIcon/>} onClick={handleOpen}>Buy</Button>
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="sell-asset-modal"
+        aria-labelledby="purchase-asset-modal"
       >
         <Box sx={style}>
             <Grid container spacing={2} columnSpacing={5}>
                 <Grid item md={12}>
                     <Typography variant="h3" component="h2" sx={{textAlign:'center'}}>
-                        Sell {asset?.symbol.toUpperCase()}
+                        Purchase {asset.symbol}
                     </Typography>
                 </Grid>
                 <Grid item md={12}>
@@ -85,27 +69,27 @@ export default function SellAssetModal({asset, price}) {
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right', fontWeight:'bold'}}>
-                        Market Price
+                        Purchase Price
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(price)}
+                        {currencyFormat(asset.price)}
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right', fontWeight:'bold'}}>
-                        Net (Qty x Price)
+                        Cost (Qty x Price)
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(price*quantity)}
+                        {currencyFormat(asset.price*quantity)}
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right', fontWeight:'bold'}}>
-                        Current Funds
+                        Available Funds
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
@@ -115,22 +99,22 @@ export default function SellAssetModal({asset, price}) {
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2" sx={{textAlign:'right', fontWeight:'bold'}}>
-                        Funds After Sale
+                        Funds After Purchase
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(parseFloat(user?.bank) + (price*quantity))}
+                        {currencyFormat(user?.bank - (asset.price*quantity))}
                     </Typography>
                 </Grid>
                 <Grid item md={12} sx={{display:'flex'}}>
                     <Button
                         variant='contained'
-                        startIcon={<SellIcon/>}
-                        onClick={() => handleSellAsset({key:'value'})}
+                        startIcon={<MonetizationOnIcon/>}
+                        onClick={() => handlePurchaseAsset({key:'value'})}
                         sx={{margin:'auto'}}
                         >
-                        Confirm Sale
+                        Confirm Purchase
                     </Button>
                 </Grid>
             </Grid>

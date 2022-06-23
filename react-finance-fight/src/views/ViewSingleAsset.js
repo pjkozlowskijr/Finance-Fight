@@ -10,7 +10,7 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import PurchaseAssetModal from '../components/PurchaseAssetModal';
+import SearchPurchaseModal from '../components/SearchPurchaseModal';
 import TradingChart from '../components/TradingChart';
 import { AppContext } from '../context/AppContext';
 import { currencyFormat, formatChange, formatRegNumber, shortenMktCap } from '../helpers';
@@ -68,7 +68,7 @@ export default function ViewSingleAsset(){
                             Company Website
                         </Link>
                     </Typography>
-                    <PurchaseAssetModal asset={asset}/>
+                    <SearchPurchaseModal asset={asset}/>
                 </Grid>
                 <Grid item md={6}>
                     <Grid container>

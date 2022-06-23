@@ -9,7 +9,7 @@ import Link from '@mui/material/Link';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { currencyFormat, formatChange, formatRegNumber, shortenMktCap } from '../helpers';
-import PurchaseAssetModal from './PurchaseAssetModal';
+import SearchPurchaseModal from './SearchPurchaseModal';
 import TradingChart from './TradingChart';
 
 const HeaderTypography = styled(Typography)({
@@ -55,7 +55,7 @@ export default function SearchSingleAsset({asset}){
                         Company Website
                     </Link>
                 </Typography>
-                <PurchaseAssetModal asset={asset}/>
+                <SearchPurchaseModal asset={asset}/>
             </Grid>
             <Grid item md={6}>
                 <Grid container>

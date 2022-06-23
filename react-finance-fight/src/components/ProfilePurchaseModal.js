@@ -1,6 +1,6 @@
-// /////////////////////////////////
-// POP UP MODAL FOR ASSET PURCHASE
-// /////////////////////////////////
+// ///////////////////////////////////////////
+// POP UP MODAL FOR ASSET PURCHASE IN PROFILE
+// ///////////////////////////////////////////
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -20,28 +20,30 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '40vw',
-  height: '60vh',
+  width: '35vw',
+  height: '65vh',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };
 
-export default function PurchaseAssetModal({asset}) {
+export default function ProfilePurchaseModal({asset, price}) {
   const {user, assetType, quantity, setAlert} = useContext(AppContext);
 
   // Set modal open/close
   const [open, setOpen] = useState(false);
-  const handleOpen = () => (user?.token) ? setOpen(true) : setAlert({msg: 'Please login to purchase an asset.', cat: 'error'});
+  const handleOpen = () => (
+    (user?.token) ? setOpen(true) : setAlert({msg: 'Please login to purchase an asset.', cat: 'error'})
+    );
   const handleClose = () => setOpen(false);
 
   // Set info for usePurchaseAsset hook on submit  
   const [purchase, setPurchase] = useState();
   const handlePurchaseAsset = (value) => {
       // If the cost of purchase is more than user funds, setAlert and don't proceed
-      if (asset.price * quantity <= user.bank){
-          setPurchase({type:assetType, quantity, data:{...asset, ...value}})
+      if (price * quantity <= user.bank){
+          setPurchase({type:assetType, quantity, data:{...asset, 'price':price, ...value}})
         }else{
             setAlert({msg: "You don't have enough funds to make this purchase.", cat: "error"})
         }
@@ -60,35 +62,35 @@ export default function PurchaseAssetModal({asset}) {
         <Box sx={style}>
             <Grid container spacing={2} columnSpacing={5}>
                 <Grid item md={12}>
-                    <Typography variant="h6" component="h2" sx={{textAlign:'center'}}>
-                        Purchase {asset.symbol}
+                    <Typography variant="h3" component="h2" sx={{textAlign:'center'}}>
+                        Purchase {asset.symbol.toUpperCase()}
                     </Typography>
                 </Grid>
                 <Grid item md={12}>
                     <QuantitySlider/>
                 </Grid>
                 <Grid item md={6}>
-                    <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
+                    <Typography variant="h6" component="h2" sx={{textAlign:'right', fontWeight:'bold'}}>
                         Purchase Price
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(asset.price)}
+                        {currencyFormat(price)}
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
-                    <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
+                    <Typography variant="h6" component="h2" sx={{textAlign:'right', fontWeight:'bold'}}>
                         Cost (Qty x Price)
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(asset.price*quantity)}
+                        {currencyFormat(price*quantity)}
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
-                    <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
+                    <Typography variant="h6" component="h2" sx={{textAlign:'right', fontWeight:'bold'}}>
                         Available Funds
                     </Typography>
                 </Grid>
@@ -98,13 +100,13 @@ export default function PurchaseAssetModal({asset}) {
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
-                    <Typography variant="h6" component="h2" sx={{textAlign:'right'}}>
+                    <Typography variant="h6" component="h2" sx={{textAlign:'right', fontWeight:'bold'}}>
                         Funds After Purchase
                     </Typography>
                 </Grid>
                 <Grid item md={6}>
                     <Typography variant="h6" component="h2">
-                        {currencyFormat(user?.bank - (asset.price*quantity))}
+                        {currencyFormat(user?.bank - (price*quantity))}
                     </Typography>
                 </Grid>
                 <Grid item md={12} sx={{display:'flex'}}>

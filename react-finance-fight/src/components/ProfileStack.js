@@ -17,7 +17,7 @@ import useGetUserAssetValues from '../hooks/useGetUserAssetValues';
 import useGetUserInfo from '../hooks/useGetUserInfo';
 import SellAssetModal from './SellAssetModal';
 import { useTheme } from '@mui/material/styles';
-import PurchaseAssetModal from './PurchaseAssetModal'
+import ProfilePurchaseModal from './ProfilePurchaseModal';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -34,6 +34,7 @@ export default function ProfileStack() {
 
   // Gets current user's assets
   const userAssets = useGetUserAssets()
+  console.log(userAssets)
   
   // Gets current user's most recent info (bank, #holdings, etc.)
   const user = useGetUserInfo()
@@ -130,7 +131,7 @@ export default function ProfileStack() {
                   {formatChange((userValues?.prices[index]*asset.quantity - asset.value)/asset.value*100)}
                 </td>
                 <td>
-                  <PurchaseAssetModal asset={asset}/>
+                  <ProfilePurchaseModal asset={asset} price={userValues?.prices[index]}/>
                 </td>
                 <td>
                   <SellAssetModal asset={asset} price={userValues?.prices[index]}/>
@@ -141,7 +142,7 @@ export default function ProfileStack() {
         </table>
         </Item>
         <Item sx={{width:'70%', p:5}}>
-            <Typography variant='h3' sx={{fontWeight:'bold', color:'black'}}>Edit Profile</Typography>
+            <Typography variant='h3' sx={{fontWeight:'bold', color:'black', textAlign:'left', mb:2}}>Edit Profile</Typography>
             <ProfileForm user={user}/>
         </Item>
       </Stack>

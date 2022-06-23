@@ -19,8 +19,8 @@ export default function usePurchaseAsset(purchaseInfo){
                 (async () => {
                     const response = await apiAsset.purchaseAsset(user.token, purchaseInfo.type, purchaseInfo.quantity, purchaseInfo.data, source.token);
                     if (response){
+                        window.location.reload()
                         setAlert({msg: `You purchased some ${purchaseInfo.data.symbol.toUpperCase()}!`, cat: 'success'})
-                        navigate('/profile')
                     }else if (response === false && response !== undefined){
                         setAlert({msg: 'There was an unexpected error. Please try again.', cat: 'error'})
                     }
