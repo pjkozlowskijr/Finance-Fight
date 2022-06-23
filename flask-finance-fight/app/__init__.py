@@ -6,19 +6,26 @@ from flask_login import LoginManager
 from flask_cors import CORS
 import os
 
-app = Flask(__name__)
-app.config.from_object(Config)
-
-login = LoginManager(app)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+login = LoginManager()
+db = SQLAlchemy()
+migrate = Migrate()
 if os.environ.get('FLASK_ENV') == 'development':
-    cors = CORS(app)
+    cors = CORS()
 
-from .blueprints.asset import bp as asset_bp
-app.register_blueprint(asset_bp)
+def create_app(config_class=Config):
+    app = Flask(__name__, static_folder='../client/build', static_url_path='')
+    app.config.from_object(Config)
 
-from .blueprints.user import bp as user_bp
-app.register_blueprint(user_bp)
+    login.init_app(app)
+    db.init_app(app)
+    migrate.init_app(app, db)
+    if os.environ.get('FLASK_ENV') == 'development':
+        cors.init_app(app)
 
-from app import models
+    from .blueprints.asset import bp as asset_bp
+    app.register_blueprint(asset_bp)
+
+    from .blueprints.user import bp as user_bp
+    app.register_blueprint(user_bp)
+
+    return app

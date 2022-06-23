@@ -1,35 +1,40 @@
-import { createContext, useCallback, useState, useEffect } from "react";
-
 // //////////////////////////////
 // APP CONTEXT
 // //////////////////////////////
 
+import { createContext, useState } from "react";
+
 export const AppContext = createContext();
 
 const AppContextProvider = ({children}) => {
-    // Context for USER
+    // Single user state
     const getUserFromLS = () => {
         let user = localStorage.getItem('user')
         if (user){
             return JSON.parse(user)
         }return {}
-    }
-
-    const [user, setUser] = useState(getUserFromLS())
-
-    // Context for ALERTS
-    const [alert, setAlert] = useState({})
+    };
+    const [user, setUser] = useState(getUserFromLS());
     
-    const [symbol, setSymbol] = useState()
+    // Alerts state
+    const [alert, setAlert] = useState({});
+    
+    // Asset symbol state
+    const [symbol, setSymbol] = useState();
 
-    const [asset, setAsset] = useState()
+    // Asset object state
+    const [asset, setAsset] = useState();
 
-    const [assetType, setAssetType] = useState('stock')
+    // Asset type state (search form)
+    const [assetType, setAssetType] = useState('stock');
 
+    // Asset quantity state (quantity slider in modals)
     const [quantity, setQuantity] = useState(10);
 
-    const [users, setUsers] = useState()
+    // All users state
+    const [users, setUsers] = useState();
 
+    // Open/close state for navbar
     const [open, setOpen] = useState(false);
   
     // Values passed to children
@@ -51,7 +56,7 @@ const AppContextProvider = ({children}) => {
         setUsers,
         open,
         setOpen
-    }
+    };
 
     return (
         <AppContext.Provider value={values}>

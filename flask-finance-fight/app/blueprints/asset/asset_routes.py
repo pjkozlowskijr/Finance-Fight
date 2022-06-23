@@ -1,3 +1,7 @@
+# #########################
+# ASSET ROUTES
+# #########################
+
 from . import bp as asset
 from app.models import Asset, Purchase
 from flask import make_response, request, g
@@ -5,10 +9,7 @@ from app.blueprints.user.user_routes import token_auth
 import os
 import requests
 
-# #########################
-# ASSET ROUTES
-# #########################
-
+# Purchase asset
 @asset.post('/asset/purchase/<string:type>/<int:quantity>')
 @token_auth.login_required()
 def purchase_asset(type, quantity):
@@ -23,19 +24,27 @@ def purchase_asset(type, quantity):
         }
     '''
     data = request.get_json()
+
+    # Check if asset is already in DB, and if so, use that asset
     if Asset.query.filter_by(symbol=data['symbol'].lower()).first():
         asset = Asset.query.filter_by(symbol=data['symbol'].lower()).first()
+
+    # If asset is not already in DB, create it
     else:
         asset = Asset()
         asset.asset_to_db(data, type)
         asset.save_asset()
+
+    # Create purchase record
     purchase = Purchase()
     purchase.purchase_to_db(data, quantity)
     purchase.save_purchase()
+
     g.current_user.purchase_asset(asset, purchase)
     g.current_user.save_user()
     return make_response(f'Successfully added asset {asset.__str__()} to holdings.', 200)
 
+# Sell asset
 @asset.delete('/asset/sell/<string:type>/<string:symbol>/<int:sell_qty>')
 @token_auth.login_required()
 def sell_asset(type, symbol, sell_qty):
@@ -45,27 +54,38 @@ def sell_asset(type, symbol, sell_qty):
     '''
     asset_symbol = symbol.upper().strip()
     FMP_API_KEY = os.environ.get('FMP_API_KEY')
+
+    # If asset is stock, use FMP stock URL
     if type == 'stock':
         fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{asset_symbol}?apikey={FMP_API_KEY}'
         fmp_response = requests.get(fmp_url_base)
         fmp_data = fmp_response.json()
         symbol = fmp_data[0]['symbol'].lower()
+
+    # If asset is crypto, use FMP crypto URL
     if type == 'crypto':
         fmp_url_base = f'https://financialmodelingprep.com/api/v3/quote/{asset_symbol}USD?apikey={FMP_API_KEY}'
         fmp_response = requests.get(fmp_url_base)
         fmp_data = fmp_response.json()
         symbol = fmp_data[0]['symbol'].lower()[:-3]
+
+    # Get symbol and price from data
     asset_data = {
         'symbol': symbol.lower(),
         'price': fmp_data[0]['price']
     }
+
     g.current_user.sell_asset(asset_data, sell_qty)
     return make_response(f'Successfully sold {sell_qty} {symbol}.', 200)
 
+# Get asset info
 @asset.get('/asset/<string:type>/<string:symbol>')
 def get_asset_info(type, symbol):
     '''
-        Gets asset info from external sources. No auth required. All requests utilize FMP_API_KEY for most info. Stocks also use FH_API_KEY for info not in first source. Crypto also use CMC_API_KEY for info not in first source.
+        Gets asset info from external sources. No auth required. 
+        All requests utilize FMP_API_KEY for most info. 
+        Stocks also use FH_API_KEY for info not in first source. 
+        Crypto also use CMC_API_KEY for info not in first source.
     '''
     FMP_API_KEY = os.environ.get('FMP_API_KEY')
     FH_API_KEY = os.environ.get('FH_API_KEY')

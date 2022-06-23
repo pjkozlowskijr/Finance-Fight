@@ -1,14 +1,10 @@
-import Typography from '@mui/material/Typography'
-import React, { useContext } from 'react'
-import { AppContext } from '../context/AppContext'
-import useGetAllUsers from '../hooks/useGetAllUsers'
 import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
-import Grid from '@mui/material/Grid';
-import { currencyFormat } from '../helpers';
 import CircularProgress from '@mui/material/CircularProgress';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import { currencyFormat } from '../helpers';
+import useGetAllUsers from '../hooks/useGetAllUsers';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -19,7 +15,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function UserLeaderboard() {
-  const users = useGetAllUsers()
+  const users = useGetAllUsers();
 
   if (!users){
     return(
@@ -27,7 +23,7 @@ export default function UserLeaderboard() {
             <CircularProgress/>
         </Box>
     )
-  }
+  };
 
   return (
     <Box sx={{width:'60%', m:'auto'}}>

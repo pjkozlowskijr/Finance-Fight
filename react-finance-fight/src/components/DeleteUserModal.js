@@ -1,13 +1,15 @@
-import * as React from 'react';
+// //////////////////////////////
+// POP UP MODAL FOR DELETE USER
+// //////////////////////////////
+
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import WarningIcon from '@mui/icons-material/Warning';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { AppContext } from '../context/AppContext';
+import Typography from '@mui/material/Typography';
+import React, { useState } from 'react';
 import useDeleteUser from '../hooks/useDeleteUser';
-import { useState } from 'react';
-import WarningIcon from '@mui/icons-material/Warning';
 
 const style = {
   position: 'absolute',
@@ -26,17 +28,15 @@ const style = {
   }
 
 export default function DeleteUserModal() {
-  const [open, setOpen] = React.useState(false);
+  // For opening and closing modal
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {user} = React.useContext(AppContext)
-  const [deleteUser, setDeleteUser] = useState({})
 
-  useDeleteUser(deleteUser)
-
-  const handleDelete = () => {
-    setDeleteUser({key:'value'})
-}
+  // Set info for useDeleteUser hook based on submit
+  const [deleteUser, setDeleteUser] = useState({});
+  const handleDelete = () => {setDeleteUser({key:'value'})};
+  useDeleteUser(deleteUser);
 
   return (
     <div>
@@ -52,8 +52,7 @@ export default function DeleteUserModal() {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="delete-user-modal"
         sx={{backgroundColor:'rgba(0, 0, 0, 0.75)'}}
       >
         <Box sx={style}>

@@ -1,10 +1,14 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
+// //////////////////////////////
+// QUANTITY SLIDER
+// //////////////////////////////
+
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import Slider from '@mui/material/Slider';
 import MuiInput from '@mui/material/Input';
+import Slider from '@mui/material/Slider';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
 import { AppContext } from '../context/AppContext';
 
 const Input = styled(MuiInput)`
@@ -12,9 +16,9 @@ const Input = styled(MuiInput)`
 `;
 
 export default function QuantitySlider() {
-  const {quantity, setQuantity} = React.useContext(AppContext)
+  const {quantity, setQuantity} = React.useContext(AppContext);
   const handleSliderChange = (event, newValue) => {
-    setQuantity(newValue);
+    setQuantity(newValue)
   };
 
   const handleInputChange = (event) => {
@@ -23,9 +27,9 @@ export default function QuantitySlider() {
 
   const handleBlur = () => {
     if (quantity < 0) {
-      setQuantity(0);
+      setQuantity(0)
     } else if (quantity > 100) {
-      setQuantity(100);
+      setQuantity(100)
     }
   };
 

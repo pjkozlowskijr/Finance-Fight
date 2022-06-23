@@ -1,15 +1,14 @@
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { useFormik } from 'formik';
-import { useContext, useState } from 'react';
-import * as Yup from 'yup';
-import Error from '../components/Error';
-import { AppContext } from '../context/AppContext';
-import useLogin from '../hooks/useLogin';
-
 // //////////////////////////////
 // LOGIN FORM
 // //////////////////////////////
+
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { useFormik } from 'formik';
+import { useState } from 'react';
+import * as Yup from 'yup';
+import Error from '../components/Error';
+import useLogin from '../hooks/useLogin';
 
 const FormSchema = Yup.object({
     email: Yup.string().email('Must be a valid email format.').required(),
@@ -22,15 +21,16 @@ const initialValues={
 }
 
 export default function LoginForm(){
-    const [loginCreds, setLoginCreds] = useState({})
     const [error, setError] = useState('')
-    
-    useLogin(loginCreds, setLoginCreds, setError)
-    
+
+    // Setting login credentials for useLogin hook
+    const [loginCreds, setLoginCreds] = useState({})
     const handleSubmit = (values, resetForm) => {
         setLoginCreds(values)
         resetForm(initialValues)
     }
+    
+    useLogin(loginCreds, setLoginCreds, setError);
 
     const formik = useFormik({
         initialValues: initialValues,

@@ -1,29 +1,33 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import CssBaseline from '@mui/material/CssBaseline';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+// //////////////////////////////
+// NAVBAR
+// //////////////////////////////
+
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import HelpIcon from '@mui/icons-material/Help';
+import HomeIcon from '@mui/icons-material/Home';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import MuiAppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import SearchIcon from '@mui/icons-material/Search';
-import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import HomeIcon from '@mui/icons-material/Home';
-import HelpIcon from '@mui/icons-material/Help';
-import LogoutIcon from '@mui/icons-material/Logout';
-import LoginIcon from '@mui/icons-material/Login';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import { styled, useTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
 import ThemeSwitch from './ThemeSwitch';
@@ -76,28 +80,38 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function PersistentDrawerRight({children}) {
   const theme = useTheme();
-  const {open, setOpen} = React.useContext(AppContext)
   const {user} = React.useContext(AppContext)
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  
+  // Opening & closing navbar side drawer
+  const {open, setOpen} = React.useContext(AppContext)
+  const handleDrawerOpen = () => {setOpen(true)};
+  const handleDrawerClose = () => {setOpen(false)};
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{backgroundColor:theme.palette.primary.main, backgroundImage:'none'}}>
+      <AppBar 
+        position="fixed" 
+        open={open} 
+        sx={{backgroundColor:theme.palette.primary.main, backgroundImage:'none'}}
+      >
         <Toolbar>
           <Box sx={{flexGrow: 1}}>
-          <Typography variant="h6" noWrap sx={{mr:3, display: 'inline', lineHeight:'40px'}} component="div">
+          <Typography 
+            variant="h6" 
+            noWrap 
+            sx={{mr:3, display: 'inline', lineHeight:'40px'}} 
+            component="div"
+          >
             Finance Fight
           </Typography>
             <Link to='/'>
-              <img height="40px" style={{verticalAlign:'top'}} src="https://res.cloudinary.com/detcvmtip/image/upload/v1655272091/finance%20fight/Business-trend-and-finance-logo-design-on-transparent-background-PNG_z2hsjy.png" alt="Finance Fight logo"/>
+              <img 
+                height="40px" 
+                style={{verticalAlign:'top'}} 
+                src="https://res.cloudinary.com/detcvmtip/image/upload/v1655272091/finance%20fight/Business-trend-and-finance-logo-design-on-transparent-background-PNG_z2hsjy.png" 
+                alt="Finance Fight logo"
+              />
             </Link>
           </Box>
           <IconButton
@@ -136,21 +150,32 @@ export default function PersistentDrawerRight({children}) {
         <Divider />
         <List>
           {[
-            {label: 'Home', path: '/', icon: <HomeIcon/>},
-            {label: 'Asset Lookup', path: '/search', icon: <SearchIcon/>},
-            {label: 'Leaderboard', path: '/leaderboard', icon: <LeaderboardIcon/>},
-            {label: 'Help', path: '/help', icon: <HelpIcon/>},
+            {label:'Home', path:'/', icon:<HomeIcon/>},
+            {label:'Asset Lookup', path:'/search', icon:<SearchIcon/>},
+            {label:'Leaderboard', path:'/leaderboard', icon:<LeaderboardIcon/>},
+            {label:'Help', path:'/help', icon:<HelpIcon/>},
+            
+            // If user is logged in, logout. If not, login.
             ((user?.token)?
-              {label: 'Logout', path: '/logout', icon: <LogoutIcon/>}
+              {label:'Logout', path:'/logout', icon:<LogoutIcon/>}
               :
-              {label: 'Login', path: '/login', icon: <LoginIcon/>}),
+              {label:'Login', path:'/login', icon:<LoginIcon/>}),
+            
+              // If user is logged in, account. If not, register.
             ((user?.token)?
-              {label: 'Account', path: '/profile', icon: <AccountCircleIcon/>}
+              {label:'Profile', path:'/profile', icon:<AccountCircleIcon/>}
               :
-              {label: 'Register', path: '/register', icon: <AppRegistrationIcon/>})
+              {label:'Register', path:'/register', icon:<AppRegistrationIcon/>})
           ].map((navItem) => (
             <ListItem key={navItem.label} disablePadding>
-              <Link to={navItem.path} style={{textDecoration:'none', color:theme.palette.text.secondary, width:'100%'}}>
+              <Link 
+                to={navItem.path} 
+                style={{
+                  textDecoration:'none', 
+                  color:theme.palette.text.secondary, 
+                  width:'100%'
+                }}
+              >
                 <ListItemButton>
                   <ListItemIcon sx={{color:theme.palette.text.secondary}}>
                     {navItem.icon}

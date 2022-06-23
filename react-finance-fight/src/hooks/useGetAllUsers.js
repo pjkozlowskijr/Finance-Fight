@@ -1,16 +1,20 @@
-import { useState, useEffect, useContext } from "react";
+// //////////////////////////////
+// Hook to get all users
+// //////////////////////////////
+
 import { CancelToken } from "apisauce";
+import { useContext, useEffect } from "react";
 import apiUser from '../api/apiUser';
-import { AppContext } from '../context/AppContext'
+import { AppContext } from '../context/AppContext';
 
 export default function useGetAllUsers() {
-    const {users, setUsers} = useContext(AppContext)
+    const {users, setUsers} = useContext(AppContext);
     
     useEffect(
         () => {
             const source = CancelToken.source();
             (async () => {
-                const response = await apiUser.getAllUsers(source.token)
+                const response = await apiUser.getAllUsers(source.token);
                 setUsers(response)
             })()
             return () => {source.cancel()}

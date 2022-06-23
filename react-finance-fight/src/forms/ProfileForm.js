@@ -1,19 +1,36 @@
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { useFormik } from 'formik';
-import { useState } from 'react';
-import * as Yup from 'yup';
-import { toTitleCase } from '../helpers';
-import useCreateUser from '../hooks/useCreateUser';
-import useEditUser from '../hooks/useEditUser';
-import DeleteUserModal from '../components/DeleteUserModal'
-import useGetUserInfo from '../hooks/useGetUserInfo';
-
 // //////////////////////////////
 // PROFILE FORM (register & edit)
 // //////////////////////////////
 
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { useFormik } from 'formik';
+import { useState } from 'react';
+import * as Yup from 'yup';
+import DeleteUserModal from '../components/DeleteUserModal';
+import { toTitleCase } from '../helpers';
+import useCreateUser from '../hooks/useCreateUser';
+import useEditUser from '../hooks/useEditUser';
+
 export default function ProfileForm({user}){
+    // Creating a user
+    const [createUser, setCreateUser] = useState({});
+    useCreateUser(createUser);
+    
+    // Editing a user
+    const [editUser, setEditUser] = useState({});
+    useEditUser(editUser);
+    
+    // Submit handles create or edit user depending on user.token
+    const handleSubmit = (values, resetForm) => {
+        if (user?.token){
+            setEditUser({...values, key:'value'})
+        }else{
+            setCreateUser(values)
+        }
+        resetForm(initialValues)
+    };
+
     const FormSchema = Yup.object(
         {
             first_name: Yup.string().required(),
@@ -23,15 +40,8 @@ export default function ProfileForm({user}){
             password: Yup.string().required(),
             confirm_pass: Yup.string().required().oneOf([Yup.ref('password'), null], 'Passwords must match.')
         }
-    )
-
-    const [createUser, setCreateUser] = useState({})
-    const [editUser, setEditUser] = useState({})
-
-    useCreateUser(createUser)
-    useEditUser(editUser)
-
-
+    );
+    
     const initialValues = {
         first_name: (user?.first_name) ? toTitleCase(user?.first_name) : '',
         last_name: (user?.last_name) ? toTitleCase(user?.last_name) : '',
@@ -39,23 +49,14 @@ export default function ProfileForm({user}){
         email: user?.email ?? '',
         password: '',
         confirm_pass: ''
-    }
-
-    const handleSubmit = (values, resetForm) => {
-        if (user?.token){
-            setEditUser({...values, key:'value'})
-        }else{
-            setCreateUser(values)
-        }
-        resetForm(initialValues)
-    }
+    };
 
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: FormSchema,
         onSubmit: (values, {resetForm}) => {handleSubmit(values, resetForm)},
         enableReinitialize: true
-    })
+    });
 
     return(
         <form onSubmit={formik.handleSubmit}>

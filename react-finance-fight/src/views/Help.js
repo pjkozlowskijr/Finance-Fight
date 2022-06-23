@@ -1,4 +1,8 @@
-import React from 'react'
+// //////////////////////////////
+// HELP PAGE
+// //////////////////////////////
+
+import React from 'react';
 
 export default function Help() {
   return (

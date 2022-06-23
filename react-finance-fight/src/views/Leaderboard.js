@@ -1,5 +1,8 @@
-import React from 'react'
-import UserLeaderboard from '../components/UserLeaderboard'
+// //////////////////////////////
+// USER LEADERBOARD
+// //////////////////////////////
+
+import UserLeaderboard from '../components/UserLeaderboard';
 
 export default function Leaderboard() {
   return (

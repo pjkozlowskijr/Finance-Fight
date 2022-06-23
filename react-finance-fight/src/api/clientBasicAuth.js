@@ -1,3 +1,7 @@
+// //////////////////////////////
+// API CLIENT - BASIC AUTH
+// //////////////////////////////
+
 import { create } from "apisauce";
 import base64 from 'base-64';
 
@@ -9,6 +13,6 @@ const apiClient = (email, password, cancelToken) => create(
         },
         cancelToken
     }
-)
+);
 
 export default apiClient

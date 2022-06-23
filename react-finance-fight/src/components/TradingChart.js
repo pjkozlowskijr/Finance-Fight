@@ -1,3 +1,7 @@
+// //////////////////////////////
+// TRADING VIEW WIDGET
+// //////////////////////////////
+
 import React, { useRef } from "react";
 import TradingViewWidget, { Themes } from "react-tradingview-widget";
 

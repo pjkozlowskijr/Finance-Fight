@@ -1,3 +1,7 @@
+// //////////////////////////////
+// API CLIENT - TOKEN AUTH
+// //////////////////////////////
+
 import { create } from "apisauce";
 
 const apiClient = (token, cancelToken) => create(
@@ -8,6 +12,6 @@ const apiClient = (token, cancelToken) => create(
         },
         cancelToken
     }
-)
+);
 
 export default apiClient

@@ -1,19 +1,20 @@
-import * as React from 'react';
+// //////////////////////////////
+// USER PROFILE
+// //////////////////////////////
+
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Divider from '@mui/material/Divider';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
-import ProfileForm from '../forms/ProfileForm';
-import { AppContext } from '../context/AppContext';
-import useGetUserAssets from '../hooks/useGetUserAssets'
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import { currencyChangeFormat, currencyFormat, formatChange, changeColor } from '../helpers';
-import useGetUserInfo from '../hooks/useGetUserInfo';
+import ProfileForm from '../forms/ProfileForm';
+import { changeColor, currencyChangeFormat, currencyFormat, formatChange } from '../helpers';
+import useGetUserAssets from '../hooks/useGetUserAssets';
 import useGetUserAssetValues from '../hooks/useGetUserAssetValues';
+import useGetUserInfo from '../hooks/useGetUserInfo';
 import SellAssetModal from './SellAssetModal';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -25,13 +26,18 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function ProfileStack() {
+  // Gets current user's assets
   const userAssets = useGetUserAssets()
+  
+  // Gets current user's most recent info (bank, #holdings, etc.)
   const user = useGetUserInfo()
+  
+  // Gets current user's assets current values as of page load
   const userValues = useGetUserAssetValues()
   const dollarChange = formatChange(userValues?.total_value - userAssets?.assets?.total_cost)
   const percentChange = formatChange((dollarChange/userAssets?.assets?.total_cost)*100)
 
-  if (!userAssets ?? user ?? userValues){
+  if (!userAssets ?? !user ?? !userValues){
     return(
         <Box sx={{width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center'}}>
             <CircularProgress/>
@@ -43,7 +49,9 @@ export default function ProfileStack() {
     <Box sx={{ width:'80%', margin:'auto'}}>
       <Stack spacing={3} divider={<Divider/>}>
         <Item>
-          <Typography sx={{textAlign:'center'}} variant='h4'>{user?.first_name+' '+user?.last_name+' ('+user?.display_name+')'}</Typography>
+          <Typography sx={{textAlign:'center'}} variant='h4'>
+            {user?.first_name+' '+user?.last_name+' ('+user?.display_name+')'}
+          </Typography>
           <table style={{width:'100%'}}>
             <thead>
               <tr>
@@ -104,7 +112,7 @@ export default function ProfileStack() {
                   {formatChange((userValues?.prices[index]*asset.quantity - asset.value)/asset.value*100)}
                 </td>
                 <td>
-                  <SellAssetModal asset={asset} price={userValues?.prices[index]} userAssets={userAssets}/>
+                  <SellAssetModal asset={asset} price={userValues?.prices[index]}/>
                 </td>
               </tr>
             ))}

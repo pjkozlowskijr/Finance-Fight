@@ -1,6 +1,10 @@
+// //////////////////////////////
+// ALERT - POP UP MESSAGES
+// //////////////////////////////
+
 import MuiAlert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
-import { useContext, useState, useEffect, forwardRef } from 'react';
+import { forwardRef, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const Alert = forwardRef(function Alert(props, ref){
@@ -9,12 +13,10 @@ const Alert = forwardRef(function Alert(props, ref){
 
 export default function AlertPopUp(){
     const [open, setOpen] = useState(false);
-    const {alert, setAlert} = useContext(AppContext)
+    const {alert, setAlert} = useContext(AppContext);
 
     useEffect(
-        ()=>{
-            setOpen(true)
-        }, [alert]
+        ()=>{setOpen(true)}, [alert]
     )
 
     const handleClose = (event, reason) => {
@@ -22,7 +24,7 @@ export default function AlertPopUp(){
             return;
         }
         setOpen(false);
-        setAlert({})
+        setAlert({});
     }
 
     if(!alert?.msg) return <></>

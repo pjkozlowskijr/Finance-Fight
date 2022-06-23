@@ -1,14 +1,18 @@
+// //////////////////////////////
+// SINGLE ASSET DISPLAY
+// //////////////////////////////
+
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import Typography from '@mui/material/Typography';
-import TradingChart from './TradingChart';
 import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
 import { currencyFormat, shortenMktCap, formatChange, formatRegNumber } from '../helpers';
 import PurchaseAssetModal from './PurchaseAssetModal';
-import Link from '@mui/material/Link';
+import TradingChart from './TradingChart';
 
 export default function SingleAsset({asset}){
-    const changeColor = (formatChange(asset.change_dollar).startsWith('+')) ? 'green' : 'red'
+    const changeColor = (formatChange(asset.change_dollar).startsWith('+')) ? 'green' : 'red';
     
     if (!asset){
         return(
@@ -16,7 +20,7 @@ export default function SingleAsset({asset}){
                 <CircularProgress/>
             </Box>
         )
-    }
+    };
 
     return(
         <Grid container sx={{mt:5}}>
@@ -41,8 +45,7 @@ export default function SingleAsset({asset}){
 
                     {/* 
                     Chose not to map the following grid items out because they come from
-                    a dictionary containig other items used in a separate part of this page. 
-                    Did not want to duplicate information.
+                    a dictionary containing items not used in this display.
                         */}
 
                     <Grid item md={3}>

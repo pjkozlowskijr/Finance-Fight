@@ -1,22 +1,22 @@
-import { useState, useEffect, useContext } from "react";
-import { CancelToken } from "apisauce";
-import apiUser from '../api/apiUser';
-import { AppContext } from '../context/AppContext'
+// /////////////////////////////////////
+// Hook to get all current user's assets
+// /////////////////////////////////////
 
-// //////////////////////////////
-// Hook to get all user assets
-// //////////////////////////////
+import { CancelToken } from "apisauce";
+import { useContext, useEffect, useState } from "react";
+import apiUser from '../api/apiUser';
+import { AppContext } from '../context/AppContext';
 
 export default function useGetUserAssets(){
-    const {user} = useContext(AppContext)
-    const [assets, setAssets] = useState({})
+    const {user} = useContext(AppContext);
+    const [assets, setAssets] = useState({});
 
     useEffect(
         () => {
-            const source = CancelToken.source()
+            const source = CancelToken.source();
             if (user?.token){
                 (async () => {
-                    const response = await apiUser.getUserAssets(user.token, source.token)
+                    const response = await apiUser.getUserAssets(user.token, source.token);
                     setAssets(response)
                 })()
             }

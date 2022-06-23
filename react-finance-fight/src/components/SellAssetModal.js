@@ -1,15 +1,18 @@
-import * as React from 'react';
+// //////////////////////////////
+// POP UP MODAL FOR SELL ASSET
+// //////////////////////////////
+
+import SellIcon from '@mui/icons-material/Sell';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import Modal from '@mui/material/Modal';
-import QuantitySlider from './QuantitySlider';
+import Typography from '@mui/material/Typography';
+import { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 import { currencyFormat } from '../helpers';
-import { Grid } from '@mui/material';
-import { useState, useContext } from 'react';
-import SellIcon from '@mui/icons-material/Sell';
 import useSellAsset from '../hooks/useSellAsset';
+import QuantitySlider from './QuantitySlider';
 
 const style = {
   position: 'absolute',
@@ -24,22 +27,26 @@ const style = {
   p: 4,
 };
 
-export default function SellAssetModal({asset, price, userAssets}) {
+export default function SellAssetModal({asset, price}) {
+  const {user, quantity,setAlert} = useContext(AppContext);
+
+  // Set modal open/close
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const {user, quantity,setAlert} = useContext(AppContext)
-  const [sale, setSale] = useState();
 
-  useSellAsset(sale)
+  // Set info for useSellAsset hook 
+  const [sale, setSale] = useState();
   const handleSellAsset = (value) => {
-    if (quantity <= asset.quantity){
-        setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity:quantity, data:{...value}})
-        console.log(sale)
-    }else{
-        setAlert({msg: "You can't sell what you don't own. Quantity selected is above your current holdings.", cat: 'error'})
-    }
-  }
+      // If the quantity trying to sell is less than what user has, setAlert and don't proceed
+      if (quantity <= asset.quantity){
+          setSale({type:asset.type.toLowerCase(), symbol:asset.symbol, quantity:quantity, data:{...value}})
+        }else{
+          setAlert({msg: "You can't sell what you don't own. Quantity selected is above your current holdings.", cat: 'error'})
+        }
+    };
+    
+  useSellAsset(sale);
 
   return (
     <div>
@@ -47,8 +54,7 @@ export default function SellAssetModal({asset, price, userAssets}) {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        aria-labelledby="sell-asset-modal"
       >
         <Box sx={style}>
             <Grid container spacing={2} columnSpacing={5}>

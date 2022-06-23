@@ -1,20 +1,21 @@
-import { useContext, useEffect, useState } from "react";
-import { CancelToken } from "apisauce";
-import apiUser from '../api/apiUser';
-import { AppContext } from "../context/AppContext";
-
 // //////////////////////////////
 // Hook to get user info
 // //////////////////////////////
 
+import { CancelToken } from "apisauce";
+import { useContext, useEffect } from "react";
+import apiUser from '../api/apiUser';
+import { AppContext } from "../context/AppContext";
+
 export default function useGetUserInfo(){
-    const {user, setUser} = useContext(AppContext)
+    const {user, setUser} = useContext(AppContext);
+    
     useEffect(
         () => {
             const source = CancelToken.source();
             if (user?.token){
                 (async () => {
-                    var response = await apiUser.getUserInfo(user.token, source.token)
+                    const response = await apiUser.getUserInfo(user.token, source.token);
                     if (response){
                         setUser(response.user)
                     }
