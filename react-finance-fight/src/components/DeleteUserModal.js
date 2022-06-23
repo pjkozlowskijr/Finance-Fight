@@ -7,8 +7,9 @@ import WarningIcon from '@mui/icons-material/Warning';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import useDeleteUser from '../hooks/useDeleteUser';
 
 const style = {
@@ -28,6 +29,8 @@ const style = {
   }
 
 export default function DeleteUserModal() {
+  const theme = useTheme()
+
   // For opening and closing modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -43,7 +46,15 @@ export default function DeleteUserModal() {
       <Button 
         color='error'
         variant='contained' 
-        sx={{width:'100%', fontWeight:'bold'}} 
+        sx={{
+          width:'100%', 
+          fontWeight:'bold', 
+          mt:2, 
+          backgroundColor:theme.palette.secondary.main,
+          '&:hover': {
+            backgroundColor:theme.palette.secondary.dark,
+          },
+        }} 
         startIcon={<DeleteForeverIcon/>} 
         onClick={handleOpen}
       >

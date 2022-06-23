@@ -9,6 +9,8 @@ import { useState } from 'react';
 import * as Yup from 'yup';
 import Error from '../components/Error';
 import useLogin from '../hooks/useLogin';
+import { useNavigate } from 'react-router-dom';
+import { useTheme } from '@mui/material/styles';
 
 const FormSchema = Yup.object({
     email: Yup.string().email('Must be a valid email format.').required(),
@@ -22,6 +24,8 @@ const initialValues={
 
 export default function LoginForm(){
     const [error, setError] = useState('')
+    const navigate = useNavigate()
+    const theme = useTheme()
 
     // Setting login credentials for useLogin hook
     const [loginCreds, setLoginCreds] = useState({})
@@ -45,7 +49,7 @@ export default function LoginForm(){
                 id = 'email'
                 name = 'email'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:1, mt:1}}
                 label = 'Email'
                 placeholder = 'Email'
                 value = {formik.values.email}
@@ -58,7 +62,7 @@ export default function LoginForm(){
                 name = 'password'
                 type = 'password'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:1, mt:1}}
                 label = 'Password'
                 placeholder = 'Password'
                 value = {formik.values.password}
@@ -66,7 +70,32 @@ export default function LoginForm(){
                 error = {formik.touched.password && Boolean(formik.errors.password)}
                 helperText = {formik.touched.password && formik.errors.password}
             />
-            <Button type='submit' sx={{width:'100%', fontWeight:'bold'}} variant='contained'>Login</Button>
+            <Button 
+                type='submit' 
+                sx={{
+                    width:'100%', 
+                    fontWeight:'bold',
+                    mt:1,
+                }} 
+                variant='contained'
+            >
+                Login
+            </Button>
+            <Button 
+                sx={{
+                    width:'100%', 
+                    fontWeight:'bold', 
+                    mt:2, 
+                    backgroundColor:theme.palette.secondary.main,
+                    '&:hover': {
+                        backgroundColor:theme.palette.secondary.dark,
+                    },
+                }} 
+                variant='contained' 
+                onClick={() => navigate('/register')}
+            >
+                Create Account
+            </Button>
             <Error>{error}</Error>
         </form>
     )

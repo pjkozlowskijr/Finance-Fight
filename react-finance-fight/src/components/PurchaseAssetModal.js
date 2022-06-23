@@ -51,7 +51,7 @@ export default function PurchaseAssetModal({asset}) {
     
   return (
     <div>
-      <Button variant='contained' sx={{py:0.5, mt:0.6}}startIcon={<MonetizationOnIcon/>} onClick={handleOpen}>Purchase</Button>
+      <Button variant='contained' sx={{mt:0.6, width:'5vw'}} startIcon={<MonetizationOnIcon/>} onClick={handleOpen}>Buy</Button>
       <Modal
         open={open}
         onClose={handleClose}

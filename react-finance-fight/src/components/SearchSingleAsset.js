@@ -1,19 +1,32 @@
 // //////////////////////////////
-// SINGLE ASSET DISPLAY
+// SEARCH SINGLE ASSET DISPLAY
 // //////////////////////////////
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { currencyFormat, shortenMktCap, formatChange, formatRegNumber } from '../helpers';
+import { currencyFormat, formatChange, formatRegNumber, shortenMktCap } from '../helpers';
 import PurchaseAssetModal from './PurchaseAssetModal';
 import TradingChart from './TradingChart';
 
-export default function SingleAsset({asset}){
-    const changeColor = (formatChange(asset.change_dollar).startsWith('+')) ? 'green' : 'red';
-    
+const HeaderTypography = styled(Typography)({
+    fontSize: '20px',
+    fontWeight: 'bold',
+    lineHeight: 3,
+    borderBottom: '1px solid black',
+})
+
+const DataTypography = styled(Typography)({
+    fontSize: '20px',
+    lineHeight: 3,
+    borderBottom: '1px solid black',
+    marginRight: '3vw'
+})
+
+export default function SearchSingleAsset({asset}){
     if (!asset){
         return(
             <Box sx={{width:'100%', height:'100%', display:'flex', justifyContent:'center', alignItems:'center'}}>
@@ -21,24 +34,28 @@ export default function SingleAsset({asset}){
             </Box>
         )
     };
+    
+    const changeColor = (formatChange(asset.change_dollar).startsWith('+')) ? 'green' : 'red'
 
     return(
-        <Grid container sx={{mt:5}}>
-            <Grid item md={12} sx={{display:'flex', justifyContent:'space-around', mb:3}}>
-                <PurchaseAssetModal asset={asset}/>
+        <Grid container sx={{mt:2, p:3}}>
+            <Grid item md={12} sx={{display:'flex', justifyContent:'space-between', mb:5}}>
                 <Typography variant='h4' sx={{fontWeight:'bold'}}>
                     {asset.name+' ('+asset.symbol+')'}
                 </Typography>
                 <Typography variant='h4'>
                     <span>{currencyFormat(asset.price)}</span>
+                    &nbsp;
                     <span style={{color:changeColor}}>{' '+formatChange(asset.change_dollar)}</span>
+                    &nbsp;
                     <span style={{color:changeColor}}>{' ('+formatChange(asset.change_percent)+'%)'}</span>
                 </Typography>
-                <Typography id='asset_link' variant='h6' sx={{lineHeight:2}}>
-                    <Link href={asset.website} underline='none' target='_blank' color='inherit'>
-                        Website: {asset.website}
+                <Typography variant='h4'>
+                    <Link href={asset.website} target='_blank' color='inherit'>
+                        Company Website
                     </Link>
                 </Typography>
+                <PurchaseAssetModal asset={asset}/>
             </Grid>
             <Grid item md={6}>
                 <Grid container>
@@ -49,124 +66,124 @@ export default function SingleAsset({asset}){
                         */}
 
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Open
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {currencyFormat(asset.open)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Industry
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {asset.industry}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Previous Close
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {currencyFormat(asset.previous_close)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Market Cap
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {shortenMktCap(asset.market_cap)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Day's High
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {currencyFormat(asset.day_high)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Volume
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {formatRegNumber(asset.volume)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Day's Low
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {currencyFormat(asset.day_low)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Avg. Volume
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {formatRegNumber(asset.volume_avg)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             Year's High
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {currencyFormat(asset.year_high)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography>
                             50-Day Average
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography>
                             {currencyFormat(asset.price_avg_50)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography sx={{borderBottom:'none'}}>
                             Year's Low
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography sx={{borderBottom:'none'}}>
                             {currencyFormat(asset.year_low)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <HeaderTypography sx={{borderBottom:'none'}}>
                             200-Day Average
-                        </Typography>
+                        </HeaderTypography>
                     </Grid>
                     <Grid item md={3}>
-                        <Typography>
+                        <DataTypography sx={{borderBottom:'none'}}>
                             {currencyFormat(asset.price_avg_200)}
-                        </Typography>
+                        </DataTypography>
                     </Grid>
                 </Grid>
             </Grid>

@@ -12,6 +12,7 @@ import Logout from './views/Logout'
 import Profile from './views/Profile'
 import Register from './views/Register'
 import SearchAsset from './views/SearchAsset'
+import ViewSingleAsset from './views/ViewSingleAsset'
 
 function App() {
 
@@ -29,6 +30,7 @@ function App() {
             <Route path='/profile' element={<Profile/>}/>
             <Route path='/register' element={<Register/>}/>
             <Route path='/search' element={<SearchAsset/>}/>
+            <Route path='/asset/:type/:symbol' element={<ViewSingleAsset/>}/>
           </Routes>
         </Box>
       </Navbar>

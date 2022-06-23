@@ -3,9 +3,11 @@
 // //////////////////////////////
 
 import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import DeleteUserModal from '../components/DeleteUserModal';
 import { toTitleCase } from '../helpers';
@@ -13,6 +15,9 @@ import useCreateUser from '../hooks/useCreateUser';
 import useEditUser from '../hooks/useEditUser';
 
 export default function ProfileForm({user}){
+    const theme = useTheme()
+    const navigate = useNavigate()
+
     // Creating a user
     const [createUser, setCreateUser] = useState({});
     useCreateUser(createUser);
@@ -64,7 +69,7 @@ export default function ProfileForm({user}){
                 id = 'first_name'
                 name = 'first_name'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:1, mt:1}}
                 label = 'First Name'
                 placeholder= 'First Name'
                 value = {formik.values.first_name}
@@ -76,7 +81,7 @@ export default function ProfileForm({user}){
                 id = 'last_name'
                 name = 'last_name'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:1, mt:1}}
                 label = 'Last Name'
                 placeholder= 'Last Name'
                 value = {formik.values.last_name}
@@ -88,7 +93,7 @@ export default function ProfileForm({user}){
                 id = 'display_name'
                 name = 'display_name'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:1, mt:1}}
                 label = 'Display Name'
                 placeholder= 'Display Name'
                 value = {formik.values.display_name}
@@ -100,7 +105,7 @@ export default function ProfileForm({user}){
                 id = 'email'
                 name = 'email'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:1, mt:1}}
                 label = 'Email'
                 placeholder= 'Email'
                 value = {formik.values.email}
@@ -113,7 +118,7 @@ export default function ProfileForm({user}){
                 name = 'password'
                 type = 'password'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:1, mt:1}}
                 label = 'Password'
                 placeholder= 'Password'
                 value = {formik.values.password}
@@ -126,7 +131,7 @@ export default function ProfileForm({user}){
                 name = 'confirm_pass'
                 type = 'password'
                 fullWidth
-                sx={{mb:2, mt:2}}
+                sx={{mb:1, mt:1}}
                 label = 'Confirm Password'
                 placeholder= 'Confirm Password'
                 value = {formik.values.confirm_pass}
@@ -136,15 +141,29 @@ export default function ProfileForm({user}){
             />
             <Button 
                 type='submit' 
-                sx={{width:'100%', fontWeight:'bold', mb:2}} 
+                sx={{width:'100%', fontWeight:'bold', mt:2}} 
                 variant='contained'
             >
-                {user?.token ? 'Edit Profile' : 'Register'}
+                {user?.token ? 'Edit Profile' : 'Create Account'}
             </Button>
             {user?.token ?
                 <DeleteUserModal/>
                 :
-                ''
+                <Button 
+                    sx={{
+                        width:'100%', 
+                        fontWeight:'bold',
+                        mt:2,
+                        backgroundColor:theme.palette.secondary.main,
+                        '&:hover': {
+                            backgroundColor:theme.palette.secondary.dark,
+                        },
+                    }} 
+                    variant='contained' 
+                    onClick={() => navigate('/login')}
+                >
+                    Login
+                </Button>
             }
         </form>
     )

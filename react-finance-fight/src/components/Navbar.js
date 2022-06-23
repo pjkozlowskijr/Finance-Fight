@@ -88,13 +88,14 @@ export default function PersistentDrawerRight({children}) {
   const handleDrawerClose = () => {setOpen(false)};
 
   return (
+    <>
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar 
         position="fixed" 
         open={open} 
         sx={{backgroundColor:theme.palette.primary.main, backgroundImage:'none'}}
-      >
+        >
         <Toolbar>
           <Box sx={{flexGrow: 1}}>
           <Typography 
@@ -102,7 +103,7 @@ export default function PersistentDrawerRight({children}) {
             noWrap 
             sx={{mr:3, display: 'inline', lineHeight:'40px'}} 
             component="div"
-          >
+            >
             Finance Fight
           </Typography>
             <Link to='/'>
@@ -111,7 +112,7 @@ export default function PersistentDrawerRight({children}) {
                 style={{verticalAlign:'top'}} 
                 src="https://res.cloudinary.com/detcvmtip/image/upload/v1655272091/finance%20fight/Business-trend-and-finance-logo-design-on-transparent-background-PNG_z2hsjy.png" 
                 alt="Finance Fight logo"
-              />
+                />
             </Link>
           </Box>
           <IconButton
@@ -120,7 +121,7 @@ export default function PersistentDrawerRight({children}) {
             edge="end"
             onClick={handleDrawerOpen}
             sx={{ ...(open && { display: 'none' }) }}
-          >
+            >
             <MenuIcon />
           </IconButton>
         </Toolbar>
@@ -141,7 +142,7 @@ export default function PersistentDrawerRight({children}) {
         variant="persistent"
         anchor="right"
         open={open}
-      >
+        >
         <DrawerHeader sx={{backgroundColor: theme.palette.primary.main}}>
           <IconButton onClick={handleDrawerClose} sx={{color: '#fff'}}>
             {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
@@ -157,15 +158,15 @@ export default function PersistentDrawerRight({children}) {
             
             // If user is logged in, logout. If not, login.
             ((user?.token)?
-              {label:'Logout', path:'/logout', icon:<LogoutIcon/>}
-              :
-              {label:'Login', path:'/login', icon:<LoginIcon/>}),
+            {label:'Logout', path:'/logout', icon:<LogoutIcon/>}
+            :
+            {label:'Login', path:'/login', icon:<LoginIcon/>}),
             
-              // If user is logged in, account. If not, register.
+            // If user is logged in, account. If not, register.
             ((user?.token)?
-              {label:'Profile', path:'/profile', icon:<AccountCircleIcon/>}
-              :
-              {label:'Register', path:'/register', icon:<AppRegistrationIcon/>})
+            {label:'Profile', path:'/profile', icon:<AccountCircleIcon/>}
+            :
+            {label:'Create Account', path:'/register', icon:<AppRegistrationIcon/>})
           ].map((navItem) => (
             <ListItem key={navItem.label} disablePadding>
               <Link 
@@ -175,7 +176,7 @@ export default function PersistentDrawerRight({children}) {
                   color:theme.palette.text.secondary, 
                   width:'100%'
                 }}
-              >
+                >
                 <ListItemButton>
                   <ListItemIcon sx={{color:theme.palette.text.secondary}}>
                     {navItem.icon}
@@ -191,5 +192,6 @@ export default function PersistentDrawerRight({children}) {
         </ListItem>
       </Drawer>
     </Box>
+    </>
   );
 }

@@ -13,6 +13,7 @@ import { AppContext } from '../context/AppContext';
 import { currencyFormat } from '../helpers';
 import useSellAsset from '../hooks/useSellAsset';
 import QuantitySlider from './QuantitySlider';
+import { useTheme } from '@mui/material/styles';
 
 const style = {
   position: 'absolute',
@@ -28,7 +29,8 @@ const style = {
 };
 
 export default function SellAssetModal({asset, price}) {
-  const {user, quantity,setAlert} = useContext(AppContext);
+  const {user, quantity, setAlert} = useContext(AppContext);
+  const theme = useTheme();
 
   // Set modal open/close
   const [open, setOpen] = useState(false);
@@ -50,7 +52,22 @@ export default function SellAssetModal({asset, price}) {
 
   return (
     <div>
-      <Button variant='contained' startIcon={<SellIcon/>} onClick={handleOpen}>Sell</Button>
+      <Button 
+        variant='contained' 
+        sx={{
+            py:0.5, 
+            my:2, 
+            backgroundColor:theme.palette.secondary.main,           
+            '&:hover': {
+                backgroundColor:theme.palette.secondary.dark,
+            }, 
+            width:'5vw'
+        }} 
+        startIcon={<SellIcon/>} 
+        onClick={handleOpen}
+      >
+        Sell
+      </Button>
       <Modal
         open={open}
         onClose={handleClose}

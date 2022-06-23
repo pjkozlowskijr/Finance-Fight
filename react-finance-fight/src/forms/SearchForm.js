@@ -53,63 +53,64 @@ export default function SearchForm(){
 
     return(
         <Box sx={{width:'60%', m:'auto'}}>
-        <FormControl sx={{mb:1}}>
-            <Box sx={{display:'flex'}}>
-            <FormLabel 
-                id="asset-type" 
-                sx={{
-                    display:'inline-flex', 
-                    alignItems:'center', 
-                    lineHeight:1.5, 
-                    mr:3
-                }}
-            >
-                Asset Type:
-            </FormLabel>
-            <RadioGroup
-                row
-                aria-labelledby="asset-type"
-                name="asset-type"
-                value={assetType}
-                onChange={handleChange}
-                >
-                <FormControlLabel 
-                value={'stock'}
-                control={<Radio/>} 
-                label={'Stock'}
-                />
-                <FormControlLabel 
-                value={'crypto'}
-                control={<Radio/>} 
-                label={'Cryptocurrency'}
-                />
-            </RadioGroup>
+            <FormControl sx={{mb:1}}>
+                <Box sx={{display:'flex'}}>
+                    <FormLabel 
+                        id="asset-type" 
+                        sx={{
+                            display:'inline-flex', 
+                            alignItems:'center', 
+                            lineHeight:1.5, 
+                            mr:3,
+                            fontSize: '1.25em'
+                        }}
+                    >
+                        Asset Type:
+                    </FormLabel>
+                    <RadioGroup
+                        row
+                        aria-labelledby="asset-type"
+                        name="asset-type"
+                        value={assetType}
+                        onChange={handleChange}
+                        >
+                        <FormControlLabel 
+                        value={'stock'}
+                        control={<Radio/>} 
+                        label={'Stock'}
+                        />
+                        <FormControlLabel 
+                        value={'crypto'}
+                        control={<Radio/>} 
+                        label={'Cryptocurrency'}
+                        />
+                    </RadioGroup>
                 </Box>
-        </FormControl>
-        <Typography sx={{color: theme?.palette.secondary.main}}>
-            Note: Only TICKER SYMBOLS are accepted in search. For example, enter "AMZN" to search Amazon.
-        </Typography>
-        <form onSubmit={formik.handleSubmit}>
-            <TextField
-                id = 'symbol'
-                name = 'symbol'
-                fullWidth
-                sx={{mb:2}}
-                label = 'Symbol'
-                placeholder = 'Symbol'
-                value = {formik.values.symbol}
-                onChange = {formik.handleChange}
-                error = {formik.touched.symbol && Boolean(formik.errors.symbol)}
-                helperText = {formik.touched.symbol && formik.errors.symbol}
-            />
-            <Button 
-                type='submit' 
-                sx={{width:'100%', fontWeight:'bold'}} 
-                variant='contained'
-            >
-                Search
-            </Button>
-        </form>
+            </FormControl>
+            <Typography sx={{color: theme?.palette.secondary.main}}>
+                Note: Only TICKER SYMBOLS are accepted in search. For example, enter "AMZN" to search Amazon.
+            </Typography>
+            <form onSubmit={formik.handleSubmit}>
+                <TextField
+                    id = 'symbol'
+                    name = 'symbol'
+                    fullWidth
+                    sx={{mb:2}}
+                    label = 'Symbol'
+                    placeholder = 'Symbol'
+                    value = {formik.values.symbol}
+                    onChange = {formik.handleChange}
+                    error = {formik.touched.symbol && Boolean(formik.errors.symbol)}
+                    helperText = {formik.touched.symbol && formik.errors.symbol}
+                />
+                <Button 
+                    type='submit' 
+                    sx={{width:'100%', fontWeight:'bold'}} 
+                    variant='contained'
+                >
+                    Search
+                </Button>
+            </form>
         </Box>
     )
 }

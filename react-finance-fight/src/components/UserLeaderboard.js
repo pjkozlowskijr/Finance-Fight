@@ -3,7 +3,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { currencyFormat } from '../helpers';
+import { changeColor, currencyFormat, formatChange } from '../helpers';
 import useGetAllUsers from '../hooks/useGetAllUsers';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -26,32 +26,40 @@ export default function UserLeaderboard() {
   };
 
   return (
-    <Box sx={{width:'60%', m:'auto'}}>
-      <Typography sx={{textAlign:'center'}}>Leaderboard</Typography>
+    <Paper sx={{width:'90%', m:'auto', p:2, mt:'-64px'}}>
+      <Typography sx={{fontWeight:'bold', color:'black', mb:3, textAlign:'center'}} variant='h3'>Leaderboard</Typography>
       <table style={{width:'100%'}}>
         <thead>
-          <tr>
+          <tr className='leader-head'>
             <th scope="col">Rank</th>
             <th scope="col">User</th>
-            <th scope="col">Total Value</th>
-            <th scope="col">Asset Value</th>
-            <th scope="col">Companies Held</th>
-            <th scope="col">Total Shares</th>
+            <th scope="col">Net Worth</th>
+            <th scope="col">Bank Funds</th>
+            <th scope="col">Asset Costs</th>
+            <th scope="col">Current Value</th>
+            <th scope="col">$ Change</th>
+            <th scope="col">% Change</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className='leader-rows'>
           {users?.users?.map((user, index) => (
-            <tr key={user?.display_name} style={{textAlign:'center'}}>
+            <tr key={user?.display_name} className='leader-data'>
               <td>{index + 1}</td>
               <td>{user?.display_name}</td>
               <td>{currencyFormat(user?.total_value)}</td>
+              <td>{currencyFormat(user?.bank)}</td>
+              <td>{currencyFormat(user?.asset_costs)}</td>
               <td>{currencyFormat(user?.asset_value)}</td>
-              <td>{user?.qty_company}</td>
-              <td>{user?.qty_assets}</td>
+              <td style={{color:changeColor(formatChange(user?.asset_value - user?.asset_costs))}}>
+                {formatChange(user?.asset_value - user?.asset_costs)}
+              </td>
+              <td style={{color:changeColor(formatChange((user?.asset_value - user?.asset_costs)/user?.asset_costs*100))}}>
+                {formatChange((user?.asset_value - user?.asset_costs)/user?.asset_costs*100)}
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-    </Box>
+    </Paper>
   )
 }

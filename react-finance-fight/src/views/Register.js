@@ -8,8 +8,8 @@ import ProfileForm from '../forms/ProfileForm';
 
 export default function Login() {
   return (
-    <Paper sx={{width:'50vw', p:2, m:'auto', mt:5}}>
-        <Typography variant='h3' sx={{fontWeight:'bold'}}>Register</Typography>
+    <Paper sx={{width:'50vw', p:5, m:'auto', mt:'-64px'}}>
+        <Typography variant='h3' sx={{fontWeight:'bold'}}>Create Account</Typography>
         <ProfileForm/>
     </Paper>
   )
