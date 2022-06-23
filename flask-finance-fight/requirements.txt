@@ -24,9 +24,14 @@ idna==3.3
 importlib-metadata==4.11.3
 itsdangerous==2.1.2
 Jinja2==3.1.2
+lxml==4.9.0
 Mako==1.2.0
 MarkupSafe==2.1.1
+multitasking==0.0.10
+numpy==1.22.4
+pandas==1.4.2
 psycopg2==2.9.3
+python-dateutil==2.8.2
 python-dotenv==0.20.0
 pytz==2022.1
 requests==2.27.1
