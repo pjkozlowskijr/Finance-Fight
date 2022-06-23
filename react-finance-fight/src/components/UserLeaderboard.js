@@ -1,18 +1,9 @@
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { changeColor, currencyFormat, formatChange } from '../helpers';
 import useGetAllUsers from '../hooks/useGetAllUsers';
-
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: 'center',
-  color: theme.palette.text.secondary,
-}));
 
 export default function UserLeaderboard() {
   const users = useGetAllUsers();
@@ -27,21 +18,21 @@ export default function UserLeaderboard() {
 
   return (
     <Paper sx={{width:'90%', m:'auto', p:2, mt:'-64px'}}>
-      <Typography sx={{fontWeight:'bold', color:'black', mb:3, textAlign:'center'}} variant='h3'>Leaderboard</Typography>
-      <table style={{width:'100%'}}>
+      <Typography sx={{fontWeight:'bold', color:'black', mb:3, textAlign:'center'}} variant='h3'>User Leaderboard</Typography>
+      <table style={{width:'100%'}} className='table table-striped'>
         <thead>
           <tr className='leader-head'>
-            <th scope="col">Rank</th>
-            <th scope="col">User</th>
-            <th scope="col">Net Worth</th>
-            <th scope="col">Bank Funds</th>
-            <th scope="col">Asset Costs</th>
-            <th scope="col">Current Value</th>
-            <th scope="col">$ Change</th>
-            <th scope="col">% Change</th>
+            <th class="text-center" scope="col">Rank</th>
+            <th class="text-center" scope="col">User</th>
+            <th class="text-center" scope="col">Net Worth</th>
+            <th class="text-center" scope="col">Bank Funds</th>
+            <th class="text-center" scope="col">Asset Costs</th>
+            <th class="text-center" scope="col">Current Value</th>
+            <th class="text-center" scope="col">$ Change</th>
+            <th class="text-center" scope="col">% Change</th>
           </tr>
         </thead>
-        <tbody className='leader-rows'>
+        <tbody>
           {users?.users?.map((user, index) => (
             <tr key={user?.display_name} className='leader-data'>
               <td>{index + 1}</td>

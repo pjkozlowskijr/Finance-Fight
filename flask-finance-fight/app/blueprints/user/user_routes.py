@@ -183,7 +183,7 @@ def get_all_users():
                 dict['asset_value'] = total_value
     
     # Sort user dicts by total value for ranking on leaderboard
-    user_dicts = sorted(user_dicts, key=lambda d: d['total_value'], reverse=True)
+    user_dicts = sorted(user_dicts, key=lambda d: d['asset_value'], reverse=True)
     return make_response({'users':user_dicts}, 200)
 
 # Get current user info

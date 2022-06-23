@@ -19,7 +19,7 @@ export default function useDeleteUser(deleteUser){
                 (async () => {
                     const response = await apiUser.deleteUser(user.token, source.token);
                     if (response){
-                        setAlert({msg: 'Account deleted successfully. Sad to see you go.', cat: 'success'})
+                        setAlert({msg: "Account deleted successfully. We're sad to see you go.", cat: 'success'})
                         setUser({})
                         navigate('/')
                     }else if (response === false && response !== undefined){
@@ -29,6 +29,6 @@ export default function useDeleteUser(deleteUser){
             }
             return () => {source.cancel()}
         },
-        [user?.token, deleteUser, setAlert]
+        [user?.token, deleteUser, setAlert, navigate, setUser]
     )
 }

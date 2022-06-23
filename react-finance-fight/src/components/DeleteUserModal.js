@@ -67,11 +67,11 @@ export default function DeleteUserModal() {
         sx={{backgroundColor:'rgba(0, 0, 0, 0.75)'}}
       >
         <Box sx={style}>
-            <Typography variant='h4' sx={{textAlign:'center'}}>
+            <Typography variant='h4' sx={{textAlign:'center', fontWeight:'bold'}}>
                 <WarningIcon/> WARNING <WarningIcon/>
             </Typography>
-            <Typography>
-                This action cannot be undone. Click outside of this warning to go back. Click "Delete Profile" to permanently delete your account.
+            <Typography variant='h6'>
+                This action cannot be undone. Click outside this warning to go back. Click "Delete Profile" to permanently delete your account.
             </Typography>
             <Button 
                 color='error' 

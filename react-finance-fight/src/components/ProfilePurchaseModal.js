@@ -58,6 +58,7 @@ export default function ProfilePurchaseModal({asset, price}) {
         open={open}
         onClose={handleClose}
         aria-labelledby="purchase-asset-modal"
+        sx={{backgroundColor:'rgba(0, 0, 0, 0.75)'}}
       >
         <Box sx={style}>
             <Grid container spacing={2} columnSpacing={5}>

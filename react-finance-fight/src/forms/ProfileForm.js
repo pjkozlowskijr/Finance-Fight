@@ -143,7 +143,7 @@ export default function ProfileForm({user}){
                 InputProps = {{
                     endAdornment: (
                     <InputAdornment position='end'>
-                        <IconButton onClick={handleShowPassword}>
+                        <IconButton tabIndex='-1' onClick={handleShowPassword}>
                             {showPassword ? <VisibilityOffIcon/> : <VisibilityIcon/>}
                         </IconButton>
                     </InputAdornment>
@@ -167,7 +167,7 @@ export default function ProfileForm({user}){
                 InputProps = {{
                     endAdornment: (
                     <InputAdornment position='end'>
-                        <IconButton onClick={handleShowPassword}>
+                        <IconButton tabIndex='-1' onClick={handleShowPassword}>
                             {showPassword ? <VisibilityOffIcon/> : <VisibilityIcon/>}
                         </IconButton>
                     </InputAdornment>

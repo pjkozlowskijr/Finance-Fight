@@ -72,6 +72,7 @@ export default function SellAssetModal({asset, price}) {
         open={open}
         onClose={handleClose}
         aria-labelledby="sell-asset-modal"
+        sx={{backgroundColor:'rgba(0, 0, 0, 0.75)'}}
       >
         <Box sx={style}>
             <Grid container spacing={2} columnSpacing={5}>

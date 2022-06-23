@@ -154,7 +154,7 @@ export default function PersistentDrawerRight({children}) {
             {label:'Home', path:'/', icon:<HomeIcon/>},
             {label:'Asset Lookup', path:'/search', icon:<SearchIcon/>},
             {label:'Leaderboard', path:'/leaderboard', icon:<LeaderboardIcon/>},
-            {label:'Help', path:'/help', icon:<HelpIcon/>},
+            {label:'FAQs', path:'/help', icon:<HelpIcon/>},
             
             // If user is logged in, logout. If not, login.
             ((user?.token)?

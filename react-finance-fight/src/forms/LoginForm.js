@@ -82,7 +82,7 @@ export default function LoginForm(){
                 InputProps = {{
                     endAdornment: (
                     <InputAdornment position='end'>
-                        <IconButton onClick={handleShowPassword}>
+                        <IconButton tabIndex='-1' onClick={handleShowPassword}>
                             {showPassword ? <VisibilityOffIcon/> : <VisibilityIcon/>}
                         </IconButton>
                     </InputAdornment>
