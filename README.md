@@ -2,16 +2,46 @@
 
 ## About This Project
 
-- First ever React JS project
+Finance Fight is a full-stack web application allowing users to make fake purchases of real stocks or cryptocurrencies to test their investing skills in a risk-free environment. Each user starts out with $10k to purchase any stocks or cryptocurrencies of their choosing. A user can make as many purchases as they wish provided they have money in their bank. Users may also sell assets at anytime to increase the funds in their bank. All purchases and sales are made at the ***current*** market value to provide the user with the experience of gaining or losing money on the investment. Users can view the leaderboard to see how their portfolio stacks up against other users.
 
-## Skills Used
+Finance Fight is built with a Flask backend connecting to a SQLite database and a React frontend. I built RESTful API's to connect to my database as well as 4 external sources for financial data. This is one of my first times working with React, so I'm excited to continue learning, revamping existing features, and building out new ones. 
 
-- RESTful API's to pull financial data on both stocks and cryptocurrencies
+## Languages & Tools Used
 
-## Challenges Leading to Skill Improvement
+<div>
+  <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original-wordmark.svg" alt="React" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/javascript/javascript-original.svg" alt="JavaScript" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/html5/html5-original-wordmark.svg" alt="HTML5" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/css3/css3-original-wordmark.svg" alt="CSS3" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/materialui/materialui-original.svg" alt="MUI" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/bootstrap/bootstrap-original-wordmark.svg" alt="Bootstrap" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/postgresql/postgresql-original-wordmark.svg" alt="PostgreSQL" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/sqlite/sqlite-original-wordmark.svg" alt="SQLite" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/python/python-original-wordmark.svg" alt="Python" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/flask/flask-original-wordmark.svg" alt="Flask" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/sqlalchemy/sqlalchemy-original-wordmark.svg" alt="SQL Alchemy" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/git/git-original-wordmark.svg" alt="Git" height="40" width="40">&nbsp;
+  <img src="https://github.com/devicons/devicon/blob/master/icons/vscode/vscode-original-wordmark.svg" alt="VS Code" height="40" width="40">&nbsp;
+</div>
 
-- Using React hooks, specifically useState and useEffect
-- Preventing infinite loops when using React hooks
-- Implementing an API to pull updated price info for user assets upon viewing user profile or user leaderboard
-- Building a user leaderboard to show all users' basic stats (ranking, total asset value, companies held, total shares held)
-- Creating complex Flask routes to update PostgreSQL database based on user input and API data
+## Future Plans/Wish List
+
+- Allow the user to customize which symbols appear on the ticker tape scrolling at the top of the page.
+- Enable search capability by company name (currently symbol only) or ability to lookup the ticker symbol.
+- Deploy websockets to replace current API's for a more steady and current stream of financial data.
+- Build out functionality for user to sort leaderboard by column to create custom views.
+- Integrate Stripe's payment API so users can increase their available funds with ***fake*** deposits.
+
+## Challenges
+
+- The biggest challenge I faced was creating the user leaderboard. I had to pull data for each asset that each user owns. In addition, I had to obtain some of that data from my database (purchase info) and some of the data from external sources (current asset values). Once the data was obtained, I then had to perform calculations and display the data in an organized manor. 
+- This was one of my first projects working with React, so it took some time to get use to the built-in hooks, specifically useEffect. There were a few times where I ran into an infinite loop and had to take a closer look at the parameters being included in the dependency array.
+- I started this project with a PostgreSQL database. As I continued hooking up API's to get user asset data, the database started responding with 500 errors due to there being too many connections for the free plan I was utilizing. I then pivoted to using a SQLite database which was able to handle the amount of connections. This caused me to be unable to deploy my app on Heroku as the SQLite database would be regularly deleted and remade. One of my main focuses at this time is making my API calls to the database more efficient to reduce open connections to be able to transition back to PostgreSQL for deployment.
+
+## Financial Data Provided By
+
+- [CoinMarketCap](https://coinmarketcap.com/api/documentation/v1/)
+- [Finage](https://finage.co.uk/docs/api/getting-started)
+- [Financial Modeling Prep](https://site.financialmodelingprep.com/developer/docs/)
+- [Finnhub](https://finnhub.io/docs/api)
+- [TradingView](https://www.tradingview.com/widget/)
