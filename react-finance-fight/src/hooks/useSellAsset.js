@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function useSellAsset(saleInfo){
     const {user, setAlert} = useContext(AppContext);
-    const navigate = useNavigate();
 
     useEffect(
         () => {
@@ -28,6 +27,6 @@ export default function useSellAsset(saleInfo){
             }
             return () => {source.cancel()}
         },
-        [saleInfo, setAlert]
+        [saleInfo, setAlert, user.token]
     )
 }

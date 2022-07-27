@@ -15,7 +15,7 @@ export default function Home() {
             FINANCE<br/>FIGHT
           </Typography>
         </Box>
-        <img style={{height:'70vh', position:'absolute', top:'25vh', left:'30vw'}} src='https://res.cloudinary.com/detcvmtip/image/upload/v1655878466/finance%20fight/bitcoin-trading-chart-png_jqkpex_stq869.png'/>
+        <img style={{height:'70vh', position:'absolute', top:'25vh', left:'30vw'}} src='https://res.cloudinary.com/detcvmtip/image/upload/v1655878466/finance%20fight/bitcoin-trading-chart-png_jqkpex_stq869.png' alt='Phone with trading chart and bitcoins.'/>
         <Box>
           <Typography 
             variant = {(open) ? 'h5' : 'h4'} 

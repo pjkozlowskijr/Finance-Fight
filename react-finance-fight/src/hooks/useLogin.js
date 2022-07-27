@@ -31,6 +31,6 @@ export default function useLogin(loginCreds, setLoginCreds, setError){
             }
             return () => {source.cancel()}
         },
-        [loginCreds, setLoginCreds, setError, setAlert]
+        [loginCreds, setLoginCreds, setError, setAlert, navigate, setUser]
     )
 }

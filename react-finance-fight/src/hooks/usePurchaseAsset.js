@@ -10,7 +10,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function usePurchaseAsset(purchaseInfo){
     const {user, setAlert} = useContext(AppContext);
-    const navigate = useNavigate();
 
     useEffect(
         () => {
@@ -28,6 +27,6 @@ export default function usePurchaseAsset(purchaseInfo){
             }
             return () => {source.cancel()}
         },
-        [purchaseInfo, setAlert]
+        [purchaseInfo, setAlert, user.token]
     )
 }

@@ -31,6 +31,6 @@ export default function useEditUser(data){
             }
             return () => {source.cancel()}
         },
-        [data.key]
+        [data.key, data, getUserFromLS, setAlert, setUserInfo, user.token]
     )
 }

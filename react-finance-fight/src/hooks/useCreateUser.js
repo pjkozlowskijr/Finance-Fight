@@ -30,6 +30,6 @@ export default function useCreateUser(data){
             }
             return () => {source.cancel()}
         },
-        [data, setAlert]
+        [data, setAlert, navigate]
     )
 }

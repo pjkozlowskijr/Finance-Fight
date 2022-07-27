@@ -30,7 +30,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export default function ProfileStack() {
   const navigate = useNavigate();
-  const theme = useTheme();
 
   // Gets current user's assets
   const userAssets = useGetUserAssets()
