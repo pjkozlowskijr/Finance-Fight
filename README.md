@@ -4,7 +4,9 @@
 
 Finance Fight is a full-stack web application allowing users to make fake purchases of real stocks or cryptocurrencies to test their investing skills in a risk-free environment. Each user starts out with $10k to purchase any stocks or cryptocurrencies of their choosing. A user can make as many purchases as they wish provided they have money in their bank. Users may also sell assets at anytime to increase the funds in their bank. All purchases and sales are made at the ***current*** market value to provide the user with the experience of gaining or losing money on the investment. Users can view the leaderboard to see how their portfolio stacks up against other users.
 
-Finance Fight is built with a Flask backend connecting to a SQLite database and a React frontend. I built RESTful API's to connect to my database as well as 4 external sources for financial data. This is one of my first times working with React, so I'm excited to continue learning, revamping existing features, and building out new ones. 
+Finance Fight is built with a Flask backend connecting to a SQLite database and a React frontend. I built RESTful API's to connect to my database as well as 4 external sources for financial data. This is one of my first times working with React, so I'm excited to continue learning, revamping existing features, and building out new ones.
+
+Check out the deployed version at [https://finance-fight.herokuapp.com/](https://finance-fight.herokuapp.com/).
 
 ## Languages & Tools Used
 
