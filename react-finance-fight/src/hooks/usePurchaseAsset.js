@@ -6,7 +6,6 @@ import { CancelToken } from "apisauce";
 import { useContext, useEffect } from "react";
 import apiAsset from '../api/apiAsset';
 import { AppContext } from "../context/AppContext";
-import { useNavigate } from 'react-router-dom';
 
 export default function usePurchaseAsset(purchaseInfo){
     const {user, setAlert} = useContext(AppContext);

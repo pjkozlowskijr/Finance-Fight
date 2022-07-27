@@ -16,7 +16,6 @@ import useGetUserAssets from '../hooks/useGetUserAssets';
 import useGetUserAssetValues from '../hooks/useGetUserAssetValues';
 import useGetUserInfo from '../hooks/useGetUserInfo';
 import SellAssetModal from './SellAssetModal';
-import { useTheme } from '@mui/material/styles';
 import ProfilePurchaseModal from './ProfilePurchaseModal';
 
 const Item = styled(Paper)(({ theme }) => ({

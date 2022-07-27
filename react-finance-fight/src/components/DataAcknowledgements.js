@@ -1,8 +1,6 @@
 import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useContext } from 'react';
-import { AppContext } from '../context/AppContext';
 
 export default function DataAcknowledgements() {
   return (
