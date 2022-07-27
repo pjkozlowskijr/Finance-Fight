@@ -1,0 +1,29 @@
+table{
+    border-collapse: collapse;
+    max-width: 100%;
+}
+
+.profile-head{
+    color: black;
+    font-size: 24px;
+    border-bottom: 1px solid black;
+}
+
+#user-summary{
+    font-size: 24px;
+}
+
+.user-assets{
+    font-size: 24px;
+}
+
+.leader-head{
+    font-size: 24px;
+    border-bottom: 1px solid black;
+}
+
+.leader-data{
+    font-size: 22px;
+    text-align: center;
+    line-height: 55px;
+}

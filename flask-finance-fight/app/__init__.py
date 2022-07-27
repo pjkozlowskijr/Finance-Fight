@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_from_directory
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -21,6 +21,14 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     if os.environ.get('FLASK_ENV') == 'development':
         cors.init_app(app)
+
+    @app.route('/')
+    def serve():
+        return send_from_directory(app.static_folder, 'index.html')
+
+    @app.errorhandler(404)
+    def not_found(e):
+        return app.send_static_file('index.html')
 
     from .blueprints.asset import bp as asset_bp
     app.register_blueprint(asset_bp)

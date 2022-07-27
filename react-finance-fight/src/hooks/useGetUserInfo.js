@@ -23,7 +23,7 @@ export default function useGetUserInfo(){
             }
             return () => {source.cancel()}
         },
-        [setUser, user.token]  
+        []
     )
     return user
 }
