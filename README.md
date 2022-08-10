@@ -4,7 +4,7 @@
 
 Finance Fight is a full-stack web application allowing users to make fake purchases of real stocks or cryptocurrencies to test their investing skills in a risk-free environment. Each user starts out with $10k to purchase any stocks or cryptocurrencies of their choosing. A user can make as many purchases as they wish provided they have money in their bank. Users may also sell assets at anytime to increase the funds in their bank. All purchases and sales are made at the ***current*** market value to provide the user with the experience of gaining or losing money on the investment. Users can view the leaderboard to see how their portfolio stacks up against other users.
 
-Finance Fight is built with a Flask backend connecting to a SQLite database and a React frontend. I built RESTful API's to connect to my database as well as 4 external sources for financial data. This is one of my first times working with React, so I'm excited to continue learning, revamping existing features, and building out new ones.
+Finance Fight is built with a Flask backend connecting to a PostgreSQL database and a React frontend. I built RESTful API's to connect to my database as well as 4 external sources for financial data. This is one of my first times working with React, so I'm excited to continue learning, revamping existing features, and building out new ones.
 
 Check out the deployed version at [https://finance-fight.herokuapp.com/](https://finance-fight.herokuapp.com/).
 
@@ -38,7 +38,6 @@ Check out the deployed version at [https://finance-fight.herokuapp.com/](https:/
 
 - The biggest challenge I faced was creating the user leaderboard. I had to pull data for each asset that each user owns. In addition, I had to obtain some of that data from my database (purchase info) and some of the data from external sources (current asset values). Once the data was obtained, I then had to perform calculations and display the data in an organized manor. 
 - This was one of my first projects working with React, so it took some time to get use to the built-in hooks, specifically useEffect. There were a few times where I ran into an infinite loop and had to take a closer look at the parameters being included in the dependency array.
-- I started this project with a PostgreSQL database. As I continued hooking up API's to get user asset data, the database started responding with 500 errors due to there being too many connections for the free plan I was utilizing. I then pivoted to using a SQLite database which was able to handle the amount of connections. This caused me to be unable to deploy my app on Heroku as the SQLite database would be regularly deleted and remade. One of my main focuses at this time is making my API calls to the database more efficient to reduce open connections to be able to transition back to PostgreSQL for deployment.
 
 ## Financial Data Provided By
 
