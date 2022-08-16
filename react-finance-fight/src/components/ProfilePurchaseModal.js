@@ -53,7 +53,7 @@ export default function ProfilePurchaseModal({asset, price}) {
     
   return (
     <div>
-      <Button variant='contained' sx={{mt:0.6, width:'5vw'}} startIcon={<MonetizationOnIcon/>} onClick={handleOpen}>Buy</Button>
+      <Button variant='contained' sx={{my:2, width:'5vw'}} startIcon={<MonetizationOnIcon/>} onClick={handleOpen}>Buy</Button>
       <Modal
         open={open}
         onClose={handleClose}

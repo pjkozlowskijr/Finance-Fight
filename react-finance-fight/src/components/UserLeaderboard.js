@@ -2,11 +2,42 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import { changeColor, currencyFormat, formatChange } from '../helpers';
 import useGetAllUsers from '../hooks/useGetAllUsers';
 
 export default function UserLeaderboard() {
-  const users = useGetAllUsers();
+  const allUsers = useGetAllUsers()?.users;
+  const [users, setUsers] = useState(allUsers);
+  const [order, setOrder] = useState('ASC');
+  const sorting = (col) => {
+    if (order === 'ASC'){
+      if (col === 'display_name'){
+        const sorted = [...users].sort((a,b) => 
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+        );
+        setUsers(sorted)
+      }
+      const sorted = [...users].sort((a,b) => 
+        a[col] > b[col] ? 1 : -1
+      );
+      setUsers(sorted)
+      setOrder('DSC')
+    }
+    if (order === 'DSC'){
+      if (col === 'display_name'){
+        const sorted = [...users].sort((a,b) => 
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+        );
+        setUsers(sorted)
+      }
+      const sorted = [...users].sort((a,b) => 
+        a[col] < b[col] ? 1 : -1
+      );
+      setUsers(sorted)
+      setOrder('ASC')
+    }
+  };
 
   if (!users){
     return(
@@ -22,18 +53,18 @@ export default function UserLeaderboard() {
       <table style={{width:'100%'}} className='table table-striped'>
         <thead>
           <tr className='leader-head'>
-            <th class="text-center" scope="col">Rank</th>
-            <th class="text-center" scope="col">User</th>
-            <th class="text-center" scope="col">Net Worth</th>
-            <th class="text-center" scope="col">Bank Funds</th>
-            <th class="text-center" scope="col">Asset Costs</th>
-            <th class="text-center" scope="col">Current Value</th>
-            <th class="text-center" scope="col">$ Change</th>
-            <th class="text-center" scope="col">% Change</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('asset_value')}>Rank</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('display_name')}>User</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('total_value')}>Net Worth</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('bank')}>Bank Funds</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('asset_costs')}>Asset Costs</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('asset_value')}>Current Value</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('')}>$ Change</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('')}>% Change</th>
           </tr>
         </thead>
         <tbody>
-          {users?.users?.map((user, index) => (
+          {users?.map((user, index) => (
             <tr key={user?.display_name} className='leader-data'>
               <td>{index + 1}</td>
               <td>{user?.display_name}</td>

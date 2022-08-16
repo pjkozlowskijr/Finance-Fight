@@ -16,6 +16,7 @@ export default function useGetAllUsers() {
             (async () => {
                 const response = await apiUser.getAllUsers(source.token);
                 setUsers(response)
+                console.log(response)
             })()
             return () => {source.cancel()}
         },

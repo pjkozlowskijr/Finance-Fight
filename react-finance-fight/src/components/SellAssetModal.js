@@ -55,7 +55,6 @@ export default function SellAssetModal({asset, price}) {
       <Button 
         variant='contained' 
         sx={{
-            py:0.5, 
             my:2, 
             backgroundColor:theme.palette.secondary.main,           
             '&:hover': {
