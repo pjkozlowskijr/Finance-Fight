@@ -31,7 +31,7 @@ Check out the deployed version at [https://finance-fight.herokuapp.com/](https:/
 - Allow the user to customize which symbols appear on the ticker tape scrolling at the top of the page.
 - Enable search capability by company name (currently symbol only) or ability to lookup the ticker symbol.
 - Deploy websockets to replace current API's for a more steady and current stream of financial data.
-- Build out functionality for user to sort leaderboard by column to create custom views.
+- CURRENTLY TACKLING...Build out functionality for user to sort leaderboard by column to create custom views.
 - Integrate Stripe's payment API so users can increase their available funds with ***fake*** deposits.
 
 ## Challenges
