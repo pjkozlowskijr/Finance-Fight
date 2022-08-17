@@ -18,6 +18,16 @@ export default function UserLeaderboard() {
           (a,b) => a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
         );
         setUsers(sorted)
+      }else if (col === 'dollar_change'){
+        const sorted = [...users].sort(
+          (a,b) => a.asset_value - a.asset_costs > b.asset_value - b.asset_costs ? 1 : -1
+        );
+        setUsers(sorted)
+      }else if (col === 'percent_change'){
+        const sorted = [...users].sort(
+          (a,b) => (a.asset_value - a.asset_costs)/a.asset_costs > (b.asset_value - b.asset_costs)/b.asset_costs ? 1 : -1
+        );
+        setUsers(sorted)
       }else{
         const sorted = [...users].sort(
           (a,b) => a[col] > b[col] ? 1 : -1
@@ -30,6 +40,16 @@ export default function UserLeaderboard() {
       if (col === 'display_name'){
         const sorted = [...users].sort(
           (a,b) => a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+        );
+        setUsers(sorted)
+      }else if (col === 'dollar_change'){
+        const sorted = [...users].sort(
+          (a,b) => a.asset_value - a.asset_costs < b.asset_value - b.asset_costs ? 1 : -1
+        );
+        setUsers(sorted)
+      }else if (col === 'percent_change'){
+        const sorted = [...users].sort(
+          (a,b) => (a.asset_value - a.asset_costs)/a.asset_costs < (b.asset_value - b.asset_costs)/b.asset_costs ? 1 : -1
         );
         setUsers(sorted)
       }else{
@@ -62,8 +82,8 @@ export default function UserLeaderboard() {
             <th className="text-center" scope="col" onClick={()=>sorting('bank')}>Bank Funds</th>
             <th className="text-center" scope="col" onClick={()=>sorting('asset_costs')}>Asset Costs</th>
             <th className="text-center" scope="col" onClick={()=>sorting('asset_value')}>Current Value</th>
-            <th className="text-center" scope="col" onClick={()=>sorting('')}>$ Change</th>
-            <th className="text-center" scope="col" onClick={()=>sorting('')}>% Change</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('dollar_change')}>$ Change</th>
+            <th className="text-center" scope="col" onClick={()=>sorting('percent_change')}>% Change</th>
           </tr>
         </thead>
         <tbody>
