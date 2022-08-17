@@ -15,12 +15,12 @@ export default function useGetAllUsers() {
             const source = CancelToken.source();
             (async () => {
                 const response = await apiUser.getAllUsers(source.token);
-                setUsers(response)
+                setUsers(response.users)
                 console.log(response)
             })()
             return () => {source.cancel()}
         },
-        [setUsers]
+        []
     )
     return users
 }

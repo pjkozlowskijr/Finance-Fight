@@ -2,39 +2,42 @@ import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { changeColor, currencyFormat, formatChange } from '../helpers';
 import useGetAllUsers from '../hooks/useGetAllUsers';
+import { AppContext } from '../context/AppContext';
 
 export default function UserLeaderboard() {
-  const allUsers = useGetAllUsers()?.users;
-  const [users, setUsers] = useState(allUsers);
-  const [order, setOrder] = useState('ASC');
+  useGetAllUsers();
+  const {users, setUsers} = useContext(AppContext);
+  const [order, setOrder] = useState('DSC');
   const sorting = (col) => {
     if (order === 'ASC'){
       if (col === 'display_name'){
-        const sorted = [...users].sort((a,b) => 
-        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+        const sorted = [...users].sort(
+          (a,b) => a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+        );
+        setUsers(sorted)
+      }else{
+        const sorted = [...users].sort(
+          (a,b) => a[col] > b[col] ? 1 : -1
         );
         setUsers(sorted)
       }
-      const sorted = [...users].sort((a,b) => 
-        a[col] > b[col] ? 1 : -1
-      );
-      setUsers(sorted)
       setOrder('DSC')
     }
     if (order === 'DSC'){
       if (col === 'display_name'){
-        const sorted = [...users].sort((a,b) => 
-        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+        const sorted = [...users].sort(
+          (a,b) => a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+        );
+        setUsers(sorted)
+      }else{
+        const sorted = [...users].sort(
+          (a,b) => a[col] < b[col] ? 1 : -1
         );
         setUsers(sorted)
       }
-      const sorted = [...users].sort((a,b) => 
-        a[col] < b[col] ? 1 : -1
-      );
-      setUsers(sorted)
       setOrder('ASC')
     }
   };
@@ -53,7 +56,7 @@ export default function UserLeaderboard() {
       <table style={{width:'100%'}} className='table table-striped'>
         <thead>
           <tr className='leader-head'>
-            <th className="text-center" scope="col" onClick={()=>sorting('asset_value')}>Rank</th>
+            <th className="text-center" scope="col">Rank</th>
             <th className="text-center" scope="col" onClick={()=>sorting('display_name')}>User</th>
             <th className="text-center" scope="col" onClick={()=>sorting('total_value')}>Net Worth</th>
             <th className="text-center" scope="col" onClick={()=>sorting('bank')}>Bank Funds</th>
